@@ -53,7 +53,6 @@
     <EmbeddedResource Include="Localization\LocalizationPack.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <!-- Add Publicizer and referece to Microsoft NEtFramework -->
@@ -246,8 +245,6 @@
     <Content Include="Assets\Features\Icon_UnarmedCombatMastery.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Credits.txt" />
-    <Content Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup />
   <Target Name="Publicize" AfterTargets="Clean">
@@ -264,14 +261,14 @@
       <Assembly Include="$(OutputPath)\TomeOfDarkness.dll" />
       <ModConfig Include="$(OutputPath)\Info.json" />
       <Localization Include="$(OutputPath)\Localization\LocalizationPack.json" />
-	  <AbilitiesAssets Include="$(OutputPath)\Assets\Abilities\*.*" />
-	  <FeaturesAssets Include="$(OutputPath)\Assets\Features\*.*" />
+      <AbilitiesAssets Include="$(OutputPath)\Assets\Abilities\*.*" />
+      <FeaturesAssets Include="$(OutputPath)\Assets\Features\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)" />
     <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Localization" />
     <Copy SourceFiles="@(AbilitiesAssets)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Assets\Abilities" />
-	<Copy SourceFiles="@(FeaturesAssets)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Assets\Features" />
+    <Copy SourceFiles="@(FeaturesAssets)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Assets\Features" />
   </Target>
   <!-- Automatically creates a release zip -->
   <Target Name="ZipRelease" AfterTargets="Deploy" Condition="'$(Configuration)' == 'Release'">
@@ -279,14 +276,14 @@
       <Assembly Include="$(OutputPath)\TomeOfDarkness.dll" />
       <ModConfig Include="$(OutputPath)\Info.json" />
       <Localization Include="$(OutputPath)\Localization\LocalizationPack.json" />
-	  <AbilitiesAssets Include="$(OutputPath)\Assets\Abilities\*.*" />
-	  <FeaturesAssets Include="$(OutputPath)\Assets\Features\*.*" />
-	</ItemGroup>
+      <AbilitiesAssets Include="$(OutputPath)\Assets\Abilities\*.*" />
+      <FeaturesAssets Include="$(OutputPath)\Assets\Features\*.*" />
+    </ItemGroup>
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(OutputPath)\$(AssemblyName)" />
     <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(OutputPath)\$(AssemblyName)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Localization" />
     <Copy SourceFiles="@(AbilitiesAssets)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Assets\Abilities" />
-	<Copy SourceFiles="@(FeaturesAssets)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Assets\Features" />
+    <Copy SourceFiles="@(FeaturesAssets)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Assets\Features" />
     <ZipDirectory SourceDirectory="$(OutputPath)\$(AssemblyName)" DestinationFile="$(OutputPath)\$(AssemblyName).zip" Overwrite="true" />
   </Target>
 </Project>
