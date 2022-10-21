@@ -1,0 +1,12 @@
+﻿{
+  "AssemblyName": "TomeOfDarkness.dll",
+  "Author": "Skarm Ghelmaad",
+  "DisplayName": "Tome of Darkness",
+  "EntryMethod": "TomeOfDarkness.Main.Load",
+  "GameVersion": "2.0.0",
+  "Id": "TomeOfDarkness",
+  "ManagerVersion": "0.23.0",
+  "Requirements": [ "TabletopTweaks-Core", "TabletopTweaks-Base" ],
+  "LoadAfter": [ "TabletopTweaks-Core", "MewsiferConsole.Mod", "TabletopTweaks-Base" ],
+  "Version": "0.0.1"
+}

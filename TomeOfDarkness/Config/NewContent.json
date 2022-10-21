@@ -1,0 +1,50 @@
+﻿{
+  "NewSettingsOffByDefault": false,
+  "Archetypes": {
+    "DisableAll": false,
+    "Settings": {
+    }
+  },
+  "Feats": {
+    "DisableAll": false,
+    "Settings": {
+    }
+  },
+  "NinjaTricks": {
+    "DisableAll": false,
+    "Settings": {
+    }
+  },
+  "RogueTalents": {
+    "DisableAll": false,
+    "Settings": {
+    }
+  },
+  "SlayerTalents": {
+    "DisableAll": false,
+    "Settings": {
+    }
+  },
+  "WildTalents": {
+    "DisableAll": false,
+    "Settings": {
+
+    }
+  },
+  "Items": {
+    "DisableAll": false,
+    "Settings": {
+    }
+  },
+  "Spells": {
+    "DisableAll": false,
+    "Settings": {
+      "FxTester": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "This is a collection of spells that merely generate visual effects."
+      }
+    }
+  }
+
+}
