@@ -4,6 +4,7 @@
   "DisplayName": "Tome of Darkness",
   "EntryMethod": "TomeOfDarkness.Main.Load",
   "GameVersion": "2.0.0",
+  "HomePage": "https://github.com/Skarm-Ghelmaad/TomeOfDarkness",
   "Id": "TomeOfDarkness",
   "ManagerVersion": "0.23.0",
   "Requirements": [ "TabletopTweaks-Core", "TabletopTweaks-Base" ],
