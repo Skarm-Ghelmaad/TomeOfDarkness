@@ -61,7 +61,9 @@
     <Compile Include="NewContent\Spells\FxTester.cs" />
     <Compile Include="NewUnitParts\UnitPartCustomMechanicsFeaturesToD.cs" />
     <Compile Include="UMMSettingsUI.cs" />
+    <Compile Include="Utilities\FeatToolsExtension.cs" />
     <Compile Include="Utilities\HelpersExtension.cs" />
+    <Compile Include="Utilities\KiTools.cs" />
     <EmbeddedResource Remove="lib\**" />
     <None Remove="lib\**" />
     <EmbeddedResource Include="Config\Blueprints.json" />
