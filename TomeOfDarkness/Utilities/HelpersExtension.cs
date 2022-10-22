@@ -103,6 +103,80 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |------------------------------------------------------------------| Elements Creators |-------------------------------------------------------------------|
+
+        // Holic75_SC
+        public static ConditionsChecker CreateConditionsCheckerAnd(params Condition[] conditions)
+        {
+            return new ConditionsChecker() { Conditions = conditions, Operation = Operation.And };
+        }
+
+        // Holic75_SC
+        public static ConditionsChecker CreateConditionsCheckerOr(params Condition[] conditions)
+        {
+            return new ConditionsChecker() { Conditions = conditions, Operation = Operation.Or };
+        }
+
+
+        #endregion
+
+        #region |------------------------------------------------------------------| Mechanics Creators |------------------------------------------------------------------|
+
+        // Holic75_SC
+        public static ContextValue CreateContextValueRank(AbilityRankType value = AbilityRankType.Default) => value.CreateContextValue();
+
+        // Holic75_SC
+        public static ContextValue CreateContextValue(this AbilityRankType value)
+        {
+            return new ContextValue() { ValueType = ContextValueType.Rank, ValueRank = value };
+        }
+
+        // Holic75_SC
+        public static ContextValue CreateContextValue(this AbilitySharedValue value)
+        {
+            return new ContextValue() { ValueType = ContextValueType.Shared, ValueShared = value };
+        }
+
+        // Holic75_SC
+        public static ContextDiceValue CreateContextDiceValue(this DiceType dice, ContextValue diceCount = null, ContextValue bonus = null)
+        {
+            return new ContextDiceValue()
+            {
+                DiceType = dice,
+                DiceCountValue = diceCount ?? CreateContextValueRank(),
+                BonusValue = bonus ?? 0
+            };
+        }
+
+        // Holic75_SC
+        public static ContextDurationValue CreateContextDuration(ContextValue bonus = null, DurationRate rate = DurationRate.Rounds, DiceType diceType = DiceType.Zero, ContextValue diceCount = null)
+        {
+            return new ContextDurationValue()
+            {
+                BonusValue = bonus ?? CreateContextValueRank(),
+                Rate = rate,
+                DiceCountValue = diceCount ?? 0,
+                DiceType = diceType
+            };
+        }
+
+        // Holic75_SC
+        public static ContextDurationValue CreateContextDurationNonExtandable(ContextValue bonus = null, DurationRate rate = DurationRate.Rounds, DiceType diceType = DiceType.Zero, ContextValue diceCount = null)
+        {
+            var d = new ContextDurationValue()
+            {
+                BonusValue = bonus ?? CreateContextValueRank(),
+                Rate = rate,
+                DiceCountValue = diceCount ?? 0,
+                DiceType = diceType
+            };
+            d.m_IsExtendable = false;
+
+            return d;
+        }
+
+        #endregion
+
         #region |----------------------------------------------------------| ( Abilities ) Components Creators |-----------------------------------------------------------|
 
         // Holic75_SC
@@ -235,7 +309,6 @@ namespace TomeOfDarkness.Utilities
         }
 
         #endregion
-
 
         #region  |------------------------------------------------|  Converters - ActivatableAbility Creators (Simple) |----------------------------------------------------|
 
