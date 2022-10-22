@@ -890,7 +890,235 @@ namespace TomeOfDarkness.Utilities
 
         }
 
+        // KINETIC TALENTS
+        // This converts a spell to a kinetic talent, allowing for different name alterations.
+        static public BlueprintAbility ConvertSpellToKineticistTalent(BlueprintAbility spell,
+                                                                       string prefixAdd = "",
+                                                                       string prefixRemove = "",
+                                                                       string suffixAdd = "",
+                                                                       string suffixRemove = "",
+                                                                       string replaceOldText1 = "",
+                                                                       string replaceOldText2 = "",
+                                                                       string replaceOldText3 = "",
+                                                                       string replaceNewText1 = "",
+                                                                       string replaceNewText2 = "",
+                                                                       string replaceNewText3 = "",
+                                                                       int burn_cost = 0)
+        {
+            var kineticist = BlueprintTools.GetBlueprint<BlueprintCharacterClass>("42a455d9ec1ad924d889272429eb8391").ToReference<BlueprintCharacterClassReference>();
 
+            var ability = ConvertSpellToSpellLike(spell, new BlueprintCharacterClassReference[] { kineticist }, StatType.Unknown, null, prefixAdd, prefixRemove, suffixAdd, suffixRemove, replaceOldText1, replaceOldText2, replaceOldText3, replaceNewText1, replaceNewText2, replaceNewText3, no_resource: true, no_scaling: true, null, 0);
+
+            ability.AddComponents(Helpers.Create<AbilityKineticist>(a => { a.Amount = burn_cost; a.WildTalentBurnCost = burn_cost; }),
+                                  Helpers.Create<ContextCalculateAbilityParamsBasedOnClass>(c => { c.m_CharacterClass = kineticist; c.StatType = StatType.Constitution; c.UseKineticistMainStat = true; }));
+
+            ability.RemoveComponents<SpellListComponent>();
+            return ability;
+
+        }
+
+        // This converts a spell to a kinetic talent with just a simplified name change (prefix added).
+        static public BlueprintAbility ConvertSpellToKineticistTalent(BlueprintAbility spell,
+                                                               string prefixAdd = "",
+                                                               int burn_cost = 0)
+        {
+            var kineticist = BlueprintTools.GetBlueprint<BlueprintCharacterClass>("42a455d9ec1ad924d889272429eb8391").ToReference<BlueprintCharacterClassReference>();
+
+            var ability = ConvertSpellToSpellLike(spell, new BlueprintCharacterClassReference[] { kineticist }, StatType.Unknown, null, prefixAdd, no_resource: true, no_scaling: true, null, 0);
+
+            ability.AddComponents(Helpers.Create<AbilityKineticist>(a => { a.Amount = burn_cost; a.WildTalentBurnCost = burn_cost; }),
+                                  Helpers.Create<ContextCalculateAbilityParamsBasedOnClass>(c => { c.m_CharacterClass = kineticist; c.StatType = StatType.Constitution; c.UseKineticistMainStat = true; }));
+
+            ability.RemoveComponents<SpellListComponent>();
+            return ability;
+
+        }
+
+        // KI POWERS
+        // This converts a spell to a ki power, allowing for different name alterations.
+        public static void ConvertSpellToMonkKiPower(BlueprintAbility spell,
+                                                     int required_level,
+                                                     bool personal_only,
+                                                     int cost = 1)
+        {
+            var monk = BlueprintTools.GetBlueprint<BlueprintCharacterClass>("e8f21e5b58e0569468e420ebea456124").ToReference<BlueprintCharacterClassReference>();
+
+            var wis_resource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("9d9c90a9a1f52d04799294bf91c80a82").ToReference<BlueprintAbilityResourceReference>(); // standard Ki resource (based on Wis)
+            var cha_resource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("7d002c1025fbfe2458f1509bf7a89ce1").ToReference<BlueprintAbilityResourceReference>(); // Scaled Fist's Ki resource (based on Cha)
+
+            var monk_ki_power_selection = BlueprintTools.GetBlueprint<BlueprintFeatureSelection>("3049386713ff04245a38b32483362551").ToReference<BlueprintFeatureSelectionReference>();
+            var scaled_fist_ki_power_selection = BlueprintTools.GetBlueprint<BlueprintFeatureSelection>("4694f6ac27eaed34abb7d09ab67b4541").ToReference<BlueprintFeatureSelectionReference>();
+
+            var sensei_mystic_powers = BlueprintTools.GetBlueprint<BlueprintFeature>("d5f7bcde6e7e5ed498f430ebf5c29837").ToReference<BlueprintFeatureReference>(); // Sensei Mystic Powers
+            var sensei_mystic_powers_mass = BlueprintTools.GetBlueprint<BlueprintFeature>("a316044187ec61344ba33535f42f6a4d").ToReference<BlueprintFeatureReference>(); // Sensei Mass Mystic Powers
+
+            string action_type = "standard";
+            if (spell.ActionType == UnitCommand.CommandType.Swift)
+            {
+                action_type = "swift";
+            }
+            else if (spell.ActionType == UnitCommand.CommandType.Move)
+            {
+                action_type = "move";
+            }
+            else if (spell.IsFullRoundAction)
+            {
+                action_type = "full-round";
+            }
+
+            var description = $"A monk with this ki power can spend {cost} point{(cost != 1 ? "s" : "")} from his ki pool to apply effect of the {spell.Name} spell to himself as a {action_type} action.\n"
+            + spell.Name + ": " + spell.Description;
+
+            var name = "Ki Power: " + spell.Name;
+
+            var monk_ability = ConvertSpellToSpellLikeVariants(spell, new BlueprintCharacterClassReference[] { monk }, StatType.Wisdom, wis_resource, "Base", "KiPower", false, false, personal_only, null, cost);
+
+            var scaled_fist_ability = ConvertSpellToSpellLikeVariants(spell, new BlueprintCharacterClassReference[] { monk }, StatType.Charisma, cha_resource, "Base", "ScaledFistKiPower", false, false, personal_only, null, cost);
+
+            monk_ability.SetNameDescription(ToDContext, name, description);
+
+            scaled_fist_ability.SetNameDescription(ToDContext, name, description);
+
+            if (monk_ability.HasVariants)
+            {
+
+                var monk_ability_variants_reference = monk_ability.GetComponent<AbilityVariants>().m_Variants;
+
+                foreach (var v in monk_ability_variants_reference)
+                {
+                    var v_orig = v.Get();
+                    v_orig.SetName(ToDContext, "Ki Power: " + v_orig.Name);
+                }
+
+            }
+
+            if (scaled_fist_ability.HasVariants)
+            {
+
+                var scaled_fist_ability_variants_reference = scaled_fist_ability.GetComponent<AbilityVariants>().m_Variants;
+
+                foreach (var v in scaled_fist_ability_variants_reference)
+                {
+                    var v_orig = v.Get();
+                    v_orig.SetName(ToDContext, "Ki Power: " + v_orig.Name);
+                }
+
+            }
+
+            var monk_feature = ConvertAbilityToFeature(monk_ability, "", "", "Feature", "Ability", false);
+
+            var scaled_fist_feature = ConvertAbilityToFeature(scaled_fist_ability, "", "", "Feature", "Ability", false);
+
+            monk_feature.AddPrerequisite<PrerequisiteClassLevel>(p => { p.m_CharacterClass = monk; p.Level = required_level; });
+
+            scaled_fist_feature.AddPrerequisite<PrerequisiteClassLevel>(p => { p.m_CharacterClass = monk; p.Level = required_level; });
+
+            FeatToolsExtension.AddAsMonkKiPower(monk_feature);
+
+            FeatToolsExtension.AddAsScaledFistKiPower(scaled_fist_feature);
+
+            var mystic_wisdom_ability = monk_ability.CreateCopy(ToDContext, "SenseiAdvice" + monk_ability.name, bp =>
+            {
+
+                bp.Range = AbilityRange.Close;
+                bp.SetMiscAbilityParametersSingleTargetRangedFriendly();
+                bp.SetName(ToDContext, bp.Name.Replace("Ki Power: ", "Sensei Advice: "));
+                var cmp = bp.GetComponent<AbilityResourceLogic>();
+                cmp.Amount = cmp.Amount + 1;
+
+            });
+
+            if (mystic_wisdom_ability.HasVariants)
+            {
+                var mystic_wisdom_ability_variants = mystic_wisdom_ability.GetComponent<AbilityVariants>().m_Variants;
+
+                int num_variants = mystic_wisdom_ability_variants.Length;
+
+                var mystic_wisdom_abilities = new BlueprintAbility[num_variants];
+
+                var mystic_wisdom_abilities_reference = new BlueprintAbilityReference[num_variants];
+
+                for (int i = 0; i < num_variants; i++)
+                {
+                    mystic_wisdom_abilities[i] = mystic_wisdom_abilities[i].CreateCopy(ToDContext, "SenseiAdvice" + mystic_wisdom_abilities[i].name, bp =>
+                    {
+
+                        bp.Range = AbilityRange.Close;
+                        bp.SetMiscAbilityParametersSingleTargetRangedFriendly();
+                        bp.SetName(ToDContext, bp.Name.Replace("Ki Power: ", "Sensei Advice: "));
+                        var cmp = bp.GetComponent<AbilityResourceLogic>();
+                        cmp.Amount = cmp.Amount + 1;
+                        bp.Parent = mystic_wisdom_ability;
+
+                    });
+
+                    mystic_wisdom_abilities_reference[i] = mystic_wisdom_abilities[i].ToReference<BlueprintAbilityReference>();
+                }
+                mystic_wisdom_ability.GetComponent<AbilityVariants>().m_Variants = mystic_wisdom_abilities_reference;
+
+                sensei_mystic_powers.Get().AddComponent<AddFeatureIfHasFact>(c =>
+                {
+                    c.m_CheckedFact = monk_feature.ToReference<BlueprintUnitFactReference>();
+                    c.m_Feature = mystic_wisdom_ability.ToReference<BlueprintUnitFactReference>();
+                });
+
+
+            }
+
+
+            var mystic_wisdom_ability_mass = monk_ability.CreateCopy(ToDContext, "SenseiAdviceMass" + monk_ability.name, bp =>
+            {
+
+                bp.SetName(ToDContext, bp.Name.Replace("Ki Power: ", "Sensei Advice: Mass "));
+                var cmp = bp.GetComponent<AbilityResourceLogic>();
+                cmp.Amount = cmp.Amount + 2;
+
+            });
+
+            if (mystic_wisdom_ability_mass.HasVariants)
+            {
+
+                var mystic_wisdom_ability_mass_variants = mystic_wisdom_ability_mass.GetComponent<AbilityVariants>().m_Variants;
+
+                int num_variants = mystic_wisdom_ability_mass_variants.Length;
+
+                var mystic_wisdom_abilities_mass = new BlueprintAbility[num_variants];
+
+                var mystic_wisdom_abilities_mass_reference = new BlueprintAbilityReference[num_variants];
+
+                for (int i = 0; i < num_variants; i++)
+                {
+                    mystic_wisdom_abilities_mass[i] = mystic_wisdom_abilities_mass[i].CreateCopy(ToDContext, "SenseiAdviceMass" + mystic_wisdom_abilities_mass[i].name, bp =>
+                    {
+
+                        bp.SetName(ToDContext, bp.Name.Replace("Ki Power: ", "Sensei Advice: Mass "));
+                        bp.Parent = mystic_wisdom_ability_mass;
+                        bp.AddComponent(CreateAbilityTargetsAround(30.Feet(), TargetType.Ally));
+                        var cmp = bp.GetComponent<AbilityResourceLogic>();
+                        cmp.Amount = cmp.Amount + 2;
+
+                    });
+
+                    mystic_wisdom_abilities_mass_reference[i] = mystic_wisdom_abilities_mass[i].ToReference<BlueprintAbilityReference>();
+                }
+
+
+            }
+            else
+            {
+
+                mystic_wisdom_ability_mass.AddComponent(CreateAbilityTargetsAround(30.Feet(), TargetType.Ally));
+
+            }
+
+            sensei_mystic_powers_mass.Get().AddComponent<AddFeatureIfHasFact>(c =>
+            {
+                c.m_CheckedFact = monk_feature.ToReference<BlueprintUnitFactReference>();
+                c.m_Feature = mystic_wisdom_ability_mass.ToReference<BlueprintUnitFactReference>();
+            });
+
+
+        }
 
 
         #endregion
@@ -1288,6 +1516,96 @@ namespace TomeOfDarkness.Utilities
             });
 
             return wrapper;
+        }
+        
+        // Holic75_SC
+        public static void SetMiscAbilityParametersSingleTargetRangedHarmful(this BlueprintAbility ability,
+                                                                     bool works_on_allies = false,
+                                                                     Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle animation = Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle.Point)
+        {
+            ability.CanTargetFriends = works_on_allies;
+            ability.CanTargetEnemies = true;
+            ability.CanTargetSelf = false;
+            ability.CanTargetPoint = false;
+            ability.EffectOnEnemy = AbilityEffectOnUnit.Harmful;
+            ability.EffectOnAlly = works_on_allies ? AbilityEffectOnUnit.Harmful : AbilityEffectOnUnit.None;
+            ability.Animation = animation;
+        }
+
+
+        // Holic75_SC
+        public static void SetMiscAbilityParametersSingleTargetRangedFriendly(this BlueprintAbility ability,
+                                                                              bool works_on_self = false,
+                                                                              Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle animation = Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle.Point)
+        {
+            ability.CanTargetFriends = true;
+            ability.CanTargetEnemies = false;
+            ability.CanTargetSelf = works_on_self;
+            ability.CanTargetPoint = false;
+            ability.EffectOnEnemy = AbilityEffectOnUnit.None;
+            ability.EffectOnAlly = AbilityEffectOnUnit.Helpful;
+            ability.Animation = animation;
+        }
+
+        // Holic75_SC
+        public static void SetMiscAbilityParametersTouchHarmful(this BlueprintAbility ability,
+                                                                bool works_on_allies = true,
+                                                                Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle animation = Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle.Touch)
+        {
+            ability.CanTargetFriends = works_on_allies;
+            ability.CanTargetEnemies = true;
+            ability.CanTargetSelf = works_on_allies;
+            ability.CanTargetPoint = false;
+            ability.EffectOnEnemy = AbilityEffectOnUnit.Harmful;
+            ability.EffectOnAlly = works_on_allies ? AbilityEffectOnUnit.Harmful : AbilityEffectOnUnit.None;
+            ability.Animation = animation;
+
+        }
+
+        // Holic75_SC
+        public static void SetMiscAbilityParametersTouchFriendly(this BlueprintAbility ability,
+                                                                 bool works_on_self = true,
+                                                                 Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle animation = Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle.Touch)
+        {
+            ability.CanTargetFriends = true;
+            ability.CanTargetEnemies = false;
+            ability.CanTargetSelf = works_on_self;
+            ability.CanTargetPoint = false;
+            ability.EffectOnEnemy = AbilityEffectOnUnit.None;
+            ability.EffectOnAlly = AbilityEffectOnUnit.Helpful;
+            ability.Animation = animation;
+
+        }
+
+        // Holic75_SC
+        public static void SetMiscAbilityParametersRangedDirectional(this BlueprintAbility ability,
+                                                                      bool works_on_units = true,
+                                                                      AbilityEffectOnUnit effect_on_ally = AbilityEffectOnUnit.Harmful,
+                                                                      AbilityEffectOnUnit effect_on_enemy = AbilityEffectOnUnit.Harmful,
+                                                                      Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle animation = Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle.Directional)
+        {
+            ability.CanTargetFriends = works_on_units;
+            ability.CanTargetEnemies = works_on_units;
+            ability.CanTargetSelf = works_on_units;
+            ability.CanTargetPoint = true;
+            ability.EffectOnEnemy = effect_on_enemy;
+            ability.EffectOnAlly = effect_on_ally;
+            ability.Animation = animation;
+
+        }
+
+        // Holic75_SC
+        public static void SetMiscAbilityParametersSelfOnly(this BlueprintAbility ability,
+                                                            Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle animation = Kingmaker.Visual.Animation.Kingmaker.Actions.UnitAnimationActionCastSpell.CastAnimationStyle.Self)
+        {
+            ability.CanTargetFriends = false;
+            ability.CanTargetEnemies = false;
+            ability.CanTargetSelf = true;
+            ability.CanTargetPoint = false;
+            ability.EffectOnEnemy = AbilityEffectOnUnit.None;
+            ability.EffectOnAlly = AbilityEffectOnUnit.Helpful;
+            ability.Animation = animation;
+
         }
 
 
