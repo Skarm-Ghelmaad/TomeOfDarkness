@@ -27,6 +27,13 @@ using Kingmaker.Blueprints.Classes;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.FactLogic;
+using Kingmaker.Blueprints.Classes.Spells;
+using Kingmaker.UnitLogic.Abilities;
+using Kingmaker.UnitLogic.Mechanics.Actions;
+using Kingmaker.Blueprints.Classes.Prerequisites;
+using Kingmaker.Blueprints.Classes.Selection;
+using Kingmaker.UnitLogic.Class.Kineticist;
+using Kingmaker.UnitLogic.Commands.Base;
 
 namespace TomeOfDarkness.Utilities
 {
@@ -97,6 +104,30 @@ namespace TomeOfDarkness.Utilities
         #endregion
 
         #region |----------------------------------------------------------| ( Abilities ) Components Creators |-----------------------------------------------------------|
+
+        // Holic75_SC
+        // These creators create a list of variant of the parent BlueprintAbility from a given variants list and then adds the parent as such in each of these variants' Blueprints
+        public static AbilityVariants CreateAbilityVariants(this BlueprintAbility parent, IEnumerable<BlueprintAbility> variants) => CreateAbilityVariants(parent, variants.ToArray());
+
+        // Holic75_SC
+        public static AbilityVariants CreateAbilityVariants(this BlueprintAbility parent, params BlueprintAbility[] variants)
+        {
+            var a = Helpers.Create<AbilityVariants>();
+
+            BlueprintAbilityReference[] variants_reference = new BlueprintAbilityReference[variants.Length];
+
+            for (int i = 0; i < variants_reference.Length; i++)
+            {
+                variants_reference[i] = variants[i].ToReference<BlueprintAbilityReference>();
+            }
+
+            a.m_Variants = variants_reference;
+            foreach (var vr in variants)
+            {
+                vr.m_Parent = parent.ToReference<BlueprintAbilityReference>();
+            }
+            return a;
+        }
 
         // Holic75_SC
         public static AbilityResourceLogic CreateResourceLogic(this BlueprintAbilityResource resource,
@@ -625,6 +656,572 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |-------------------------------------------------|  Converters - Specific Ability Creators (Simple) |-----------------------------------------------------|
+
+        // Holic75_PT
+        // This converter creates a spell-like ability from an existing spell.
+        // Compared to the original Holic75's version, I have added more optional string parameters to allow to customize the name of the spell-like ability.
+        static public BlueprintAbility ConvertSpellToSpellLike(BlueprintAbility spell,
+                                                               BlueprintCharacterClassReference[] classes,
+                                                               StatType stat,
+                                                               BlueprintAbilityResource resource = null,
+                                                               string prefixAdd = "",
+                                                               string prefixRemove = "",
+                                                               string suffixAdd = "",
+                                                               string suffixRemove = "",
+                                                               string replaceOldText1 = "",
+                                                               string replaceOldText2 = "",
+                                                               string replaceOldText3 = "",
+                                                               string replaceNewText1 = "",
+                                                               string replaceNewText2 = "",
+                                                               string replaceNewText3 = "",
+                                                               bool no_resource = false,
+                                                               bool no_scaling = false,
+                                                               BlueprintArchetypeReference[] archetypes = null,
+                                                               int cost = 1
+
+                                                              )
+        {
+
+            string spelllikeName = spell.Name;
+
+            if (!String.IsNullOrEmpty(prefixRemove))
+            {
+                spelllikeName.Replace(prefixRemove, "");
+            }
+            if (!String.IsNullOrEmpty(suffixRemove))
+            {
+                spelllikeName.Replace(suffixRemove, "");
+            }
+            if (!String.IsNullOrEmpty(prefixAdd))
+            {
+                spelllikeName = prefixAdd + spelllikeName;
+            }
+            if (!String.IsNullOrEmpty(suffixAdd))
+            {
+                spelllikeName = spelllikeName + suffixAdd;
+            }
+            if (!String.IsNullOrEmpty(replaceOldText1))
+            {
+                spelllikeName.Replace(replaceOldText1, replaceNewText1);
+            }
+            if (!String.IsNullOrEmpty(replaceOldText2))
+            {
+                spelllikeName.Replace(replaceOldText2, replaceNewText2);
+            }
+            if (!String.IsNullOrEmpty(replaceOldText3))
+            {
+                spelllikeName.Replace(replaceOldText3, replaceNewText3);
+            }
+
+            var ability = spell.CreateCopy(ToDContext, spelllikeName);
+
+            if (!no_scaling)
+            {
+                ability.RemoveComponents<SpellListComponent>();
+            }
+
+            ability.Type = AbilityType.SpellLike;
+
+            if (!no_scaling)
+            {
+                ability.AddComponent(CreateContextCalculateAbilityParamsBasedOnClassesWithArchetypes(classes, archetypes, stat));
+            }
+
+            ability.MaterialComponent = BlueprintTools.GetBlueprint<BlueprintAbility>("2d81362af43aeac4387a3d4fced489c3").MaterialComponent; // Fireball spell (no component)
+
+            if (!no_resource)
+            {
+                var resource2 = resource;
+                if (resource2 == null)
+                {
+                    resource2 = CreateAbilityResource(spelllikeName + "Resource", null);
+                    resource2.SetFixedResource(cost);
+                }
+                ability.AddComponent(CreateResourceLogic(resource2, amount: cost));
+            }
+
+            ability.Parent = null;
+            return ability;
+
+        }
+
+        // Holic75_PT
+        // This converter variant converts a spell-like ability from an existing spell, but drops all the string alterations BUT the prefix.
+        static public BlueprintAbility ConvertSpellToSpellLike(BlueprintAbility spell,
+                                                               BlueprintCharacterClassReference[] classes,
+                                                               StatType stat,
+                                                               BlueprintAbilityResource resource = null,
+                                                               string prefixAdd = "",
+                                                               bool no_resource = false,
+                                                               bool no_scaling = false,
+                                                               BlueprintArchetypeReference[] archetypes = null,
+                                                               int cost = 1
+
+                                                              )
+        {
+
+            string spelllikeName = spell.Name;
+
+            if (!String.IsNullOrEmpty(prefixAdd))
+            {
+                spelllikeName = prefixAdd + spelllikeName;
+            }
+
+            var ability = spell.CreateCopy(ToDContext, spelllikeName);
+
+            if (!no_scaling)
+            {
+                ability.RemoveComponents<SpellListComponent>();
+            }
+
+            ability.Type = AbilityType.SpellLike;
+
+            if (!no_scaling)
+            {
+                ability.AddComponent(CreateContextCalculateAbilityParamsBasedOnClassesWithArchetypes(classes, archetypes, stat));
+            }
+
+            ability.MaterialComponent = BlueprintTools.GetBlueprint<BlueprintAbility>("2d81362af43aeac4387a3d4fced489c3").MaterialComponent; // Fireball spell (no component)
+
+            if (!no_resource)
+            {
+                var resource2 = resource;
+                if (resource2 == null)
+                {
+                    resource2 = CreateAbilityResource(spelllikeName + "Resource", null);
+                    resource2.SetFixedResource(cost);
+                }
+                ability.AddComponent(CreateResourceLogic(resource2, amount: cost));
+            }
+
+            ability.Parent = null;
+            return ability;
+
+        }
+
+        // Holic75_PT
+        // This converter creates a supernatural ability from an existing spell.
+        // Compared to the original Holic75's version, I have added more optional string parameters to allow to customize the name of the supernatural ability,
+        // moreover I have completely redone the part of non-dispellable buffs to avoid to have to port the changeAction method, which seemed either impossible or (more likely)
+        // too hard for me to port!
+        static public BlueprintAbility ConvertSpellToSupernatural(BlueprintAbility spell,
+                                                                   BlueprintCharacterClassReference[] classes,
+                                                                   StatType stat,
+                                                                   BlueprintAbilityResource resource = null,
+                                                                   string prefixAdd = "",
+                                                                   bool no_resource = false,
+                                                                   bool no_scaling = false,
+                                                                   BlueprintArchetypeReference[] archetypes = null,
+                                                                   int cost = 1
+
+                                                                  )
+        {
+
+            var ability = ConvertSpellToSpellLike(spell, classes, stat, resource, prefixAdd, no_resource, no_scaling, archetypes: archetypes, cost: cost);
+            ability.Type = AbilityType.Supernatural;
+            ability.SpellResistance = false;
+            ability.RemoveComponents<SpellComponent>();
+            ability.AvailableMetamagic = (Metamagic)0;
+
+            GameAction[] action_storage = new GameAction[0];
+
+            //make buffs non dispellable
+            var actions = ability.GetComponent<AbilityEffectRunAction>();
+
+            ability.FlattenAllActions()
+                   .OfType<ContextActionApplyBuff>()
+                        .ForEach(b =>
+                        {
+                            b.IsNotDispelable = true;
+                            b.IsFromSpell = false;
+                        });
+
+
+            return ability;
+
+        }
+
+        // Holic75_PT
+        // This converter creates a supernatural ability from an existing spell, but drops all the string alterations BUT the prefix.
+        static public BlueprintAbility ConvertSpellToSupernatural(BlueprintAbility spell,
+                                                                   BlueprintCharacterClassReference[] classes,
+                                                                   StatType stat,
+                                                                   BlueprintAbilityResource resource = null,
+                                                                   string prefixAdd = "",
+                                                                   string prefixRemove = "",
+                                                                   string suffixAdd = "",
+                                                                   string suffixRemove = "",
+                                                                   string replaceOldText1 = "",
+                                                                   string replaceOldText2 = "",
+                                                                   string replaceOldText3 = "",
+                                                                   string replaceNewText1 = "",
+                                                                   string replaceNewText2 = "",
+                                                                   string replaceNewText3 = "",
+                                                                   bool no_resource = false,
+                                                                   bool no_scaling = false,
+                                                                   BlueprintArchetypeReference[] archetypes = null,
+                                                                   int cost = 1
+
+                                                                  )
+        {
+
+            var ability = ConvertSpellToSpellLike(spell, classes, stat, resource, prefixAdd, prefixRemove, suffixAdd, suffixRemove, replaceOldText1, replaceOldText2, replaceOldText3, replaceNewText1, replaceNewText2, replaceNewText3, no_resource, no_scaling, archetypes: archetypes, cost: cost);
+            ability.Type = AbilityType.Supernatural;
+            ability.SpellResistance = false;
+            ability.RemoveComponents<SpellComponent>();
+            ability.AvailableMetamagic = (Metamagic)0;
+
+            GameAction[] action_storage = new GameAction[0];
+
+            //make buffs non dispellable
+            var actions = ability.GetComponent<AbilityEffectRunAction>();
+
+            ability.FlattenAllActions()
+                   .OfType<ContextActionApplyBuff>()
+                        .ForEach(b =>
+                        {
+                            b.IsNotDispelable = true;
+                            b.IsFromSpell = false;
+                        });
+
+
+            return ability;
+
+        }
+
+
+
+
+        #endregion
+
+        #region |-------------------------------------------------|  Converters - Specific Ability Creators (Variant) |----------------------------------------------------|
+
+        // Holic75_PT
+        // This method creates spell-like variants from a spell (with variants). This is the most complete version, which allows to add a specific prefix for the wrapper and a lot of text modifications.
+        // Note that the typical suffix used for the wrapper ability is "Base" (as in the existing game wrappers).
+        static public BlueprintAbility ConvertSpellToSpellLikeVariants(BlueprintAbility spell,
+                                                                       BlueprintCharacterClassReference[] classes,
+                                                                       StatType stat,
+                                                                       BlueprintAbilityResource resource = null,
+                                                                       string suffixforWrapperAdd = "Base",
+                                                                       string prefixAdd = "",
+                                                                       string prefixRemove = "",
+                                                                       string suffixAdd = "",
+                                                                       string suffixRemove = "",
+                                                                       string replaceOldText1 = "",
+                                                                       string replaceOldText2 = "",
+                                                                       string replaceOldText3 = "",
+                                                                       string replaceNewText1 = "",
+                                                                       string replaceNewText2 = "",
+                                                                       string replaceNewText3 = "",
+                                                                       bool no_resource = false,
+                                                                       bool no_scaling = false,
+                                                                       bool self_only = false,
+                                                                       BlueprintArchetypeReference[] archetypes = null,
+                                                                       int cost = 1
+                                                                       )
+        {
+            if (!spell.HasVariants)
+            {
+                var a = ConvertSpellToSpellLike(spell, classes, stat, resource, prefixAdd, prefixRemove, suffixAdd, suffixRemove, replaceOldText1, replaceOldText2, replaceOldText3, replaceNewText1, replaceNewText2, replaceNewText3, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    a.Range = AbilityRange.Personal;
+                }
+                return a;
+            }
+
+            var spell_variants = spell.GetComponent<AbilityVariants>().m_Variants;
+
+            int num_variants = spell_variants.Length;
+
+            var abilities = new BlueprintAbility[num_variants];
+
+            for (int i = 0; i < num_variants; i++)
+            {
+                abilities[i] = ConvertSpellToSpellLike(spell_variants[i], classes, stat, resource, prefixAdd, prefixRemove, suffixAdd, suffixRemove, replaceOldText1, replaceOldText2, replaceOldText3, replaceNewText1, replaceNewText2, replaceNewText3, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    abilities[i].Range = AbilityRange.Personal;
+                }
+            }
+
+            string spelllikeWrapperName = spell.Name;
+
+            if (!String.IsNullOrEmpty(prefixRemove))
+            {
+                spelllikeWrapperName.Replace(prefixRemove, "");
+            }
+            if (!String.IsNullOrEmpty(suffixRemove))
+            {
+                spelllikeWrapperName.Replace(suffixRemove, "");
+            }
+            if (!String.IsNullOrEmpty(prefixAdd))
+            {
+                spelllikeWrapperName = prefixAdd + spelllikeWrapperName;
+            }
+            if (!String.IsNullOrEmpty(suffixAdd))
+            {
+                spelllikeWrapperName = spelllikeWrapperName + suffixAdd;
+            }
+            if (!String.IsNullOrEmpty(replaceOldText1))
+            {
+                spelllikeWrapperName.Replace(replaceOldText1, replaceNewText1);
+            }
+            if (!String.IsNullOrEmpty(replaceOldText2))
+            {
+                spelllikeWrapperName.Replace(replaceOldText2, replaceNewText2);
+            }
+            if (!String.IsNullOrEmpty(replaceOldText3))
+            {
+                spelllikeWrapperName.Replace(replaceOldText3, replaceNewText3);
+            }
+            if (!String.IsNullOrEmpty(suffixforWrapperAdd))
+            {
+                spelllikeWrapperName = spelllikeWrapperName + suffixforWrapperAdd;
+            }
+
+            var wrapper = CreateVariantWrapper(spelllikeWrapperName, abilities);
+
+            wrapper.SetName(ToDContext, spell.Name);
+            wrapper.SetDescription(ToDContext, spell.Description);
+            wrapper.m_Icon = spell.m_Icon;
+
+            return wrapper;
+
+        }
+
+        // Holic75_PT
+        // This method creates spell-like variants from a spell (with variants), but drops all the string alterations BUT the prefix AND the prefix for the wrapper.
+        // Note that the typical suffix used for the wrapper ability is "Base" (as in the existing game wrappers).
+        static public BlueprintAbility ConvertSpellToSpellLikeVariants(BlueprintAbility spell,
+                                                                       BlueprintCharacterClassReference[] classes,
+                                                                       StatType stat,
+                                                                       BlueprintAbilityResource resource = null,
+                                                                       string suffixforWrapperAdd = "Base",
+                                                                       string prefixAdd = "",
+                                                                       bool no_resource = false,
+                                                                       bool no_scaling = false,
+                                                                       bool self_only = false,
+                                                                       BlueprintArchetypeReference[] archetypes = null,
+                                                                       int cost = 1
+                                                                       )
+        {
+            if (!spell.HasVariants)
+            {
+                var a = ConvertSpellToSpellLike(spell, classes, stat, resource, prefixAdd, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    a.Range = AbilityRange.Personal;
+                }
+                return a;
+            }
+
+            var spell_variants = spell.GetComponent<AbilityVariants>().m_Variants;
+
+            int num_variants = spell_variants.Length;
+
+            var abilities = new BlueprintAbility[num_variants];
+
+            for (int i = 0; i < num_variants; i++)
+            {
+                abilities[i] = ConvertSpellToSpellLike(spell_variants[i], classes, stat, resource, prefixAdd, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    abilities[i].Range = AbilityRange.Personal;
+                }
+            }
+
+            string spelllikeWrapperName = spell.Name;
+
+            if (!String.IsNullOrEmpty(prefixAdd))
+            {
+                spelllikeWrapperName = prefixAdd + spelllikeWrapperName;
+            }
+            if (!String.IsNullOrEmpty(suffixforWrapperAdd))
+            {
+                spelllikeWrapperName = spelllikeWrapperName + suffixforWrapperAdd;
+            }
+
+            var wrapper = CreateVariantWrapper(spelllikeWrapperName, abilities);
+
+            wrapper.SetName(ToDContext, spell.Name);
+            wrapper.SetDescription(ToDContext, spell.Description);
+            wrapper.m_Icon = spell.m_Icon;
+
+            return wrapper;
+
+        }
+
+        // Holic75_PT
+        // This method creates supernatural variants from a spell (with variants).  This is the most complete version, which allows to add a specific prefix for the wrapper and a lot of text modifications.
+        // Note that the typical suffix used for the wrapper ability is "Base" (as in the existing game wrappers).
+        static public BlueprintAbility ConvertSpellToSupernaturalVariants(BlueprintAbility spell,
+                                                                       BlueprintCharacterClassReference[] classes,
+                                                                       StatType stat,
+                                                                       BlueprintAbilityResource resource = null,
+                                                                       string suffixforWrapperAdd = "Base",
+                                                                       string prefixAdd = "",
+                                                                       string prefixRemove = "",
+                                                                       string suffixAdd = "",
+                                                                       string suffixRemove = "",
+                                                                       string replaceOldText1 = "",
+                                                                       string replaceOldText2 = "",
+                                                                       string replaceOldText3 = "",
+                                                                       string replaceNewText1 = "",
+                                                                       string replaceNewText2 = "",
+                                                                       string replaceNewText3 = "",
+                                                                       bool no_resource = false,
+                                                                       bool no_scaling = false,
+                                                                       bool self_only = false,
+                                                                       BlueprintArchetypeReference[] archetypes = null,
+                                                                       int cost = 1
+                                                                       )
+        {
+
+            if (!spell.HasVariants)
+            {
+                var a = ConvertSpellToSupernatural(spell, classes, stat, resource, prefixAdd, prefixRemove, suffixAdd, suffixRemove, replaceOldText1, replaceOldText2, replaceOldText3, replaceNewText1, replaceNewText2, replaceNewText3, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    a.Range = AbilityRange.Personal;
+                }
+                return a;
+
+            }
+
+            var spell_variants = spell.GetComponent<AbilityVariants>().m_Variants;
+
+            int num_variants = spell_variants.Length;
+
+            var abilities = new BlueprintAbility[num_variants];
+
+            for (int i = 0; i < num_variants; i++)
+            {
+                abilities[i] = ConvertSpellToSupernatural(spell_variants[i], classes, stat, resource, prefixAdd, prefixRemove, suffixAdd, suffixRemove, replaceOldText1, replaceOldText2, replaceOldText3, replaceNewText1, replaceNewText2, replaceNewText3, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    abilities[i].Range = AbilityRange.Personal;
+                }
+            }
+
+
+            string supernaturalWrapperName = spell.Name;
+
+            if (!String.IsNullOrEmpty(prefixRemove))
+            {
+                supernaturalWrapperName.Replace(prefixRemove, "");
+            }
+            if (!String.IsNullOrEmpty(suffixRemove))
+            {
+                supernaturalWrapperName.Replace(suffixRemove, "");
+            }
+            if (!String.IsNullOrEmpty(prefixAdd))
+            {
+                supernaturalWrapperName = prefixAdd + supernaturalWrapperName;
+            }
+            if (!String.IsNullOrEmpty(suffixAdd))
+            {
+                supernaturalWrapperName = supernaturalWrapperName + suffixAdd;
+            }
+            if (!String.IsNullOrEmpty(replaceOldText1))
+            {
+                supernaturalWrapperName.Replace(replaceOldText1, replaceNewText1);
+            }
+            if (!String.IsNullOrEmpty(replaceOldText2))
+            {
+                supernaturalWrapperName.Replace(replaceOldText2, replaceNewText2);
+            }
+            if (!String.IsNullOrEmpty(replaceOldText3))
+            {
+                supernaturalWrapperName.Replace(replaceOldText3, replaceNewText3);
+            }
+            if (!String.IsNullOrEmpty(suffixforWrapperAdd))
+            {
+                supernaturalWrapperName = supernaturalWrapperName + suffixforWrapperAdd;
+            }
+
+
+            var wrapper = CreateVariantWrapper(supernaturalWrapperName, abilities);
+
+            wrapper.SetName(ToDContext, spell.Name);
+            wrapper.SetDescription(ToDContext, spell.Description);
+            wrapper.m_Icon = spell.m_Icon;
+
+            return wrapper;
+
+
+        }
+
+        // Holic75_PT
+        // This method creates supernatural variants from a spell (with variants), but drops all the string alterations BUT the prefix AND the prefix for the wrapper.
+        // Note that the typical suffix used for the wrapper ability is "Base" (as in the existing game wrappers).
+        static public BlueprintAbility ConvertSpellToSupernaturalVariants(BlueprintAbility spell,
+                                                                       BlueprintCharacterClassReference[] classes,
+                                                                       StatType stat,
+                                                                       BlueprintAbilityResource resource = null,
+                                                                       string suffixforWrapperAdd = "Base",
+                                                                       string prefixAdd = "",
+                                                                       bool no_resource = false,
+                                                                       bool no_scaling = false,
+                                                                       bool self_only = false,
+                                                                       BlueprintArchetypeReference[] archetypes = null,
+                                                                       int cost = 1
+                                                                       )
+        {
+
+            if (!spell.HasVariants)
+            {
+                var a = ConvertSpellToSupernatural(spell, classes, stat, resource, prefixAdd, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    a.Range = AbilityRange.Personal;
+                }
+                return a;
+
+            }
+
+            var spell_variants = spell.GetComponent<AbilityVariants>().m_Variants;
+
+            int num_variants = spell_variants.Length;
+
+            var abilities = new BlueprintAbility[num_variants];
+
+            for (int i = 0; i < num_variants; i++)
+            {
+                abilities[i] = ConvertSpellToSupernatural(spell_variants[i], classes, stat, resource, prefixAdd, no_resource, no_scaling, archetypes, cost);
+                if (self_only)
+                {
+                    abilities[i].Range = AbilityRange.Personal;
+                }
+            }
+
+
+            string supernaturalWrapperName = spell.Name;
+
+            if (!String.IsNullOrEmpty(prefixAdd))
+            {
+                supernaturalWrapperName = prefixAdd + supernaturalWrapperName;
+            }
+            if (!String.IsNullOrEmpty(suffixforWrapperAdd))
+            {
+                supernaturalWrapperName = supernaturalWrapperName + suffixforWrapperAdd;
+            }
+
+            var wrapper = CreateVariantWrapper(supernaturalWrapperName, abilities);
+
+            wrapper.SetName(ToDContext, spell.Name);
+            wrapper.SetDescription(ToDContext, spell.Description);
+            wrapper.m_Icon = spell.m_Icon;
+
+            return wrapper;
+
+
+        }
+
+        #endregion
+
         #region |-------------------------------------------------------|  ( Blueprint ) Miscellaneous Functions |---------------------------------------------------------|
 
         // Holic75_PT
@@ -644,6 +1241,53 @@ namespace TomeOfDarkness.Utilities
             if (amount.m_ArchetypesDiv == null) amount.m_ArchetypesDiv = emptyArchetypes;
 
             resource.m_MaxAmount = amount;
+        }
+
+
+        #endregion
+
+        #region |-------------------------------------------------------|  ( Abilities ) Miscellaneous Functions |---------------------------------------------------------|
+
+        // Holic75_PT
+        // This method adds variants to an existing ability variants list and then adds the parent as such in each of these new variants' Blueprints
+        public static bool AddToAbilityVariants(this BlueprintAbility parent, params BlueprintAbility[] variants)
+        {
+            var cmp = parent.GetComponent<AbilityVariants>();
+
+            BlueprintAbilityReference[] variants_reference = new BlueprintAbilityReference[variants.Length];
+
+            for (int i = 0; i < variants_reference.Length; i++)
+            {
+                variants_reference[i] = variants[i].ToReference<BlueprintAbilityReference>();
+            }
+
+            cmp.m_Variants = cmp.m_Variants.AppendToArray(variants_reference);
+
+            foreach (var vr in variants)
+            {
+                vr.m_Parent = parent.ToReference<BlueprintAbilityReference>();
+            }
+
+            return true;
+
+        }
+
+        // Holic75_PT
+        // This method creates a wrapper for certain variants
+        public static BlueprintAbility CreateVariantWrapper(string name, params BlueprintAbility[] variants)
+        {
+            var first_variant = variants[0];
+
+            var wrapper = first_variant.CreateCopy(ToDContext, name, bp =>
+            {
+
+                List<BlueprintComponent> cmps = new List<BlueprintComponent>();
+                cmps.Add(CreateAbilityVariants(bp, variants));
+                bp.ComponentsArray = cmps.ToArray();
+
+            });
+
+            return wrapper;
         }
 
 
