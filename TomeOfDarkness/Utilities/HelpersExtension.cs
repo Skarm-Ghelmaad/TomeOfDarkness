@@ -34,6 +34,9 @@ using Kingmaker.Blueprints.Classes.Prerequisites;
 using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.UnitLogic.Class.Kineticist;
 using Kingmaker.UnitLogic.Commands.Base;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
+using Kingmaker.UnitLogic.Mechanics.Conditions;
+using Kingmaker.Blueprints.Facts;
 
 namespace TomeOfDarkness.Utilities
 {
@@ -177,6 +180,80 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |--------------------------------------------------------------| ( Event ) Actions Creators |---------------------------------------------------------------|
+
+        // Holic75_SC
+        public static Conditional CreateConditional(Condition condition, GameAction ifTrue, GameAction ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = CreateConditionsCheckerAnd(condition);
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse);
+            return c;
+        }
+
+        // Holic75_SC
+        public static Conditional CreateConditional(Condition[] condition, GameAction ifTrue, GameAction ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = CreateConditionsCheckerAnd(condition);
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse);
+            return c;
+        }
+
+        // Holic75_SC
+        public static Conditional CreateConditionalOr(Condition[] condition, GameAction ifTrue, GameAction ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = CreateConditionsCheckerOr(condition);
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse);
+            return c;
+        }
+
+        // Holic75_SC
+        public static Conditional CreateConditional(Condition[] condition, GameAction[] ifTrue, GameAction[] ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = CreateConditionsCheckerAnd(condition);
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse);
+            return c;
+        }
+
+        // Holic75_SC
+        public static Conditional CreateConditional(ConditionsChecker conditions, GameAction ifTrue, GameAction ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = conditions;
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse);
+            return c;
+        }
+
+        // Holic75_SC
+        public static Conditional CreateConditional(Condition condition, GameAction[] ifTrue, GameAction[] ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = new ConditionsChecker() { Conditions = new Condition[] { condition } };
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse ?? Array.Empty<GameAction>());
+            return c;
+        }
+
+        // Holic75_SC
+        public static Conditional CreateConditional(ConditionsChecker condition, GameAction[] ifTrue, GameAction[] ifFalse = null)
+        {
+            var c = Helpers.Create<Conditional>();
+            c.ConditionsChecker = condition;
+            c.IfTrue = Helpers.CreateActionList(ifTrue);
+            c.IfFalse = Helpers.CreateActionList(ifFalse ?? Array.Empty<GameAction>());
+            return c;
+        }
+
+        #endregion
+
         #region |----------------------------------------------------------| ( Abilities ) Components Creators |-----------------------------------------------------------|
 
         // Holic75_SC
@@ -305,6 +382,72 @@ namespace TomeOfDarkness.Utilities
             c.Dice_Formulas = dice_formulas;
             c.Value = value;
 
+            return c;
+        }
+
+        #endregion
+
+        #region |----------------------------------------------------------| ( Mechanics ) Conditions Creators |-----------------------------------------------------------|
+
+        // Holic75_SC
+        public static ContextConditionAlignment CreateContextConditionAlignment(AlignmentComponent alignment, bool check_caster = false, bool not = false)
+        {
+            var c = Helpers.Create<ContextConditionAlignment>();
+            c.Alignment = alignment;
+            c.Not = not;
+            c.CheckCaster = check_caster;
+            return c;
+        }
+
+        // Holic75_SC
+        static public ContextConditionCasterHasFact CreateContextConditionCasterHasFact(BlueprintUnitFact fact, bool has = true)
+        {
+            var c = Helpers.Create<ContextConditionCasterHasFact>();
+            c.m_Fact = fact.ToReference<BlueprintUnitFactReference>();
+            c.Not = !has;
+            return c;
+        }
+
+        // Holic75_SC
+        public static ContextConditionHasBuff CreateConditionHasBuff(this BlueprintBuff buff)
+        {
+            var hasBuff = Helpers.Create<ContextConditionHasBuff>();
+            hasBuff.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            return hasBuff;
+        }
+
+        // Holic75_SC
+        public static ContextConditionHasBuff CreateConditionHasNoBuff(this BlueprintBuff buff)
+        {
+            var hasBuff = Helpers.Create<ContextConditionHasBuff>();
+            hasBuff.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            hasBuff.Not = true;
+            return hasBuff;
+        }
+
+        // Holic75_SC
+        public static ContextConditionHasBuffFromCaster CreateContextConditionHasBuffFromCaster(BlueprintBuff buff, bool not = false)
+        {
+            var c = Helpers.Create<ContextConditionHasBuffFromCaster>();
+            c.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            c.Not = not;
+            return c;
+        }
+
+        // Holic75_SC
+        static public ContextConditionHasFact CreateContextConditionHasFact(BlueprintUnitFact fact, bool has = true)
+        {
+            var c = Helpers.Create<ContextConditionHasFact>();
+            c.m_Fact = fact.ToReference<BlueprintUnitFactReference>();
+            c.Not = !has;
+            return c;
+        }
+
+        // Holic75_SC
+        static public ContextConditionIsCaster CreateContextConditionIsCaster(bool not = false)
+        {
+            var c = Helpers.Create<ContextConditionIsCaster>();
+            c.Not = not;
             return c;
         }
 
