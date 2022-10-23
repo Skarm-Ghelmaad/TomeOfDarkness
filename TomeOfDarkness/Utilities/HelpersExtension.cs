@@ -37,6 +37,13 @@ using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
 using Kingmaker.Blueprints.Facts;
+using Kingmaker.UnitLogic.Abilities.Components.AreaEffects;
+using Kingmaker.UnitLogic.Abilities.Components.Base;
+using TabletopTweaks.Core.NewComponents;
+using Kingmaker.UnitLogic.Mechanics.Properties;
+using TabletopTweaks.Core.NewComponents.Properties;
+using Kingmaker.Assets.UnitLogic.Mechanics.Properties;
+using Kingmaker.UnitLogic.Class.Kineticist.Properties;
 
 namespace TomeOfDarkness.Utilities
 {
@@ -254,7 +261,145 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region  |-----------------------------------------------------------| ( Mechanics ) Actions Creators |-------------------------------------------------------------|
+
+        // Holic75_SC
+        public static ContextActionApplyBuff CreateContextActionApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false)
+        {
+            var result = Helpers.Create<ContextActionApplyBuff>();
+            result.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            result.DurationValue = duration;
+            result.IsFromSpell = fromSpell;
+            result.IsNotDispelable = !dispellable;
+            result.ToCaster = toCaster;
+            result.AsChild = asChild;
+            result.Permanent = permanent;
+            return result;
+        }
+
+        // Holic75_PT
+        static public ContextActionRemoveBuff CreateContextActionRemoveBuff(BlueprintBuff buff)
+        {
+            var r = Helpers.Create<ContextActionRemoveBuff>();
+            r.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            return r;
+        }
+
+        // Holic75_SC
+        static public ContextActionRemoveBuffsByDescriptor CreateContextActionRemoveBuffsByDescriptor(SpellDescriptor descriptor, bool not_self = true)
+        {
+            var r = Helpers.Create<ContextActionRemoveBuffsByDescriptor>();
+            r.SpellDescriptor = descriptor;
+            r.NotSelf = not_self;
+            return r;
+        }
+
+        #endregion
+
+        #region |------------------------------------------------------------| ( Mechanics ) Buffs Creators |--------------------------------------------------------------|
+
+        public static HasFactFeatureUnlock CreateHasFactFeatureUnlock(BlueprintUnitFactReference checked_fact, BlueprintUnitFactReference feature, bool not)
+        {
+            var c = Helpers.Create<HasFactFeatureUnlock>();
+            c.m_CheckedFact = checked_fact;
+            c.m_Feature = feature;
+            c.Not = not;
+            return c;
+        }
+
+
+
+        #endregion
+
         #region |----------------------------------------------------------| ( Abilities ) Components Creators |-----------------------------------------------------------|
+
+
+        public static AbilityShowIfCasterHasFact CreateAbilityShowIfCasterHasFact(BlueprintUnitFactReference checked_fact, bool not = false)
+        {
+            var c = Helpers.Create<AbilityShowIfCasterHasFact>();
+            c.m_UnitFact = checked_fact;
+            c.Not = not;
+            return c;
+        }
+
+        // Holic75_SC
+        public static AbilityAreaEffectRunAction CreateAreaEffectRunAction(GameAction unitEnter = null, GameAction unitExit = null, GameAction unitMove = null, GameAction round = null)
+        {
+            var a = Helpers.Create<AbilityAreaEffectRunAction>();
+            a.UnitEnter = Helpers.CreateActionList(unitEnter);
+            a.UnitExit = Helpers.CreateActionList(unitExit);
+            a.UnitMove = Helpers.CreateActionList(unitMove);
+            a.Round = Helpers.CreateActionList(round);
+            return a;
+        }
+
+        // Holic75_SC
+        public static AbilityAreaEffectRunAction CreateAreaEffectRunAction(GameAction[] unitEnter = null, GameAction[] unitExit = null, GameAction[] unitMove = null, GameAction[] round = null)
+        {
+            var a = Helpers.Create<AbilityAreaEffectRunAction>();
+            a.UnitEnter = Helpers.CreateActionList(unitEnter);
+            a.UnitExit = Helpers.CreateActionList(unitExit);
+            a.UnitMove = Helpers.CreateActionList(unitMove);
+            a.Round = Helpers.CreateActionList(round);
+            return a;
+        }
+
+        // Holic75_SC
+        public static AbilitySpawnFx CreateAbilitySpawnFx(string asset_id,
+                                                  AbilitySpawnFxAnchor position_anchor = AbilitySpawnFxAnchor.None,
+                                                  AbilitySpawnFxAnchor orientation_anchor = AbilitySpawnFxAnchor.None,
+                                                  AbilitySpawnFxAnchor anchor = AbilitySpawnFxAnchor.None)
+        {
+            var a = Helpers.Create<AbilitySpawnFx>();
+            a.PrefabLink = CreatePrefabLink(asset_id);
+            a.PositionAnchor = position_anchor;
+            a.OrientationAnchor = orientation_anchor;
+            a.Anchor = anchor;
+
+            return a;
+        }
+
+        // Holic75_SC
+        public static AbilitySpawnFx CreateAbilitySpawnFxTime(string asset_id, AbilitySpawnFxTime time,
+                                                              AbilitySpawnFxAnchor position_anchor = AbilitySpawnFxAnchor.None,
+                                                              AbilitySpawnFxAnchor orientation_anchor = AbilitySpawnFxAnchor.None,
+                                                              AbilitySpawnFxAnchor anchor = AbilitySpawnFxAnchor.None)
+        {
+            var a = Helpers.Create<AbilitySpawnFx>();
+            a.PrefabLink = CreatePrefabLink(asset_id);
+            a.PositionAnchor = position_anchor;
+            a.OrientationAnchor = orientation_anchor;
+            a.Anchor = anchor;
+            a.Time = time;
+            return a;
+        }
+
+        // Holic75_SC
+        public static AbilitySpawnFx CreateAbilitySpawnFxDestroyOnCast(string asset_id,
+                                                                       AbilitySpawnFxAnchor position_anchor = AbilitySpawnFxAnchor.None,
+                                                                       AbilitySpawnFxAnchor orientation_anchor = AbilitySpawnFxAnchor.None,
+                                                                       AbilitySpawnFxAnchor anchor = AbilitySpawnFxAnchor.None)
+        {
+            var a = Helpers.Create<AbilitySpawnFx>();
+            a.PrefabLink = CreatePrefabLink(asset_id);
+            a.PositionAnchor = position_anchor;
+            a.OrientationAnchor = orientation_anchor;
+            a.Anchor = anchor;
+            a.DestroyOnCast = true;
+            return a;
+        }
+
+        // Holic75_PT
+        public static AbilityTargetsAround CreateAbilityTargetsAround(Feet radius, TargetType target_type, ConditionsChecker conditions = null, Feet spread_speed = default(Feet), bool include_dead = false)
+        {
+            var around = Helpers.Create<AbilityTargetsAround>();
+            around.m_Radius = radius;
+            around.m_TargetType = target_type;
+            around.m_IncludeDead = include_dead;
+            around.m_Condition = conditions ?? new ConditionsChecker() { Conditions = Array.Empty<Condition>() };
+            around.m_SpreadSpeed = spread_speed;
+            return around;
+        }
 
         // Holic75_SC
         // These creators create a list of variant of the parent BlueprintAbility from a given variants list and then adds the parent as such in each of these variants' Blueprints
@@ -295,21 +440,29 @@ namespace TomeOfDarkness.Utilities
             return arl;
         }
 
-        // Holic75_PT
-        public static AbilityTargetsAround CreateAbilityTargetsAround(Feet radius, TargetType target_type, ConditionsChecker conditions = null, Feet spread_speed = default(Feet), bool include_dead = false)
+        // Holic75_SC
+        public static AbilityEffectRunAction CreateRunActions(params GameAction[] actions)
         {
-            var around = Helpers.Create<AbilityTargetsAround>();
-            around.m_Radius = radius;
-            around.m_TargetType = target_type;
-            around.m_IncludeDead = include_dead;
-            around.m_Condition = conditions ?? new ConditionsChecker() { Conditions = Array.Empty<Condition>() };
-            around.m_SpreadSpeed = spread_speed;
-            return around;
+            var result = Helpers.Create<AbilityEffectRunAction>();
+            result.Actions = Helpers.CreateActionList(actions);
+            return result;
         }
+
+
 
         #endregion
 
         #region |----------------------------------------------------------| ( Mechanics ) Components Creators |-----------------------------------------------------------|
+
+        // Holic75_SC
+        public static AddFactContextActions CreateAddFactContextActions(GameAction[] onActivate = null, GameAction[] onDeactivate = null, GameAction[] onNewRound = null)
+        {
+            var a = Helpers.Create<AddFactContextActions>();
+            a.Activated = Helpers.CreateActionList(onActivate);
+            a.Deactivated = Helpers.CreateActionList(onDeactivate);
+            a.NewRound = Helpers.CreateActionList(onNewRound);
+            return a;
+        }
 
         public static ContextCalculateAbilityParamsBasedOnClass CreateContextCalculateAbilityParamsBasedOnClass(BlueprintCharacterClassReference character_class,
                                                                                                          StatType stat,
@@ -387,6 +540,19 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |-----------------------------------------------------| ( FactLogic ) Component Delegates Creators |-------------------------------------------------------|
+
+        // Holic75_SC
+        public static AddFacts CreateAddFacts(params BlueprintUnitFactReference[] facts)
+        {
+            var c = Helpers.Create<AddFacts>();
+            c.m_Facts = facts;
+            return c;
+        }
+
+
+        #endregion
+
         #region |----------------------------------------------------------| ( Mechanics ) Conditions Creators |-----------------------------------------------------------|
 
         // Holic75_SC
@@ -449,6 +615,302 @@ namespace TomeOfDarkness.Utilities
             var c = Helpers.Create<ContextConditionIsCaster>();
             c.Not = not;
             return c;
+        }
+
+        #endregion
+
+        #region |------------------------------------------------------------| ( Mechanics ) Facts Creators |--------------------------------------------------------------|
+
+        // Holic75_SC
+        public static AddAbilityResources CreateAddAbilityResources(this BlueprintAbilityResourceReference resource)
+        {
+            var c = Helpers.Create<AddAbilityResources>();
+            c.m_Resource = resource;
+            c.RestoreAmount = true;
+            return c;
+        }
+
+        // Holic75_SC
+        public static AddAbilityResources CreateAddAbilityResourcesNoRestore(this BlueprintAbilityResourceReference resource)
+        {
+            var c = Helpers.Create<AddAbilityResources>();
+            c.m_Resource = resource;
+            c.RestoreAmount = false;
+            return c;
+        }
+
+        // Holic75_SC
+        public static AddFeatureOnClassLevel CreateAddFeatureOnClassLevel(BlueprintFeatureReference feature, BlueprintCharacterClassReference[] character_classes, int level, bool before_level = false)
+        {
+            var c = Helpers.Create<AddFeatureOnClassLevel>();
+            c.name = $"AddFeatureOnClassLevel${feature.Get().name}";
+            c.m_Feature = feature;
+            c.m_Class = character_classes[0];
+            c.m_AdditionalClasses = character_classes.Skip(1).ToArray();
+            c.m_Archetypes = new BlueprintArchetypeReference[0];
+            c.Level = level;
+            c.BeforeThisLevel = before_level;
+
+            return c;
+        }
+
+
+
+        #endregion
+
+        #region |---------------------------------------------------------------| Prerequisite Creators |------------------------------------------------------------------|
+
+        public static PrerequisiteNoFeature CreatePrerequisiteNoFeature(this BlueprintFeature feat, bool any = false)
+        {
+            var p = Helpers.Create<PrerequisiteNoFeature>();
+            p.m_Feature = feat.ToReference<BlueprintFeatureReference>();
+            p.Group = any ? Prerequisite.GroupType.Any : Prerequisite.GroupType.All;
+            return p;
+        }
+
+        #endregion
+
+        #region |----------------------------------------------------------| ( Kineticist ) Properties Creators |----------------------------------------------------------|
+
+        public static BaseAtackGetter CreateBaseAtackGetter()
+        {
+            var ppv = Helpers.Create<BaseAtackGetter>();
+            return ppv;
+        }
+
+        public static BaseAttackPropertyWithFeatureList CreateBaseAttackPropertyWithFeatureList(int base_value, int base_attack_divisor, int base_attack_zero, int feature_bonus, BlueprintFeatureReference[] features)
+        {
+            var ppv = Helpers.Create<BaseAttackPropertyWithFeatureList>();
+            ppv.BaseValue = base_value;
+            ppv.BaseAttackDiv = base_attack_divisor;
+            ppv.BaseAttackZero = base_attack_zero;
+            ppv.FeatureBonus = feature_bonus;
+            ppv.m_Features = features;
+            return ppv;
+        }
+
+        public static CurrentMeleeWeaponDamageStatGetter CreateCurrentMeleeWeaponDamageStatGetter()
+        {
+            var ppv = Helpers.Create<CurrentMeleeWeaponDamageStatGetter>();
+            return ppv;
+        }
+
+        public static CurrentWeaponCriticalMultiplierGetter CreateCurrentWeaponCriticalMultiplierGetter()
+        {
+            var ppv = Helpers.Create<CurrentWeaponCriticalMultiplierGetter>();
+            return ppv;
+        }
+
+        public static FightingDefensivelyACBonusProperty CreateFightingDefensivelyACBonusProperty()
+        {
+            var ppv = Helpers.Create<FightingDefensivelyACBonusProperty>();
+            return ppv;
+        }
+
+        public static FightingDefensivelyAttackPenaltyProperty CreateFightingDefensivelyAttackPenaltyProperty()
+        {
+            var ppv = Helpers.Create<FightingDefensivelyAttackPenaltyProperty>();
+            return ppv;
+        }
+
+        public static LevelBasedPropertyWithFeatureList CreateLevelBasedPropertyWithFeatureList(int base_value, int level_divisor, int level_zero, int feature_bonus, BlueprintFeatureReference[] features)
+        {
+            var ppv = Helpers.Create<LevelBasedPropertyWithFeatureList>();
+            ppv.BaseValue = base_value;
+            ppv.LevelDiv = level_divisor;
+            ppv.LevelZero = level_zero;
+            ppv.m_Features = features;
+            ppv.FeatureBonus = feature_bonus;
+            return ppv;
+        }
+
+        public static StatBonusIfHasFactProperty CreateStatBonusIfHasFactProperty(int multiplier, StatType stat, BlueprintUnitFactReference fact)
+        {
+            var ppv = Helpers.Create<StatBonusIfHasFactProperty>();
+            ppv.Multiplier = multiplier;
+            ppv.Stat = stat;
+            ppv.m_RequiredFact = fact;
+            return ppv;
+        }
+
+        #endregion
+
+        #region |----------------------------------------------------------| ( Mechanics ) Properties Creators |-----------------------------------------------------------|
+
+
+        public static CastingAttributeGetter CreateCastingAttributeGetter()
+        {
+            var ppv = Helpers.Create<CastingAttributeGetter>();
+            return ppv;
+        }
+        public static CustomProgressionPropertyGetter CreateCustomProgressionPropertyGetter(UnitProperty property, int start = 1, int step = 1)
+        {
+            var ppv = Helpers.Create<CustomProgressionPropertyGetter>();
+            ppv.Property = property;
+            ppv.Start = start;
+            ppv.Step = step;
+            return ppv;
+        }
+
+        public static MaxAttributeBonusGetter CreateMaxAttributeBonusGetter()
+        {
+            var ppv = Helpers.Create<MaxAttributeBonusGetter>();
+            return ppv;
+        }
+
+        public static MaxCastingAttributeGetter CreateMaxCastingAttributeGetter()
+        {
+            var ppv = Helpers.Create<MaxCastingAttributeGetter>();
+            return ppv;
+        }
+
+        public static CompositeCustomPropertyGetter CreateCompositeCustomPropertyGetter(CompositeCustomPropertyGetter.Mode mode, CompositeCustomPropertyGetter.ComplexCustomProperty[] properties)
+        {
+            var cpg = Helpers.Create<CompositeCustomPropertyGetter>();
+            cpg.CalculationMode = mode;
+            cpg.Properties = properties;
+            return cpg;
+
+        }
+
+        public static CompositePropertyGetter CreateCompositePropertyGetter(CompositePropertyGetter.Mode mode, CompositePropertyGetter.ComplexProperty[] properties)
+        {
+            var cpg = Helpers.Create<CompositePropertyGetter>();
+            cpg.CalculationMode = mode;
+            cpg.Properties = properties;
+            return cpg;
+        }
+
+        public static CompositePropertyGetter.ComplexProperty CreateComplexProperty(UnitProperty property, int bonus = 0, float numerator = 1.0f, float denominator = 1.0f)
+        {
+            var cp = Helpers.Create<CompositePropertyGetter.ComplexProperty>();
+            cp.Property = property;
+            cp.Bonus = bonus;
+            cp.Numerator = numerator;
+            cp.Denominator = denominator;
+            return cp;
+        }
+
+        public static CompositeCustomPropertyGetter.ComplexCustomProperty ComplexCustomProperty(PropertyValueGetter property, int bonus = 0, float numerator = 1.0f, float denominator = 1.0f)
+        {
+            var ccp = Helpers.Create<CompositeCustomPropertyGetter.ComplexCustomProperty>();
+            ccp.Property = property;
+            ccp.Bonus = bonus;
+            ccp.Numerator = numerator;
+            ccp.Denominator = denominator;
+            return ccp;
+        }
+
+
+        #endregion
+
+        #region |----------------------------------------------------| ( UnitLogic Mechanics ) Properties Creators |-------------------------------------------------------|
+
+        public static AnimalPetOwnerRankGetter CreateAnimalPetOwnerRankGetter(UnitProperty property)
+        {
+            var ppv = Helpers.Create<AnimalPetOwnerRankGetter>();
+            ppv.Property = property;
+            return ppv;
+        }
+
+        public static ArcaneSpellFailureChanceGetter CreateArcaneSpellFailureChanceGetter(UnitProperty property)
+        {
+            var ppv = Helpers.Create<ArcaneSpellFailureChanceGetter>();
+            return ppv;
+        }
+
+        public static AreaCrComplexGetter CreateAreaCrComplexGetter(int bonus, int multiplier = 1, int denominator = 1)
+        {
+            var ppv = Helpers.Create<AreaCrComplexGetter>();
+            ppv.Bonus = bonus;
+            ppv.Multiplier = multiplier;
+            ppv.Denominator = denominator;
+            return ppv;
+        }
+
+        public static ClassLevelGetter CreateClassLevelGetter(BlueprintCharacterClassReference character_class, BlueprintArchetypeReference archetype = null)
+        {
+            var ppv = Helpers.Create<ClassLevelGetter>();
+            ppv.m_Class = character_class;
+            ppv.m_Archetype = archetype;
+            return ppv;
+        }
+
+        public static CompanionsCountGetter CreateCompanionsCountGetter()
+        {
+            var ppv = Helpers.Create<CompanionsCountGetter>();
+            return ppv;
+        }
+
+        public static FactRankGetter CreateFactRankGetter(BlueprintUnitFactReference fact)
+        {
+            var ppv = Helpers.Create<FactRankGetter>();
+            ppv.m_Fact = fact;
+            return ppv;
+        }
+
+        public static PropertyWithFactRankGetter CreatePropertyWithFactRankGetter(BlueprintUnitFactReference fact, int rank_multiplier = 1)
+        {
+            var ppv = Helpers.Create<PropertyWithFactRankGetter>();
+            ppv.m_Fact = fact;
+            ppv.m_RankMultiplier = rank_multiplier;
+            return ppv;
+        }
+
+        public static ShieldBonusGetter CreateShieldBonusGetter()
+        {
+            var ppv = Helpers.Create<ShieldBonusGetter>();
+            return ppv;
+        }
+
+        public static SimplePropertyGetter CreateSimplePropertyGetter(UnitProperty property)
+        {
+            var ppv = Helpers.Create<SimplePropertyGetter>();
+            ppv.Property = property;
+            return ppv;
+        }
+
+        public static SkillRankGetter CreateSkillRankGetter(StatType skill)
+        {
+            var ppv = Helpers.Create<SkillRankGetter>();
+            ppv.Skill = skill;
+            return ppv;
+        }
+
+        public static SkillValueGetter CreateSkillValueGetter(StatType skill)
+        {
+            var ppv = Helpers.Create<SkillValueGetter>();
+            ppv.Skill = skill;
+            return ppv;
+        }
+
+        public static SpellLevelGetter CreateSpellLevelGetter(bool from_cast_rule)
+        {
+            var ppv = Helpers.Create<SpellLevelGetter>();
+            ppv.FromCastRule = from_cast_rule;
+            return ppv;
+        }
+
+        public static StatValueGetter CreateStatValueGetter(StatValueGetter.ReturnType type)
+        {
+            var ppv = Helpers.Create<StatValueGetter>();
+            ppv.ValueType = type;
+            return ppv;
+        }
+
+
+        public static SummClassLevelGetter CreateSummClassLevelGetter(BlueprintCharacterClassReference[] character_classes, BlueprintArchetypeReference[] archetypes = null)
+        {
+            var ppv = Helpers.Create<SummClassLevelGetter>();
+            ppv.m_Class = character_classes;
+            ppv.m_Archetypes = archetypes;
+            return ppv;
+        }
+
+        public static UnitWeaponEnhancementGetter CreateUnitWeaponEnhancementGetter()
+        {
+            var ppv = Helpers.Create<UnitWeaponEnhancementGetter>();
+            return ppv;
         }
 
         #endregion
@@ -1667,6 +2129,33 @@ namespace TomeOfDarkness.Utilities
         #endregion
 
         #region |-------------------------------------------------------|  ( Blueprint ) Miscellaneous Functions |---------------------------------------------------------|
+
+        // Holic75_SC
+        static public LevelEntry[] RemoveEntries(LevelEntry[] old_entries, Predicate<BlueprintFeatureBase> predicate, bool keep_empty_entries = false)
+        {
+            List<LevelEntry> level_entries = new List<LevelEntry>();
+
+            for (int i = 0; i < old_entries.Length; i++)
+            {
+                var new_entry = new LevelEntry() { Level = old_entries[i].Level };
+
+                foreach (var f in old_entries[i].Features.ToArray())
+                {
+                    if (!predicate(f))
+                    {
+                        new_entry.Features.Add(f);
+                    }
+                }
+
+                if (!new_entry.Features.Empty() || keep_empty_entries)
+                {
+                    level_entries.Add(new_entry);
+                }
+
+            }
+
+            return level_entries.ToArray();
+        }
 
         // Holic75_PT
         public static void SetFixedResource(this BlueprintAbilityResource resource, int baseValue)
