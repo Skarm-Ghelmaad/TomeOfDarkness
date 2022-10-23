@@ -1,6 +1,265 @@
 ﻿{
   "LocalizedStrings": [
 
+    {
+      "Key": "NinjaNoTraceFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "No Trace"
+    },
+
+    {
+      "Key": "NinjaNoTraceFeature.Description",
+      "enGB": "At 3rd level, a ninja gains a +1 bonus on Stealth checks. This bonus increases by 1 every 3 ninja levels thereafter."
+    },
+
+    {
+      "Key": "NinjaDispatchmentFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Dispatchment"
+    },
+
+    {
+      "Key": "NinjaDispatchmentFeature.Description",
+      "enGB": "At 4th level, whenever a ninja attacks an opponent that would be denied a Dexterity bonus to AC or when she flanks her target, she gains a +2 bonus on her attack roll. At 9th level and every 5 levels thereafter, this bonus increases by +1 (to a total maximum of +5)."
+    },
+
+    {
+      "Key": "NinjaLightStepsFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Light Steps"
+    },
+
+    {
+      "Key": "NinjaLightStepsFeature.Description",
+      "enGB": "At 6th level, a ninja learns to move while barely touching the surface underneath her. As a full-round action, she can move to any location within medium range, ignoring difficult terrain. While moving in this way, any surface will support her, no matter how much she weighs. This allows her to move across water, lava, or even the thinnest tree branches. She must end her move on a surface that can support her normally. She cannot move across air in this way, nor can she walk up walls or other vertical surfaces. When moving in this way, she does not take damage from surfaces or hazards that react to being touched, such as lava or caltrops, nor does she need to make Mobility checks to avoid falling on slippery or rough surfaces. Finally, when using light steps, the ninja ignores any mechanical traps that use a location-based trigger."
+    },
+
+    {
+      "Key": "MonkFlyingKickFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Flying Kick"
+    },
+
+    {
+      "Key": "MonkFlyingKickFeature.Description",
+      "enGB": "The monk leaps through the air to strike a foe with a kick. The monk can make a full-attack at the end of charge action."
+    },
+
+    {
+      "Key": "WisdomKiPoolCanonFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Ki Pool - {g|Encyclopedia:Wisdom}Wisdom{/g}"
+    },
+
+    {
+      "Key": "WisdomKiPoolCanonFeature.Description",
+      "enGB": "This character adds his {g|Encyclopedia:Wisdom}Wisdom{/g} modifier to his ki pool, to the DC of his ki abilities and \n to any other ability parameter that would be affected by an attribute."
+    },
+
+    {
+      "Key": "CharismaKiPoolCanonFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Ki Pool - {g|Encyclopedia:Charisma}Charisma{/g}"
+    },
+
+    {
+      "Key": "CharismaKiPoolCanonFeature.Description",
+      "enGB": "This character adds his {g|Encyclopedia:Charisma}Charisma{/g} modifier to his ki pool, to the DC of his ki abilities and \n to any other ability parameter that would be affected by an attribute."
+    },
+
+    {
+      "Key": "NinjaProficiencies.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Ninja Proficiencies"
+    },
+
+    {
+      "Key": "NinjaProficiencies.Description",
+      "enGB": "Ninja are proficient with all simple weapons, plus the kama, dueling sword, nunchaku, sai, shortbow, short sword, shuriken, and scimitar. Ninjas are proficient with light armor but not with shields."
+    },
+
+    {
+      "Key": "NinjaTrickInvisibleBladeFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Invisible Blade"
+    },
+
+    {
+      "Key": "NinjaTrickInvisibleBladeFeature.Description",
+      "enGB": "Whenever the character uses the Vanishing Trick ninja trick, she is treated as if she were under the effects of Greater Invisibility."
+    },
+
+    {
+      "Key": "NinjaTrickVanishingTrickFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Vanishing Trick"
+    },
+
+    {
+      "Key": "NinjaTrickVanishingTrickFeature.Description",
+      "enGB": "As a swift action, the character can disappear for 1 round per level. This ability functions as Invisibility. Using this ability uses up 1 ki point."
+    },
+
+    {
+      "Key": "NinjaTrickShadowCloneFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Shadow Clone"
+    },
+
+    {
+      "Key": "NinjaTrickShadowCloneFeature.Description",
+      "enGB": "A character with this trick can create shadowy duplicates of herself that conceal her true location. This ability functions as Mirror Image, using his class level as her caster level. Using this ability is a standard action that uses up 1 ki point. The charater creates 1d4 duplicates plus one duplicates per three caster levels (maximum eight duplicates total) are created. [LONGSTART] These images remain in your space and move with you, mimicking your movements, sounds, and {g|Encyclopedia:CA_Types}actions{/g} exactly.[LONGEND] Whenever you are attacked or are the target of a spell that requires an attack roll, there is a possibility that the attack targets one of your images instead.[LONGSTART] If the attack is a hit, roll randomly to see whether the selected target is real or a figment. If it is a figment, the figment is destroyed. If the attack misses by 5 or less, one of your figments is destroyed by the near miss. Area spells affect you normally and do not destroy any of your figments. Spells and effects that do not require an attack roll affect you normally and do not destroy any of your figments. Spells that require a {g|Encyclopedia:TouchAttack}touch attack{/g} are harmlessly discharged if used to destroy a figment.\nAn attacker must be able to see the figments to be fooled. If you are invisible or the attacker is blind, the spell has no effect (although the normal miss chances still apply).[LONGEND] "
+    },
+
+    {
+      "Key": "NinjaTrickHerbalCompoundFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Herbal Compound"
+    },
+
+    {
+      "Key": "NinjaTrickHerbalCompoundFeature.Description",
+      "enGB": "A character with this trick can consume specially prepared herbs to strengthen her mind. The character can spend 1 ki point and smoke, eat, or inject an herbal compound as a move action. The character takes a –2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per relevant class level."
+    },
+
+    {
+      "Key": "NinjaTrickKamikazeAbility.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Kamikaze"
+    },
+
+    {
+      "Key": "NinjaTrickKamikazeAbility.Description",
+      "enGB": "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level."
+    },
+
+    {
+      "Key": "NinjaTrickKamikazeDismissAbility.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Kamikaze"
+    },
+
+    {
+      "Key": "NinjaTrickKamikazeDismissAbility.Description",
+      "enGB": "A character with this ability can spend 1 ki point to dismiss the Kamikaze effect as a free action."
+    },
+
+    {
+      "Key": "NinjaTrickKamikazeFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Kamikaze"
+    },
+
+    {
+      "Key": "NinjaTrickKamikazeFeature.Description",
+      "enGB": "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level. The character can also spend 1 ki point to dismiss this effect as a free action."
+    },
+
+    {
+      "Key": "NinjaTrickAccelerationOfFormFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Acceleration of Form"
+    },
+
+    {
+      "Key": "NinjaTrickAccelerationOfFormFeature.Description",
+      "enGB": "A character with this trick can spend 1 ki point as a standard action to gain the benefits of Displacement and Haste for 1 round per 2 relevant class levels."
+    },
+
+    {
+      "Key": "NinjaStyleMasterFeatureSelection.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Style Master"
+    },
+
+    {
+      "Key": "NinjaStyleMasterFeatureSelection.Description",
+      "enGB": "A chracter who selects this trick gains a style feat that she qualifies for as a bonus feat."
+    },
+
+    {
+      "Key": "NinjaTrickSeeTheUnseenFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "See the Unseen"
+    },
+
+    {
+      "Key": "NinjaTrickSeeTheUnseenFeature.Description",
+      "enGB": "A character with this trick learns how to see that which cannot be seen. As a swift action, the character can cast See Invisibility, using her relevant class level as the caster level. Each use of this ability uses up 1 ki point."
+    },
+
+    {
+      "Key": "NinjaTrickFlurryOfStarsFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Flurry of Stars"
+    },
+
+    {
+      "Key": "NinjaTrickFlurryOfStarsFeature.Description",
+      "enGB": "A character with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken (and darts). During that attack, she can throw two additional shuriken (or darts) at her highest attack bonus, but all of her shuriken (or darts) attacks are made at a –2 penalty, including the two extra attacks. Additionaly, shuriken and darts are considered as light weapons for the purpose of two-weapon fighting."
+    },
+
+    {
+      "Key": "NinjaTrickUnarmedCombatMasteryNinjaFeature.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Unarmed Combat Mastery"
+    },
+
+    {
+      "Key": "NinjaTrickUnarmedCombatMasteryNinjaFeature.Description",
+      "enGB": "A ninja who selects this trick deals damage with her unarmed strikes as if she were a monk of her ninja level –4. If the rogue has levels in monk (or other similar features), this ability stacks with monk levels to determine how much damage she can do with her unarmed strikes. A ninja must have the Improved Unarmed Strike feat before taking this trick."
+    },
+
+    {
+      "Key": "UniversalUnarmedStrike.Name",
+      // Don't process this since it is just a name. Without this it might create strange artifacts by trying to create
+      // links to encycolpedia pages.
+      "ProcessTemplates": false,
+      "enGB": "Unarmed Strike (Generic)"
+    },
+
+    {
+      "Key": "UniversalUnarmedStrike.Description",
+      "enGB": "The character deals increased unarmed attack {g|Encyclopedia:Damage}damage{/g} based on relevant class levels. The {g|Encyclopedia:Damage}damage{/g} dealt by a Medium character's {g|Encyclopedia:UnarmedAttack}unarmed{/g} strike increases with such levels: {g|Encyclopedia:Dice}1d6{/g} at levels 1–3, 1d8 at levels 4–7, 1d10 at levels 8–11, 2d6 at levels 12–15, 2d8 at levels 16–19, and 2d10 at level 20.\nIf the character is Small, his unarmed strike damage increases as follows: 1d4 at levels 1–3, 1d6 at levels 4–7, 1d8 at levels 8–11, 1d10 at levels 12–15, 2d6 at levels 16–19, and 2d8 at level 20.\nIf the character is Large, his unarmed strike damage increases as follows: 1d8 at levels 1–3, 2d6 at levels 4–7, 2d8 at levels 8–11, 3d6 at levels 12–15, 3d8 at levels 16–19, and 4d8 at level 20."
+    }
 
   ]
 }

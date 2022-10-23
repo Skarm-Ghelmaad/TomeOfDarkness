@@ -39,6 +39,9 @@
   <ItemGroup>
     <Compile Remove="lib\**" />
     <Compile Include="Config\NewContent.cs" />
+    <Compile Include="MechanicsChanges\CustomStatTypesToD.cs" />
+    <Compile Include="MechanicsChanges\KiResourceChanges.cs" />
+    <Compile Include="MechanicsChanges\MartialArtsTraining.cs" />
     <Compile Include="ModLogic\ModContextTomeOfDarkness.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterHasFacts.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterHasResource.cs" />
