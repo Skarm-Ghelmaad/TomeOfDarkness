@@ -34,8 +34,9 @@ namespace TomeOfDarkness.NewContent
                 Initialized = true;
                 ToDContext.Logger.LogHeader("Loading New Content");
 
+
                 //New archetypes
-                //Archetypes.Ninja.ConfigureNinjaArchetype();
+                Archetypes.Ninja.ConfigureNinjaArchetype();
 
                 //New spells
                 Spells.FxTester.ConfigureFxTester();

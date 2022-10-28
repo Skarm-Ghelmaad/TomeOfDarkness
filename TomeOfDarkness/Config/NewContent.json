@@ -3,6 +3,11 @@
   "Archetypes": {
     "DisableAll": false,
     "Settings": {
+      "Ninja": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "A rogue archetype that uses ki-fuelled (ninja) tricks that focus on martial arts, misdirection, mental manipulation and assassination."
+      }
     }
   },
   "Feats": {

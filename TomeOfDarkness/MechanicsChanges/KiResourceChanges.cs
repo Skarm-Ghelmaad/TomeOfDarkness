@@ -4,6 +4,7 @@ using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.EntitySystem.Stats;
+using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.Utility;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,9 @@ namespace TomeOfDarkness.MechanicsChanges
         public static void ConfigureBasicKiResourceChanges()
         {
             var kiPowerFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("e9590244effb4be4f830b1e3fffced13");
-            var scaledFistKiPowerFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("7d002c1025fbfe2458f1509bf7a89ce1");
+            var scaledFistKiPowerFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("ae98ab7bda409ef4bb39149a212d6732");
             var kiResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("9d9c90a9a1f52d04799294bf91c80a82");
-            var scaledFistKiResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("ae98ab7bda409ef4bb39149a212d6732");
+            var scaledFistKiResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("7d002c1025fbfe2458f1509bf7a89ce1");
 
             var wisdomKiPoolIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_KiPoolWisdom.png");
             var charismaKiPoolIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_KiPoolCharisma.png");
@@ -143,7 +144,7 @@ namespace TomeOfDarkness.MechanicsChanges
             #region | Make the Extra Attack Buff's name and description generic. |
 
 
-            var Ki_Extra_Attack_Buff = BlueprintTools.GetBlueprint<BlueprintFeature>("cadf8a5c42002494cabfc6c1196b514a");
+            var Ki_Extra_Attack_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("cadf8a5c42002494cabfc6c1196b514a");
 
             Ki_Extra_Attack_Buff.SetName(ToDContext, "Ki - Extra Attack");
             Ki_Extra_Attack_Buff.SetDescription(ToDContext, "By spending points from his ki pool, the character can make one additional attack at his highest attack bonus when making a full attack. This bonus attack stacks with haste and similar effects.");
@@ -158,9 +159,9 @@ namespace TomeOfDarkness.MechanicsChanges
         {
 
             var KiPowerFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("e9590244effb4be4f830b1e3fffced13");
-            var ScaledFistKiPowerFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("7d002c1025fbfe2458f1509bf7a89ce1");
+            var ScaledFistKiPowerFeature = BlueprintTools.GetBlueprint<BlueprintFeature>("ae98ab7bda409ef4bb39149a212d6732");
             var KiPowerResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("9d9c90a9a1f52d04799294bf91c80a82");
-            var ScaledFistKiPowerResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("ae98ab7bda409ef4bb39149a212d6732");
+            var ScaledFistKiPowerResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("7d002c1025fbfe2458f1509bf7a89ce1");
 
             var StrengthKiPoolIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_KiPoolStrength.png");
             var DexterityKiPoolIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_KiPoolDexterity.png");

@@ -174,8 +174,8 @@ namespace TomeOfDarkness.MechanicsChanges
             var MartialArtsTrainingAzureIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingAzure.png");
             var MartialArtsTrainingBlackIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingBlack.png");
             var MartialArtsTrainingBlueIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingBlue.png");
-            var MartialArtsTrainingBrownIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingBrown");
-            var MartialArtsTrainingDarkGreenIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingDarkGreen");
+            var MartialArtsTrainingBrownIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingBrown.png");
+            var MartialArtsTrainingDarkGreenIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingDarkGreen.png");
             var MartialArtsTrainingGrayIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingGray.png");
             var MartialArtsTrainingLightGreenIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingLightGreen.png");
             var MartialArtsTrainingOrangeIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingOrange.png");

@@ -45,6 +45,7 @@ using TabletopTweaks.Core.NewComponents.Properties;
 using Kingmaker.Assets.UnitLogic.Mechanics.Properties;
 using Kingmaker.UnitLogic.Class.Kineticist.Properties;
 
+
 namespace TomeOfDarkness.Utilities
 {
     public static class HelpersExtension
@@ -936,15 +937,15 @@ namespace TomeOfDarkness.Utilities
                                                         )
         {
 
-            string toggleName = buff.Name;
+            string toggleName = buff.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                toggleName.Replace(prefixRemove, "");
+                toggleName = toggleName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                toggleName.Replace(suffixRemove, "");
+                toggleName = toggleName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -956,15 +957,15 @@ namespace TomeOfDarkness.Utilities
             }
             if (!String.IsNullOrEmpty(replaceOldText1))
             {
-                toggleName.Replace(replaceOldText1, replaceNewText1);
+                toggleName = toggleName.Replace(replaceOldText1, replaceNewText1);
             }
             if (!String.IsNullOrEmpty(replaceOldText2))
             {
-                toggleName.Replace(replaceOldText2, replaceNewText2);
+                toggleName = toggleName.Replace(replaceOldText2, replaceNewText2);
             }
             if (!String.IsNullOrEmpty(replaceOldText3))
             {
-                toggleName.Replace(replaceOldText3, replaceNewText3);
+                toggleName = toggleName.Replace(replaceOldText3, replaceNewText3);
             }
 
 
@@ -997,11 +998,11 @@ namespace TomeOfDarkness.Utilities
                                                         )
         {
 
-            string toggleName = buff.Name;
+            string toggleName = buff.name;
 
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                toggleName.Replace(suffixRemove, "");
+                toggleName = toggleName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixAdd))
             {
@@ -1051,15 +1052,15 @@ namespace TomeOfDarkness.Utilities
                                                                 )
         {
 
-            string feature1AltName = feature1.Name;
+            string feature1AltName = feature1.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                feature1AltName.Replace(prefixRemove, "");
+                feature1AltName = feature1AltName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                feature1AltName.Replace(suffixRemove, "");
+                feature1AltName = feature1AltName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1071,15 +1072,15 @@ namespace TomeOfDarkness.Utilities
             }
             if (!String.IsNullOrEmpty(replaceOldText1))
             {
-                feature1AltName.Replace(replaceOldText1, replaceNewText1);
+                feature1AltName = feature1AltName.Replace(replaceOldText1, replaceNewText1);
             }
             if (!String.IsNullOrEmpty(replaceOldText2))
             {
-                feature1AltName.Replace(replaceOldText2, replaceNewText2);
+                feature1AltName = feature1AltName.Replace(replaceOldText2, replaceNewText2);
             }
             if (!String.IsNullOrEmpty(replaceOldText3))
             {
-                feature1AltName.Replace(replaceOldText3, replaceNewText3);
+                feature1AltName = feature1AltName.Replace(replaceOldText3, replaceNewText3);
             }
 
             var feature2 = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, feature1AltName, bp =>
@@ -1114,23 +1115,27 @@ namespace TomeOfDarkness.Utilities
                                                                 )
         {
 
-            string abilityAltName = ability.Name;
+            string abilityAltName = ability.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                abilityAltName.Replace(prefixRemove, "");
+                abilityAltName = abilityAltName.Replace(prefixRemove, "");
+
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                abilityAltName.Replace(suffixRemove, "");
+                abilityAltName = abilityAltName.Replace(suffixRemove, "");
+
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
                 abilityAltName = prefixAdd + abilityAltName;
+
             }
             if (!String.IsNullOrEmpty(suffixAdd))
             {
                 abilityAltName = abilityAltName + suffixAdd;
+
             }
 
             var feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, abilityAltName, bp =>
@@ -1162,7 +1167,7 @@ namespace TomeOfDarkness.Utilities
                                                         )
         {
 
-            string abilityAltName = ability.Name + "Feature";
+            string abilityAltName = ability.name + "Feature";
 
 
             var feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, abilityAltName, bp =>
@@ -1198,15 +1203,15 @@ namespace TomeOfDarkness.Utilities
                                                                     )
         {
 
-            string abilityAltName = ability.Name;
+            string abilityAltName = ability.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                abilityAltName.Replace(prefixRemove, "");
+                abilityAltName = abilityAltName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                abilityAltName.Replace(suffixRemove, "");
+                abilityAltName = abilityAltName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1248,15 +1253,15 @@ namespace TomeOfDarkness.Utilities
                                                                     )
         {
 
-            string activatable_abilityAltName = ability.Name;
+            string activatable_abilityAltName = ability.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                activatable_abilityAltName.Replace(prefixRemove, "");
+                activatable_abilityAltName = activatable_abilityAltName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                activatable_abilityAltName.Replace(suffixRemove, "");
+                activatable_abilityAltName = activatable_abilityAltName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1298,15 +1303,15 @@ namespace TomeOfDarkness.Utilities
                                                         )
         {
 
-            string buffAltName = buff.Name;
+            string buffAltName = buff.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                buffAltName.Replace(prefixRemove, "");
+                buffAltName = buffAltName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                buffAltName.Replace(suffixRemove, "");
+                buffAltName = buffAltName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1361,15 +1366,15 @@ namespace TomeOfDarkness.Utilities
                                                               )
         {
 
-            string spelllikeName = spell.Name;
+            string spelllikeName = spell.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                spelllikeName.Replace(prefixRemove, "");
+                spelllikeName = spelllikeName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                spelllikeName.Replace(suffixRemove, "");
+                spelllikeName = spelllikeName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1381,15 +1386,15 @@ namespace TomeOfDarkness.Utilities
             }
             if (!String.IsNullOrEmpty(replaceOldText1))
             {
-                spelllikeName.Replace(replaceOldText1, replaceNewText1);
+                spelllikeName = spelllikeName.Replace(replaceOldText1, replaceNewText1);
             }
             if (!String.IsNullOrEmpty(replaceOldText2))
             {
-                spelllikeName.Replace(replaceOldText2, replaceNewText2);
+                spelllikeName = spelllikeName.Replace(replaceOldText2, replaceNewText2);
             }
             if (!String.IsNullOrEmpty(replaceOldText3))
             {
-                spelllikeName.Replace(replaceOldText3, replaceNewText3);
+                spelllikeName = spelllikeName.Replace(replaceOldText3, replaceNewText3);
             }
 
             var ability = spell.CreateCopy(ToDContext, spelllikeName);
@@ -1439,7 +1444,7 @@ namespace TomeOfDarkness.Utilities
                                                               )
         {
 
-            string spelllikeName = spell.Name;
+            string spelllikeName = spell.name;
 
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1647,15 +1652,15 @@ namespace TomeOfDarkness.Utilities
             var description = $"A monk with this ki power can spend {cost} point{(cost != 1 ? "s" : "")} from his ki pool to apply effect of the {spell.Name} spell to himself as a {action_type} action.\n"
             + spell.Name + ": " + spell.Description;
 
-            var name = "Ki Power: " + spell.Name;
+            var ab_name = "Ki Power: " + spell.Name;
 
             var monk_ability = ConvertSpellToSpellLikeVariants(spell, new BlueprintCharacterClassReference[] { monk }, StatType.Wisdom, wis_resource, "Base", "KiPower", false, false, personal_only, null, cost);
 
             var scaled_fist_ability = ConvertSpellToSpellLikeVariants(spell, new BlueprintCharacterClassReference[] { monk }, StatType.Charisma, cha_resource, "Base", "ScaledFistKiPower", false, false, personal_only, null, cost);
 
-            monk_ability.SetNameDescription(ToDContext, name, description);
+            monk_ability.SetNameDescription(ToDContext, ab_name, description);
 
-            scaled_fist_ability.SetNameDescription(ToDContext, name, description);
+            scaled_fist_ability.SetNameDescription(ToDContext, ab_name, description);
 
             if (monk_ability.HasVariants)
             {
@@ -1853,15 +1858,15 @@ namespace TomeOfDarkness.Utilities
                 }
             }
 
-            string spelllikeWrapperName = spell.Name;
+            string spelllikeWrapperName = spell.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                spelllikeWrapperName.Replace(prefixRemove, "");
+                spelllikeWrapperName = spelllikeWrapperName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                spelllikeWrapperName.Replace(suffixRemove, "");
+                spelllikeWrapperName = spelllikeWrapperName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -1873,15 +1878,15 @@ namespace TomeOfDarkness.Utilities
             }
             if (!String.IsNullOrEmpty(replaceOldText1))
             {
-                spelllikeWrapperName.Replace(replaceOldText1, replaceNewText1);
+                spelllikeWrapperName = spelllikeWrapperName.Replace(replaceOldText1, replaceNewText1);
             }
             if (!String.IsNullOrEmpty(replaceOldText2))
             {
-                spelllikeWrapperName.Replace(replaceOldText2, replaceNewText2);
+                spelllikeWrapperName = spelllikeWrapperName.Replace(replaceOldText2, replaceNewText2);
             }
             if (!String.IsNullOrEmpty(replaceOldText3))
             {
-                spelllikeWrapperName.Replace(replaceOldText3, replaceNewText3);
+                spelllikeWrapperName = spelllikeWrapperName.Replace(replaceOldText3, replaceNewText3);
             }
             if (!String.IsNullOrEmpty(suffixforWrapperAdd))
             {
@@ -1939,7 +1944,7 @@ namespace TomeOfDarkness.Utilities
                 }
             }
 
-            string spelllikeWrapperName = spell.Name;
+            string spelllikeWrapperName = spell.name;
 
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -2013,15 +2018,15 @@ namespace TomeOfDarkness.Utilities
             }
 
 
-            string supernaturalWrapperName = spell.Name;
+            string supernaturalWrapperName = spell.name;
 
             if (!String.IsNullOrEmpty(prefixRemove))
             {
-                supernaturalWrapperName.Replace(prefixRemove, "");
+                supernaturalWrapperName = supernaturalWrapperName.Replace(prefixRemove, "");
             }
             if (!String.IsNullOrEmpty(suffixRemove))
             {
-                supernaturalWrapperName.Replace(suffixRemove, "");
+                supernaturalWrapperName = supernaturalWrapperName.Replace(suffixRemove, "");
             }
             if (!String.IsNullOrEmpty(prefixAdd))
             {
@@ -2033,15 +2038,15 @@ namespace TomeOfDarkness.Utilities
             }
             if (!String.IsNullOrEmpty(replaceOldText1))
             {
-                supernaturalWrapperName.Replace(replaceOldText1, replaceNewText1);
+                supernaturalWrapperName = supernaturalWrapperName.Replace(replaceOldText1, replaceNewText1);
             }
             if (!String.IsNullOrEmpty(replaceOldText2))
             {
-                supernaturalWrapperName.Replace(replaceOldText2, replaceNewText2);
+                supernaturalWrapperName = supernaturalWrapperName.Replace(replaceOldText2, replaceNewText2);
             }
             if (!String.IsNullOrEmpty(replaceOldText3))
             {
-                supernaturalWrapperName.Replace(replaceOldText3, replaceNewText3);
+                supernaturalWrapperName = supernaturalWrapperName.Replace(replaceOldText3, replaceNewText3);
             }
             if (!String.IsNullOrEmpty(suffixforWrapperAdd))
             {
@@ -2104,7 +2109,7 @@ namespace TomeOfDarkness.Utilities
             }
 
 
-            string supernaturalWrapperName = spell.Name;
+            string supernaturalWrapperName = spell.name;
 
             if (!String.IsNullOrEmpty(prefixAdd))
             {

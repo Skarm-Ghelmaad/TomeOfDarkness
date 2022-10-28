@@ -16,6 +16,7 @@ using static TabletopTweaks.Core.Utilities.FeatTools;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using HarmonyLib;
+using static UnityModManagerNet.UnityModManager;
 
 namespace TomeOfDarkness.Utilities
 {
@@ -55,12 +56,34 @@ namespace TomeOfDarkness.Utilities
 
         }
 
+        public static void AddAsNinjaTrick(BlueprintFeature feature, bool advanced_trick = false)
+        {
+
+            var ninja_tricks = BlueprintTools.GetModBlueprint<BlueprintFeatureSelection>(ToDContext, "NinjaTrickSelection");
+
+            var advanced_talents = BlueprintTools.GetBlueprint<BlueprintFeature>("a33b99f95322d6741af83e9381b2391c");
+
+            var NinjaTrickSelections = new BlueprintFeatureSelection[] { ninja_tricks };
+
+            feature.Groups = feature.Groups.AddToArray(FeatureGroup.RogueTalent);
+            NinjaTrickSelections.ForEach(selection => selection.AddFeatures(feature));
+
+            if (advanced_trick)
+            {
+                feature.AddPrerequisiteFeature(advanced_talents);
+
+            }
+
+
+        }
+
+        //GetStyleFeat needs to be changed as gives mistake...
+
         public static BlueprintFeature[] GetStyleFeats()
         {
             return FeatTools.Selections.BasicFeatSelection.AllFeatures
-                    .Select(reference => reference)
-                    .Where(feature => feature.GetComponent<FeatureTagsComponent>().FeatureTags.HasFlag(FeatureTag.Style))
-                    .ToArray();
+            .Where(feature => (feature.GetComponent<FeatureTagsComponent>() is not null) && (feature.GetComponent<FeatureTagsComponent>().FeatureTags.HasFlag(FeatureTag.Style)))
+            .ToArray();
         }
 
     }
