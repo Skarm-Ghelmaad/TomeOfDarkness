@@ -289,7 +289,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
                                             + "Moreover, she can also spend 1 point to gain a +4 insight bonus on her Stealth checks for 1 round. Each of these powers is activated as a swift action. A ninja can gain additional powers that consume points from her ki pool by selecting certain ninja tricks.");
                 bp.IsClassFeature = true;
                 bp.Ranks = 1;
-                bp.Groups = new FeatureGroup[] { };
+                bp.Groups = new FeatureGroup[] { FeatureGroup.None };
                 bp.IsPrerequisiteFor = new List<BlueprintFeatureReference> { Abundant_Ki_Pool.ToReference<BlueprintFeatureReference>() };
                 bp.AddComponent(HlEX.CreateAddAbilityResources(kiResource.ToReference<BlueprintAbilityResourceReference>()));
                 bp.AddComponent(Helpers.Create<IncreaseResourceAmountBasedOnClassOnly>(c => {
