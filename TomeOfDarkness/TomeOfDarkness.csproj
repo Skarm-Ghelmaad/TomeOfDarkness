@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Remove="lib\**" />
     <Compile Include="Config\NewContent.cs" />
+    <Compile Include="MechanicsChanges\ConcealmentDescriptorToD.cs" />
     <Compile Include="MechanicsChanges\CustomStatTypesToD.cs" />
     <Compile Include="MechanicsChanges\KiResourceChanges.cs" />
     <Compile Include="MechanicsChanges\MartialArtsTraining.cs" />
