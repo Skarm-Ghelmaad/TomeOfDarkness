@@ -15,6 +15,9 @@ using static Kingmaker.Armies.TacticalCombat.Grid.TacticalCombatGrid;
 
 namespace TomeOfDarkness.NewComponents
 {
+    [AllowedOn(typeof(BlueprintAbility))]
+    [AllowMultipleComponents]
+    [TypeId("298F8F1A103E445A9C7ECED8530F76C1")]
     public class AbilityShowIfCasterKnowsSpell : BlueprintComponent, IAbilityVisibilityProvider  // Holic75_SC 
     {
 

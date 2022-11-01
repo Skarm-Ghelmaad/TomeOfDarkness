@@ -48,6 +48,7 @@
     <Compile Include="NewComponents\AbilityShowIfCasterHasResource.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterKnowsSpell.cs" />
     <Compile Include="NewComponents\AddContextFlankingAttackBonus.cs" />
+    <Compile Include="NewComponents\AddOutgoingConcealment.cs" />
     <Compile Include="NewComponents\BuffExtraAttackCategorySpecific.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlock.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlockData.cs" />
@@ -57,10 +58,15 @@
     <Compile Include="NewComponents\ContextWeaponDamageDiceReplacementWeaponCategory.cs" />
     <Compile Include="NewComponents\HasFactsFeaturesUnlock.cs" />
     <Compile Include="NewComponents\HasFactsFeaturesUnlockData.cs" />
+    <Compile Include="NewComponents\IgnoreCasterConcealment.cs" />
+    <Compile Include="NewComponents\IgnoreConcealmentDescriptor.cs" />
     <Compile Include="NewComponents\IncreaseResourceAmountBasedOnClassOnly.cs" />
     <Compile Include="NewComponents\IncreaseResourceAmountBasedOnStat.cs" />
     <Compile Include="NewComponents\OwlcatReplacements\DoubleDamageDiceOnAttackLOS.cs" />
     <Compile Include="NewComponents\OwlcatReplacements\IncreaseResourcesByClassLOS.cs" />
+    <Compile Include="NewComponents\ReduceConcealmentByOneStep.cs" />
+    <Compile Include="NewComponents\SetVisibilityLimit.cs" />
+    <Compile Include="NewComponents\SpecificConcealmentBase.cs" />
     <Compile Include="NewContent\Archetypes\Ninja.cs" />
     <Compile Include="NewContent\ContentAdder.cs" />
     <Compile Include="NewContent\Features\Dispatchment.cs" />
@@ -78,7 +84,12 @@
     <Compile Include="NewContent\NinjaTricks\VanishingTrick.cs" />
     <Compile Include="NewContent\Spells\FxTester.cs" />
     <Compile Include="NewContent\StyleStrikes\FlyingKick.cs" />
+    <Compile Include="NewUnitParts\AdditiveUnitPart.cs" />
     <Compile Include="NewUnitParts\UnitPartCustomMechanicsFeaturesToD.cs" />
+    <Compile Include="NewUnitParts\UnitPartIgnoreConcealmentDescriptor.cs" />
+    <Compile Include="NewUnitParts\UnitPartOutgoingConcealment.cs" />
+    <Compile Include="NewUnitParts\UnitPartSpecificConcealment.cs" />
+    <Compile Include="NewUnitParts\UnitPartVisibilityLimit.cs" />
     <Compile Include="UMMSettingsUI.cs" />
     <Compile Include="Utilities\FeatToolsExtension.cs" />
     <Compile Include="Utilities\HelpersExtension.cs" />
