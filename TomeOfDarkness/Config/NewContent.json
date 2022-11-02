@@ -48,6 +48,11 @@
         "Enabled": true,
         "Homebrew": false,
         "Description": "This is a collection of spells that merely generate visual effects."
+      },
+      "ObscuringMist": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "A misty vapor arises around you. It is stationary. The vapor obscures all sight, including darkvision, beyond 5 feet. A creature 5 feet away has concealment (attacks have a 20% miss chance). Creatures farther away have total concealment (50% miss chance, and the attacker cannot use sight to locate the target).."
       }
     }
   }

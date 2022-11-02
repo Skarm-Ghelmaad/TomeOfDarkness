@@ -83,6 +83,7 @@
     <Compile Include="NewContent\NinjaTricks\UnarmedCombatMastery.cs" />
     <Compile Include="NewContent\NinjaTricks\VanishingTrick.cs" />
     <Compile Include="NewContent\Spells\FxTester.cs" />
+    <Compile Include="NewContent\Spells\ObscuringMist.cs" />
     <Compile Include="NewContent\StyleStrikes\FlyingKick.cs" />
     <Compile Include="NewUnitParts\AdditiveUnitPart.cs" />
     <Compile Include="NewUnitParts\UnitPartCustomMechanicsFeaturesToD.cs" />
@@ -218,6 +219,9 @@
     <Content Include="Assets\Abilities\Icon_NinjaStyleStrike.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Abilities\Icon_ObscuringMist.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Abilities\Icon_SeeTheUnseen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -225,6 +229,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_VanishingTrick.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Equipment\Icon_ScrollObscuringMist.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_AlchemyTraining.png">

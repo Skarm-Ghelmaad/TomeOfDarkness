@@ -295,6 +295,14 @@ namespace TomeOfDarkness.Utilities
             return r;
         }
 
+        static public ContextActionSpawnAreaEffect CreateContextActionSpawnAreaEffect(BlueprintAbilityAreaEffectReference area_effect, ContextDurationValue duration)
+        {
+            var r = Helpers.Create<ContextActionSpawnAreaEffect>();
+            r.m_AreaEffect = area_effect;
+            r.DurationValue = duration;
+            return r;
+        }
+
         #endregion
 
         #region |------------------------------------------------------------| ( Mechanics ) Buffs Creators |--------------------------------------------------------------|
@@ -548,6 +556,20 @@ namespace TomeOfDarkness.Utilities
         {
             var c = Helpers.Create<AddFacts>();
             c.m_Facts = facts;
+            return c;
+        }
+
+        // Holic75_SC
+        public static AddOutgoingConcealment CreateOutgoingConcealment(AddConcealment self_concealement)
+        {
+            var c = Helpers.Create<AddOutgoingConcealment>();
+            c.Descriptor = self_concealement.Descriptor;
+            c.Concealment = self_concealement.Concealment;
+            c.CheckDistance = self_concealement.CheckDistance;
+            c.CheckWeaponRangeType = self_concealement.CheckWeaponRangeType;
+            c.DistanceGreater = self_concealement.DistanceGreater;
+            c.OnlyForAttacks = self_concealement.OnlyForAttacks;
+            c.RangeType = self_concealement.RangeType;
             return c;
         }
 
