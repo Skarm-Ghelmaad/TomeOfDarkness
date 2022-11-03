@@ -37,8 +37,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class SeeTheUnseen
     {
-        private static readonly string SeeTheUnseenFeatureName = "NinjaTrickSeeTheUnseenFeature.Name";
-        private static readonly string SeeTheUnseenFeatureDescription = "NinjaTrickSeeTheUnseenFeature.Description";
 
         public static void ConfigureSeeTheUnseen()
         {
@@ -52,8 +50,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             var SeeTheUnseenAbility = HlEX.ConvertSpellToSupernatural(See_Invisibility_Spell, RogueArray, StatType.Charisma, kiResource, "NinjaTrick", "Ability", "SeeTheUnseen", "SeeInvisibility", "", "", "", "", "", "", false, false, null, 1);
 
-            SeeTheUnseenAbility.SetName(ToDContext, SeeTheUnseenFeatureName);
-            SeeTheUnseenAbility.SetDescription(ToDContext, SeeTheUnseenFeatureDescription);
+            SeeTheUnseenAbility.SetName(ToDContext, "See the Unseen");
+            SeeTheUnseenAbility.SetDescription(ToDContext, "A character with this trick learns how to see that which cannot be seen. As a swift action, the character can cast See Invisibility, using her relevant class level as the caster level. Each use of this ability uses up 1 ki point.");
             SeeTheUnseenAbility.m_Icon = SeeTheUnseenIcon;
             SeeTheUnseenAbility.ActionType = UnitCommand.CommandType.Swift;
 

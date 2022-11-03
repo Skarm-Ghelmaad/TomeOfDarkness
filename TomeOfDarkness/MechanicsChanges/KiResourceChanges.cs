@@ -64,8 +64,8 @@ namespace TomeOfDarkness.MechanicsChanges
             // Note that these features are hidden in the UI.
 
             var wisdom_KiPoolCanon = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "WisdomKiPoolCanonFeature", bp => {
-                bp.SetName(ToDContext, WisdomKiPoolCanonFeatureName);
-                bp.SetDescription(ToDContext, WisdomKiPoolCanonFeatureDescription);
+                bp.SetName(ToDContext, "Ki Pool - {g|Encyclopedia:Wisdom}Wisdom{/g}");
+                bp.SetDescription(ToDContext, "This character adds his {g|Encyclopedia:Wisdom}Wisdom{/g} modifier to his ki pool, to the DC of his ki abilities and \n to any other ability parameter that would be affected by an attribute.");
                 bp.m_Icon = wisdomKiPoolIcon;
                 bp.HideInUI = true;
                 bp.HideInCharacterSheetAndLevelUp = true;
@@ -81,8 +81,8 @@ namespace TomeOfDarkness.MechanicsChanges
             ToDContext.Logger.LogPatch("Created traditional Ki Pool modifier for Wisdom", wisdom_KiPoolCanon);
 
             var charisma_KiPoolCanon = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "CharismaKiPoolCanonFeature", bp => {
-                bp.SetName(ToDContext, CharismaKiPoolCanonFeatureName);
-                bp.SetDescription(ToDContext, CharismaKiPoolCanonFeatureDescription);
+                bp.SetName(ToDContext, "Ki Pool - {g|Encyclopedia:Charisma}Charisma{/g}");
+                bp.SetDescription(ToDContext, "This character adds his {g|Encyclopedia:Charisma}Charisma{/g} modifier to his ki pool, to the DC of his ki abilities and \n to any other ability parameter that would be affected by an attribute.");
                 bp.m_Icon = wisdomKiPoolIcon;
                 bp.HideInUI = true;
                 bp.HideInCharacterSheetAndLevelUp = true;

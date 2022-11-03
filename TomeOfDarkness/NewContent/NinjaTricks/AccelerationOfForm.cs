@@ -37,8 +37,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class AccelerationOfForm
     {
-        private static readonly string AccelerationOfFormFeatureName = "NinjaTrickAccelerationOfFormFeature.Name";
-        private static readonly string AccelerationOfFormFeatureDescription = "NinjaTrickAccelerationOfFormFeature.Description";
 
         public static void ConfigureAccelerationOfForm()
         {
@@ -63,8 +61,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
 
             var AccelerationOfFormAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickAccelerationOfFormAbility", bp => {
-                bp.SetName(ToDContext, AccelerationOfFormFeatureName);
-                bp.SetDescription(ToDContext, AccelerationOfFormFeatureDescription);
+                bp.SetName(ToDContext, "Acceleration of Form");
+                bp.SetDescription(ToDContext, "A character with this trick can spend 1 ki point as a standard action to gain the benefits of Displacement and Haste for 1 round per 2 relevant class levels.");
                 bp.m_Icon = AccelerationOfFormIcon;
                 bp.ResourceAssetIds = Array.Empty<string>();
                 bp.Type = AbilityType.Supernatural;

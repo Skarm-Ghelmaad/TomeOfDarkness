@@ -28,16 +28,13 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class InvisibleBlade
     {
-        private static readonly string InvisibleBladeFeatureName = "NinjaTrickInvisibleBladeFeature.Name";
-        private static readonly string InvisibleBladeFeatureDescription = "NinjaTrickInvisibleBladeFeature.Description";
-
         public static void ConfigureInvisibleBlade()
         {
             var InvisibleBladeIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_InvisibleBlade.png");
 
             var InvisibleBladeFeature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickInvisibleBladeFeature", bp => {
-                bp.SetName(ToDContext, InvisibleBladeFeatureName);
-                bp.SetDescription(ToDContext, InvisibleBladeFeatureDescription);
+                bp.SetName(ToDContext, "Invisible Blade");
+                bp.SetDescription(ToDContext, "Whenever the character uses the Vanishing Trick ninja trick, she is treated as if she were under the effects of Greater Invisibility.");
                 bp.m_Icon = InvisibleBladeIcon;
             });
 

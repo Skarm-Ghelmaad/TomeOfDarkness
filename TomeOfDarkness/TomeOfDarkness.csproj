@@ -48,6 +48,7 @@
     <Compile Include="NewComponents\AbilityShowIfCasterHasResource.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterKnowsSpell.cs" />
     <Compile Include="NewComponents\AddContextFlankingAttackBonus.cs" />
+    <Compile Include="NewComponents\AddInoffensiveness.cs" />
     <Compile Include="NewComponents\AddOutgoingConcealment.cs" />
     <Compile Include="NewComponents\BuffExtraAttackCategorySpecific.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlock.cs" />
@@ -85,9 +86,11 @@
     <Compile Include="NewContent\Spells\FxTester.cs" />
     <Compile Include="NewContent\Spells\ObscuringMist.cs" />
     <Compile Include="NewContent\StyleStrikes\FlyingKick.cs" />
+    <Compile Include="NewEnums\OffensiveActionEffect.cs" />
     <Compile Include="NewUnitParts\AdditiveUnitPart.cs" />
     <Compile Include="NewUnitParts\UnitPartCustomMechanicsFeaturesToD.cs" />
     <Compile Include="NewUnitParts\UnitPartIgnoreConcealmentDescriptor.cs" />
+    <Compile Include="NewUnitParts\UnitPartInoffensiveness.cs" />
     <Compile Include="NewUnitParts\UnitPartOutgoingConcealment.cs" />
     <Compile Include="NewUnitParts\UnitPartSpecificConcealment.cs" />
     <Compile Include="NewUnitParts\UnitPartVisibilityLimit.cs" />
@@ -321,12 +324,14 @@
       <Localization Include="$(OutputPath)\Localization\LocalizationPack.json" />
       <AbilitiesAssets Include="$(OutputPath)\Assets\Abilities\*.*" />
       <FeaturesAssets Include="$(OutputPath)\Assets\Features\*.*" />
+      <EquipmentAssets Include="$(OutputPath)\Assets\Equipment\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)" />
     <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Localization" />
     <Copy SourceFiles="@(AbilitiesAssets)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Assets\Abilities" />
     <Copy SourceFiles="@(FeaturesAssets)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Assets\Features" />
+    <Copy SourceFiles="@(EquipmentAssets)" DestinationFolder="$(WrathPath)\Mods\$(MSBuildProjectName)\Assets\Equipment" />
   </Target>
   <!-- Automatically creates a release zip -->
   <Target Name="ZipRelease" AfterTargets="Deploy" Condition="'$(Configuration)' == 'Release'">
@@ -336,12 +341,19 @@
       <Localization Include="$(OutputPath)\Localization\LocalizationPack.json" />
       <AbilitiesAssets Include="$(OutputPath)\Assets\Abilities\*.*" />
       <FeaturesAssets Include="$(OutputPath)\Assets\Features\*.*" />
+      <EquipmentAssets Include="$(OutputPath)\Assets\Equipment\*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(Assembly)" DestinationFolder="$(OutputPath)\$(AssemblyName)" />
     <Copy SourceFiles="@(ModConfig)" DestinationFolder="$(OutputPath)\$(AssemblyName)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Localization" />
     <Copy SourceFiles="@(AbilitiesAssets)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Assets\Abilities" />
     <Copy SourceFiles="@(FeaturesAssets)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Assets\Features" />
+    <Copy SourceFiles="@(EquipmentAssets)" DestinationFolder="$(OutputPath)\$(AssemblyName)\Assets\Equipment" />
     <ZipDirectory SourceDirectory="$(OutputPath)\$(AssemblyName)" DestinationFile="$(OutputPath)\$(AssemblyName).zip" Overwrite="true" />
   </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties localization_4localizationpack_1json__JsonSchema="https://docs.strmprivacy.io/jsonschema/BatchJob.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

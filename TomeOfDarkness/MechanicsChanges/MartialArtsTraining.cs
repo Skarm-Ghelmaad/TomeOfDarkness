@@ -45,8 +45,6 @@ namespace TomeOfDarkness.MechanicsChanges
         // This is an attempt to allow for the acquisition (and stacking) of the Monk's Unarmed Strike feature.
 
         static public BlueprintFeature MartialArtsTrainingFakeLevel;
-        private static readonly string UniversalUnarmedStrikeName = "UniversalUnarmedStrike.Name";
-        private static readonly string UniversalUnarmedStrikeDescription = "UniversalUnarmedStrike.Description";
         static public BlueprintUnitProperty MartialArtsTrainingProperty;
         static public BlueprintFeature UniversalUnarmedStrike;
 
@@ -137,8 +135,8 @@ namespace TomeOfDarkness.MechanicsChanges
             #region |------------------------------------------------------/ CREATE GENERIC (MONK) UNARMED STRIKE /------------------------------------------------------------|
 
             var generic_1d6_unarmed_strike = monk_1d6_unarmed_strike.CreateCopy(ToDContext, "UniversalUnarmedStrike", bp => {
-                bp.SetName(ToDContext, UniversalUnarmedStrikeName);
-                bp.SetDescription(ToDContext, UniversalUnarmedStrikeDescription);
+                bp.SetName(ToDContext, "Unarmed Strike (Generic)");
+                bp.SetDescription(ToDContext, "The character deals increased unarmed attack {g|Encyclopedia:Damage}damage{/g} based on relevant class levels. The {g|Encyclopedia:Damage}damage{/g} dealt by a Medium character's {g|Encyclopedia:UnarmedAttack}unarmed{/g} strike increases with such levels: {g|Encyclopedia:Dice}1d6{/g} at levels 1–3, 1d8 at levels 4–7, 1d10 at levels 8–11, 2d6 at levels 12–15, 2d8 at levels 16–19, and 2d10 at level 20.\nIf the character is Small, his unarmed strike damage increases as follows: 1d4 at levels 1–3, 1d6 at levels 4–7, 1d8 at levels 8–11, 1d10 at levels 12–15, 2d6 at levels 16–19, and 2d8 at level 20.\nIf the character is Large, his unarmed strike damage increases as follows: 1d8 at levels 1–3, 2d6 at levels 4–7, 2d8 at levels 8–11, 3d6 at levels 12–15, 3d8 at levels 16–19, and 4d8 at level 20.");
 
             });
 

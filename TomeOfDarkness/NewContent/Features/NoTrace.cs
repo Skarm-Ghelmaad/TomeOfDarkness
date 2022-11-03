@@ -20,16 +20,14 @@ namespace TomeOfDarkness.NewContent.Features
 {
     internal class NoTrace
     {
-        private static readonly string NoTraceFeatureName = "NinjaNoTraceFeature.Name";
-        private static readonly string NoTraceDescription = "NinjaNoTraceFeature.Description";
 
         public static void ConfigureNoTrace()
         {
             var NoTraceIcon = BlueprintTools.GetBlueprint<BlueprintFeature>("97a6aa2b64dd21a4fac67658a91067d7").Icon; // No Trace uses Fast Stealth icon
 
             var NoTraceFeature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "NinjaNoTraceFeature", bp => {
-                bp.SetName(ToDContext, NoTraceFeatureName);
-                bp.SetDescription(ToDContext, NoTraceDescription);
+                bp.SetName(ToDContext, "No Trace");
+                bp.SetDescription(ToDContext, "At 3rd level, a ninja gains a +1 bonus on Stealth checks. This bonus increases by 1 every 3 ninja levels thereafter.");
                 bp.m_Icon = NoTraceIcon;
                 bp.AddComponent<AddContextStatBonus>(c => {
                     c.Stat = StatType.SkillStealth;

@@ -32,8 +32,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class HerbalCompound
     {
-        private static readonly string HerbalCompoundFeatureName = "NinjaTrickHerbalCompoundFeature.Name";
-        private static readonly string HerbalCompoundFeatureDescription = "NinjaTrickHerbalCompoundFeature.Description";
 
         public static void ConfigureHerbalCompound()
         {
@@ -78,8 +76,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                                                                             false, false, false, false, false);
 
             var HerbalCompoundAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickHerbalCompoundAbility", bp => {
-                bp.SetName(ToDContext, HerbalCompoundFeatureName);
-                bp.SetDescription(ToDContext, HerbalCompoundFeatureDescription);
+                bp.SetName(ToDContext, "Herbal Compound");
+                bp.SetDescription(ToDContext, "A character with this trick can consume specially prepared herbs to strengthen her mind. The character can spend 1 ki point and smoke, eat, or inject an herbal compound as a move action. The character takes a –2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per relevant class level.");
                 bp.m_Icon = HerbalCompoundIcon;
                 bp.ResourceAssetIds = Array.Empty<string>();
                 bp.Type = AbilityType.Extraordinary;

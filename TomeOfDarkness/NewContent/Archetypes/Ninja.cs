@@ -50,9 +50,6 @@ namespace TomeOfDarkness.NewContent.Archetypes
 {
     internal class Ninja
     {
-        private static readonly string NinjaProficienciesFeatureName = "NinjaProficiencies.Name";
-        private static readonly string NinjaProficienciesFeatureDescription = "NinjaProficiencies.Description";
-
         public static void ConfigureNinjaArchetype()
         {
             var Rogue_Array = new BlueprintCharacterClassReference[] { ClassTools.ClassReferences.RogueClass };
@@ -171,8 +168,8 @@ namespace TomeOfDarkness.NewContent.Archetypes
                 {
                     c.m_Facts = new BlueprintUnitFactReference[] { Dueling_Sword_Proficiency.ToReference<BlueprintUnitFactReference>() };
                 });
-                bp.SetName(ToDContext, NinjaProficienciesFeatureName);
-                bp.SetDescription(ToDContext, NinjaProficienciesFeatureDescription);
+                bp.SetName(ToDContext, "Ninja Proficiencies");
+                bp.SetDescription(ToDContext, "Ninja are proficient with all simple weapons, plus the kama, dueling sword, nunchaku, sai, shortbow, short sword, shuriken, and scimitar. Ninjas are proficient with light armor but not with shields.");
 
             });
             #endregion

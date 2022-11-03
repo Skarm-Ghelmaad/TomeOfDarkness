@@ -31,12 +31,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class Kamikaze
     {
-        private static readonly string KamikazeFeatureName = "NinjaTrickKamikazeFeature.Name";
-        private static readonly string KamikazeAbilityName = "NinjaTrickKamikazeAbility.Name";
-        private static readonly string KamikazeDismissAbilityName = "NinjaTrickKamikazeDismissAbility.Name";
-        private static readonly string KamikazeFeatureDescription = "NinjaTrickKamikazeFeature.Description";
-        private static readonly string KamikazeAbilityDescription = "NinjaTrickKamikazeAbility.Description";
-        private static readonly string KamikazeDismissAbilityDescription = "NinjaTrickKamikazeDismissAbility.Description";
 
         public static void ConfigureKamikaze()
         {
@@ -63,7 +57,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                         a.m_EnchantmentBlueprint = Vicious_Enchantment.ToReference<BlueprintItemEnchantmentReference>();
                     });
                 bp.m_Icon = KamikazeIcon;
-                bp.SetName(ToDContext, KamikazeFeatureName);
+                bp.SetName(ToDContext, "Kamikaze");
                 bp.SetDescription(ToDContext, KamikazeFeatureDescription);
                 bp.FxOnStart = HlEX.CreatePrefabLink(Rage_Buff_Fx_Asset_ID);
             });
@@ -74,8 +68,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
 
             var KamikazeAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickKamikazeAbility", bp => {
-                bp.SetName(ToDContext, KamikazeAbilityName);
-                bp.SetDescription(ToDContext, KamikazeAbilityDescription);
+                bp.SetName(ToDContext, "Kamikaze");
+                bp.SetDescription(ToDContext, "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level.");
                 bp.m_Icon = KamikazeIcon;
                 bp.ResourceAssetIds = Array.Empty<string>();
                 bp.Type = AbilityType.Supernatural;
@@ -98,8 +92,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             var Dismiss_Kamikaze_Buff = HlEX.CreateConditional(HlEX.CreateContextConditionHasBuffFromCaster(Kamikaze_Buff), HlEX.CreateContextActionRemoveBuff(Kamikaze_Buff), null);
 
             var KamikazeDismissAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickKamikazeDismissAbility", bp => {
-                bp.SetName(ToDContext, KamikazeDismissAbilityName);
-                bp.SetDescription(ToDContext, KamikazeDismissAbilityDescription);
+                bp.SetName(ToDContext, "Kamikaze (Dismiss)");
+                bp.SetDescription(ToDContext, "A character with this ability can spend 1 ki point to dismiss the Kamikaze effect as a free action.");
                 bp.m_Icon = KamikazeDismissIcon;
                 bp.ResourceAssetIds = Array.Empty<string>();
                 bp.Type = AbilityType.Supernatural;
@@ -116,8 +110,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             var Kamikaze_Wrapper_Ability = HlEX.CreateVariantWrapper("NinjaTrickKamikazeBaseAbility", Kamikaze_Variants);
 
-            Kamikaze_Wrapper_Ability.SetName(ToDContext, KamikazeFeatureName);
-            Kamikaze_Wrapper_Ability.SetDescription(ToDContext, KamikazeFeatureDescription);
+            Kamikaze_Wrapper_Ability.SetName(ToDContext, "Kamikaze");
+            Kamikaze_Wrapper_Ability.SetDescription(ToDContext, "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level. The character can also spend 1 ki point to dismiss this effect as a free action.");
 
             var kamikaze_feature = HlEX.ConvertAbilityToFeature(Kamikaze_Wrapper_Ability, "", "", "Feature", "BaseAbility", false);
 

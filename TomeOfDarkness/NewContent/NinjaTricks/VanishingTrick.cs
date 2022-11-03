@@ -34,9 +34,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class VanishingTrick
     {
-        private static readonly string VanishingTrickFeatureName = "NinjaTrickVanishingTrickFeature.Name";
-        private static readonly string VanishingTrickFeatureDescription = "NinjaTrickVanishingTrickFeature.Description";
-
         public static void ConfigureVanishingTrick()
         {
 
@@ -65,8 +62,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
 
             var VanishingTrickAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickVanishingTrickAbility", bp => {
-                bp.SetName(ToDContext, VanishingTrickFeatureName);
-                bp.SetDescription(ToDContext, VanishingTrickFeatureDescription);
+                bp.SetName(ToDContext, "Vanishing Trick");
+                bp.SetDescription(ToDContext, "As a swift action, the character can disappear for 1 round per level. This ability functions as Invisibility. Using this ability uses up 1 ki point.");
                 bp.m_Icon = VanishingTrickIcon;
                 bp.ResourceAssetIds = Array.Empty<string>();
                 bp.Type = AbilityType.Supernatural;

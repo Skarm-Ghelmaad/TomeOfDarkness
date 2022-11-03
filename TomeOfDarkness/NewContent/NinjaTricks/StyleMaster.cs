@@ -31,9 +31,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class StyleMaster
     {
-        private static readonly string StyleMasterFeatureSelectionName = "NinjaStyleMasterFeatureSelection.Name";
-        private static readonly string StyleMasterFeatureSelectionDescription = "NinjaStyleMasterFeatureSelection.Description";
-
         public static void ConfigureStyleMaster()
         {
             var RogueArray = new BlueprintCharacterClassReference[] { ClassTools.ClassReferences.RogueClass };
@@ -41,8 +38,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             var current_style_feats = FeatToolsExtension.GetStyleFeats();
 
             var Style_Master_Feature_Selection = Helpers.CreateBlueprint<BlueprintFeatureSelection>(ToDContext, "NinjaStyleMasterFeatureSelection", bp => {
-                bp.SetName(ToDContext, StyleMasterFeatureSelectionName);
-                bp.SetDescription(ToDContext, StyleMasterFeatureSelectionDescription);
+                bp.SetName(ToDContext, "Style Master");
+                bp.SetDescription(ToDContext, "A chracter who selects this trick gains a style feat that she qualifies for as a bonus feat.");
                 bp.m_Icon = null;
 
                 foreach (var current_style_feat in current_style_feats)

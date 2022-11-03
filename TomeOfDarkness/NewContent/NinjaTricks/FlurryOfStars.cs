@@ -50,8 +50,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             var FlurryOfStarsIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_FlurryOfStars.png");
 
             var Flurry_Of_Stars_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "FlurryOfStarsBuff", bp => {
-                bp.SetName(ToDContext, FlurryOfStarsFeatureName);
-                bp.SetDescription(ToDContext, FlurryOfStarsFeatureDescription);
+                bp.SetName(ToDContext, "Flurry of Stars");
+                bp.SetDescription(ToDContext, "A character with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken (and darts). During that attack, she can throw two additional shuriken (or darts) at her highest attack bonus, but all of her shuriken (or darts) attacks are made at a –2 penalty, including the two extra attacks. Additionaly, shuriken and darts are considered as light weapons for the purpose of two-weapon fighting.");
                 bp.m_Icon = FlurryOfStarsIcon;
                 bp.FxOnStart = new PrefabLink();
                 bp.FxOnRemove = new PrefabLink();
@@ -68,8 +68,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                                              false, false, false, false, false);
 
             var FlurryOfStarsAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickFlurryOfStarsAbility", bp => {
-                bp.SetName(ToDContext, FlurryOfStarsFeatureName);
-                bp.SetDescription(ToDContext, FlurryOfStarsFeatureDescription);
+                bp.SetName(ToDContext, "Flurry of Stars");
+                bp.SetDescription(ToDContext, "A character with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken (and darts). During that attack, she can throw two additional shuriken (or darts) at her highest attack bonus, but all of her shuriken (or darts) attacks are made at a –2 penalty, including the two extra attacks. Additionaly, shuriken and darts are considered as light weapons for the purpose of two-weapon fighting.");
                 bp.m_Icon = FlurryOfStarsIcon;
                 bp.ResourceAssetIds = Array.Empty<string>();
                 bp.Type = AbilityType.Extraordinary;

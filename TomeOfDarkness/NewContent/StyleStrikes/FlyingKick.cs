@@ -23,8 +23,6 @@ namespace TomeOfDarkness.NewContent.StyleStrikes
 {
     internal class FlyingKick
     {
-        private static readonly string FlyingKickFeatureName = "MonkFlyingKickFeature.Name";
-        private static readonly string FlyingKickDescription = "MonkFlyingKickFeature.Description";
 
         public static void ConfigureFlyingKick()
         {
@@ -43,8 +41,8 @@ namespace TomeOfDarkness.NewContent.StyleStrikes
             var FlyingKickToggle = HelpersExtension.ConvertBuffToActivatableAbility(FlyingKickBuff, Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Free, false, "ToggleAbility", "Buff");
 
             FlyingKickToggle.Group = Kingmaker.UnitLogic.ActivatableAbilities.ActivatableAbilityGroup.StyleStrike;
-            FlyingKickToggle.SetName(ToDContext, FlyingKickFeatureName);
-            FlyingKickToggle.SetDescription(ToDContext, FlyingKickDescription);
+            FlyingKickToggle.SetName(ToDContext, "Flying Kick");
+            FlyingKickToggle.SetDescription(ToDContext, "The monk leaps through the air to strike a foe with a kick. The monk can make a full-attack at the end of charge action.");
             FlyingKickToggle.m_Icon = FlyingKickIcon;
 
 

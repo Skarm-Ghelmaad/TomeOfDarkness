@@ -25,8 +25,6 @@ namespace TomeOfDarkness.NewContent.Features
     internal class Dispatchment
     {
         // This feature required the creation of the "AddContextFlankingAttackBonus" component.
-        private static readonly string DispatchmentFeatureName = "NinjaDispatchmentFeature.Name";
-        private static readonly string DispatchmentDescription = "NinjaDispatchmentFeature.Description";
 
         private static BlueprintCharacterClassReference[] RogueClassArray()
         {
@@ -43,8 +41,8 @@ namespace TomeOfDarkness.NewContent.Features
             var DispatchmentIcon = BlueprintTools.GetBlueprint<BlueprintFeature>("422dab7309e1ad343935f33a4d6e9f11").Icon; // Dispatchment uses Outflank icon
 
             var DispatchmentFeature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "NinjaDispatchmentFeature", bp => {
-                bp.SetName(ToDContext, DispatchmentFeatureName);
-                bp.SetDescription(ToDContext, DispatchmentDescription);
+                bp.SetName(ToDContext, "Dispatchment");
+                bp.SetDescription(ToDContext, "At 4th level, whenever a ninja attacks an opponent that would be denied a Dexterity bonus to AC or when she flanks her target, she gains a +2 bonus on her attack roll. At 9th level and every 5 levels thereafter, this bonus increases by +1 (to a total maximum of +5).");
                 bp.m_Icon = DispatchmentIcon;
                 bp.AddComponent<AddContextFlankingAttackBonus>(c => {
                     c.Descriptor = ModifierDescriptor.UntypedStackable;

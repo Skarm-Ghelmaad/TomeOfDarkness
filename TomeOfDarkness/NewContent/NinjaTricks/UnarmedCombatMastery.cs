@@ -90,8 +90,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             });
 
             var UnarmedCombatMasteryNinjaFeature = Helpers.CreateBlueprint<BlueprintFeatureSelection>(ToDContext, "NinjaTrickUnarmedCombatMasteryNinjaFeature", bp => {
-                bp.SetName(ToDContext, UnarmedCombatMasteryNinjaFeatureName);
-                bp.SetDescription(ToDContext, UnarmedCombatMasteryNinjaFeatureDescription);
+                bp.SetName(ToDContext, "Unarmed Combat Mastery");
+                bp.SetDescription(ToDContext, "A ninja who selects this trick deals damage with her unarmed strikes as if she were a monk of her ninja level –4. If the rogue has levels in monk (or other similar features), this ability stacks with monk levels to determine how much damage she can do with her unarmed strikes. A ninja must have the Improved Unarmed Strike feat before taking this trick.");
                 bp.m_Icon = MartialArtsTrainingBlackIcon;
                 bp.AddComponent(HlEX.CreateHasFactFeatureUnlock(monk_1d6_unarmed_strike.ToReference<BlueprintUnitFactReference>(), UniversalUnarmedStrike.ToReference<BlueprintUnitFactReference>(), true));
                 bp.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
