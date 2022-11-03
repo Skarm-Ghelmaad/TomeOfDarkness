@@ -23,6 +23,15 @@ using Kingmaker.UnitLogic.Abilities.Components.AreaEffects;
 using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.Designers.Mechanics.Facts;
 using System.Web;
+using static UnityModManagerNet.UnityModManager;
+using Kingmaker.Blueprints.Classes.Selection;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
+using Kingmaker.ElementsSystem;
+using Kingmaker.EntitySystem.Stats;
+using Kingmaker.RuleSystem;
+using Kingmaker.UnitLogic.Mechanics.Components;
+using Kingmaker.UnitLogic.Mechanics.Conditions;
+
 
 namespace TomeOfDarkness.NewContent.Spells
 {
@@ -30,13 +39,14 @@ namespace TomeOfDarkness.NewContent.Spells
     {
         public static void ConfigureObscuringMist()
         {
+
             var ObscuringMistIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_ObscuringMist.png");
             var Icon_ScrollOfObscuringMist = AssetLoader.LoadInternal(ToDContext, folder: "Equipment", file: "Icon_ScrollObscuringMist.png");
             var Stinking_Cloud_Spell = BlueprintTools.GetBlueprint<BlueprintAbility>("68a9e6d7256f1354289a39003a46d826");
             var Stinking_Cloud_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5");
-            var Stinking_Cloud_Area_Context_Value = Stinking_Cloud_Area.FlattenAllActions().OfType<ContextActionSpawnAreaEffect>().FirstOrDefault().DurationValue.BonusValue;
+            var Stinking_Cloud_Spawn_Area_Context_Value = Stinking_Cloud_Spell.GetComponent<AbilityEffectRunAction>().Actions.Actions.OfType<ContextActionSpawnAreaEffect>().FirstOrDefault().DurationValue.BonusValue;
             var Mind_Fog_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("fe5102d734382b74586f56980086e5e8");
-            var Stinking_Cloud_Fx_ID = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5").Fx.AssetId;
+            var Stinking_Cloud_Fx_ID = Stinking_Cloud_Area.Fx.AssetId;
             string ObscuringMistName = "Obscuring Mist";
             string ObscuringMistDescription = "A misty vapor arises around you. It is stationary. The vapor obscures all sight, including darkvision, beyond 5 feet. A creature 5 feet away has concealment (attacks have a 20% miss chance). Creatures farther away have total concealment (50% miss chance, and the attacker cannot use sight to locate the target).";
 
@@ -73,11 +83,9 @@ namespace TomeOfDarkness.NewContent.Spells
             Obscuring_Mist_Area.ComponentsArray = new BlueprintComponent[] { Helpers.Create<AbilityAreaEffectBuff>(a => { a.m_Buff = Obscuring_Mist_Buff.ToReference<BlueprintBuffReference>(); a.Condition = HlEX.CreateConditionsCheckerAnd(); }) };
 
             var Obscuring_Mist_Spawn_Action = HlEX.CreateContextActionSpawnAreaEffect(Obscuring_Mist_Area.ToReference<BlueprintAbilityAreaEffectReference>(),
-                                                                HlEX.CreateContextDuration(Stinking_Cloud_Area_Context_Value, DurationRate.Minutes));
+                                                                HlEX.CreateContextDuration(Stinking_Cloud_Spawn_Area_Context_Value, DurationRate.Minutes));
 
             Obscuring_Mist_Spawn_Action.DurationValue.m_IsExtendable = true;
-
-
 
             var Obscuring_Mist_Spell = Stinking_Cloud_Spell.CreateCopy(ToDContext, "ObscuringMistAbility", bp => {
                 bp.SetName(ToDContext, ObscuringMistName);
@@ -101,6 +109,7 @@ namespace TomeOfDarkness.NewContent.Spells
             if (ToDContext.NewContent.Spells.IsDisabled("ObscuringMist")) { return; }
 
             VenderTools.AddScrollToLeveledVenders(ObscuringMistScroll);
+
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.BloodragerSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.ClericSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.DruidSpellList, 1);
@@ -110,6 +119,8 @@ namespace TomeOfDarkness.NewContent.Spells
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WizardSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WitchSpellList, 1);
 
+            ToDContext.Logger.LogPatch("Created Obscuring Mist spell.", Obscuring_Mist_Spell);
+            ToDContext.Logger.LogPatch("Created Obscuring Mist scroll and added to vendors.", ObscuringMistScroll);
 
         }
     }

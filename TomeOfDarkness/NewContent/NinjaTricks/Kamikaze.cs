@@ -58,7 +58,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                     });
                 bp.m_Icon = KamikazeIcon;
                 bp.SetName(ToDContext, "Kamikaze");
-                bp.SetDescription(ToDContext, KamikazeFeatureDescription);
+                bp.SetDescription(ToDContext, "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level.");
                 bp.FxOnStart = HlEX.CreatePrefabLink(Rage_Buff_Fx_Asset_ID);
             });
 

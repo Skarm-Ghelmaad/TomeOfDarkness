@@ -40,9 +40,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 {
     internal class UnarmedCombatMastery
     {
-        private static readonly string UnarmedCombatMasteryNinjaFeatureName = "NinjaTrickUnarmedCombatMasteryNinjaFeature.Name";
-        private static readonly string UnarmedCombatMasteryNinjaFeatureDescription = "NinjaTrickUnarmedCombatMasteryNinjaFeature.Description";
-
         public static void ConfigureUnarmedCombatMastery()
         {
             var RogueArray = new BlueprintCharacterClassReference[] { ClassTools.ClassReferences.RogueClass };

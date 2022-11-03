@@ -39,9 +39,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
     // This has been called "Flurry of Stars" because I plan to re-introduce shurikens.
     internal class FlurryOfStars
     {
-        private static readonly string FlurryOfStarsFeatureName = "NinjaTrickFlurryOfStarsFeature.Name";
-        private static readonly string FlurryOfStarsFeatureDescription = "NinjaTrickFlurryOfStarsFeature.Description";
-
         public static void ConfigureFlurryOfStars()
         {
 

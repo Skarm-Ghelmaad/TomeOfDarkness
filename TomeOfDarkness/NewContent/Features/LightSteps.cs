@@ -29,9 +29,6 @@ namespace TomeOfDarkness.NewContent.Features
     // Just like in Holic75's version of the Ninja Light Steps is implemented as a weakened version of Monk's Abundant Step, which takes a full-round action to activate.
     internal class LightSteps
     {
-        private static readonly string LightStepsFeatureName = "NinjaLightStepsFeature.Name";
-        private static readonly string LightStepsFeatureDescription = "NinjaLightStepsFeature.Description";
-
         private static BlueprintCharacterClassReference[] RogueClassArray()
         {
             return new BlueprintCharacterClassReference[] { ClassTools.ClassReferences.RogueClass };
