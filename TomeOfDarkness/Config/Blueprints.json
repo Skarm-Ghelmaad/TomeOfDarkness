@@ -68,7 +68,11 @@
     "RogueMartialArtsTrainingProgression": "573b09b6-269d-4b6c-9ae4-938681f3799f",
     "ShadowyVFXBuff": "9334d3a0-f1a6-4af7-8805-c330bb3e44d0",
     "UniversalUnarmedStrike": "920d1eeb-40c9-4aeb-a55f-6ecc69f8dfb6",
-    "WisdomKiPoolCanonFeature": "2d1d7be6-0b81-4b0f-9005-228d5a8e3790"
+    "WisdomKiPoolCanonFeature": "2d1d7be6-0b81-4b0f-9005-228d5a8e3790",
+    "ObscuringMistAbility": "3aa2b0de-bd6e-45f4-b8ac-1037d6148757",
+    "ObscuringMistArea": "f4e4df94-8d24-47ea-a1bf-566b82b02e84",
+    "ObscuringMistBuff": "61822a87-0b55-4f4b-9bd0-7d725294bc0c",
+    "ScrollOfObscuringMist": "ddab99fc-8e43-4bd4-991f-ffd2398adc7e"
   },
   "DerivedBlueprintMasters": {},
   "DerivedBlueprints": {},
