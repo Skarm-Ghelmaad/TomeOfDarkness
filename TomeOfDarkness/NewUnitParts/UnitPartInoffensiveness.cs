@@ -25,3 +25,6 @@
 
 //    }
 //}
+
+
+//UnityModManagerNet.UnityModManager.Logger.Log($"Replace {domain_base_feature_name} spell: Removed {domain_base_feature_name} spell list component from {old_spell_name}.");

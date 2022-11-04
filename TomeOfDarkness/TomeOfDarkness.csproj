@@ -50,6 +50,7 @@
     <Compile Include="NewComponents\AddContextFlankingAttackBonus.cs" />
     <Compile Include="NewComponents\AddInoffensiveness.cs" />
     <Compile Include="NewComponents\AddOutgoingConcealment.cs" />
+    <Compile Include="NewComponents\AreaEffects\AbilityAreaEffectRunActionWithDelay.cs" />
     <Compile Include="NewComponents\BuffExtraAttackCategorySpecific.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlock.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlockData.cs" />

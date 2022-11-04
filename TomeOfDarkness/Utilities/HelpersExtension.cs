@@ -46,6 +46,8 @@ using Kingmaker.Assets.UnitLogic.Mechanics.Properties;
 using Kingmaker.UnitLogic.Class.Kineticist.Properties;
 
 
+
+
 namespace TomeOfDarkness.Utilities
 {
     public static class HelpersExtension
@@ -53,7 +55,7 @@ namespace TomeOfDarkness.Utilities
 
         #region |----------------------------------------------------------------| ResourceLinks Creators |----------------------------------------------------------------|
 
-              
+
 
         public static PrefabLink CreatePrefabLink(string asset_id) // Holic75_SC 
         {
@@ -62,7 +64,7 @@ namespace TomeOfDarkness.Utilities
             return link;
         }
 
-        public static ProjectileLink CreateProjectileLink(string asset_id) 
+        public static ProjectileLink CreateProjectileLink(string asset_id)
         {
             var link = new ProjectileLink();
             link.AssetId = asset_id;
@@ -97,7 +99,7 @@ namespace TomeOfDarkness.Utilities
         // Holic75_PT
         public static BlueprintAbilityResource CreateAbilityResource(String name,
                                                               String display_name,
-                                                              String description,         
+                                                              String description,
                                                               Sprite icon = null,
                                                               params BlueprintComponent[] components)
 
@@ -2185,6 +2187,68 @@ namespace TomeOfDarkness.Utilities
         }
 
         // Holic75_PT
+        public static void ReplaceDomainSpell (BlueprintProgression domain_progression, BlueprintAbility new_spell, int level)
+        {
+            var domain_base_feature = domain_progression.LevelEntries[0].m_Features[0]; // This is the base feature for the domain progression.
+            string domain_base_feature_name = domain_base_feature.Get().Name;
+            var domain_spell_list = domain_progression.GetComponent<LearnSpellList>().SpellList;
+            var domain_spells = domain_spell_list.SpellsByLevel.First(sp => sp.SpellLevel == level).m_Spells;
+            var old_spell = domain_spells[0];
+            
+            string new_description = "";
+            string new_base_feature_description = "";
+            string domain_progression_description = domain_progression.Description;
+            string old_spell_name = old_spell.Get().Name;
+            string old_spell_name_lc = old_spell_name.ToLower();
+            string new_spell_name = new_spell.Name;
+            string new_spell_name_lc = new_spell_name.ToLower();
+            string domain_base_feature_description = domain_base_feature.Get().Description;
+
+            if (level < 9)
+            {
+                new_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ",", new_spell_name_lc + ",");
+            }
+            else
+            {
+                new_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ".", new_spell_name_lc + ".");
+            }
+
+            var domain_blueprints = GetBlueprintsByDescription<BlueprintProgression>(domain_progression_description).ToArray();
+
+            foreach (var bpt in domain_blueprints)
+            {
+                bpt.SetDescription(ToDContext, new_description);
+            }
+
+            if (level < 9)
+            {
+                new_base_feature_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ",", new_spell_name_lc + ",");
+            }
+            else
+            {
+                new_base_feature_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ".", new_spell_name_lc + ".");
+            }
+
+            domain_base_feature.Get().SetDescription(ToDContext, new_base_feature_description);
+
+            domain_spells.Clear();
+            domain_spells.Add(new_spell.ToReference<BlueprintAbilityReference>());
+
+            new_spell.AddComponent(Helpers.Create<SpellListComponent>( c => { c.SpellLevel = level; c.m_SpellList = domain_spell_list.ToReference<BlueprintSpellListReference>(); }));
+
+            var old_spelllist_components = old_spell.Get().GetComponents<SpellListComponent>();
+
+            foreach (var slc in old_spelllist_components.ToArray())
+            {
+                if (slc.m_SpellList == domain_spell_list.ToReference<BlueprintSpellListReference>())
+                {
+                    old_spell.Get().RemoveComponent(slc);
+                }
+            }
+
+        }
+
+        // Holic75_PT
         public static void SetFixedResource(this BlueprintAbilityResource resource, int baseValue)
         {
             var amount = resource.m_MaxAmount;
@@ -2249,7 +2313,7 @@ namespace TomeOfDarkness.Utilities
 
             return wrapper;
         }
-        
+
         // Holic75_SC
         public static void SetMiscAbilityParametersSingleTargetRangedHarmful(this BlueprintAbility ability,
                                                                      bool works_on_allies = false,
@@ -2339,6 +2403,37 @@ namespace TomeOfDarkness.Utilities
             ability.Animation = animation;
 
         }
+
+
+        #endregion
+
+        #region |--------------------------------------------------------|  ( Strings ) Miscellaneous Functions |----------------------------------------------------------|
+
+        public static List<T> GetBlueprintsByDescription<T>(string description) where T : BlueprintUnitFact
+        {
+            return Kingmaker.Cheats.Utilities.GetScriptableObjects<T>().Where(b => b.Description == description).ToList();
+
+        }
+
+        public static List<T> GetBlueprintsByDisplayName<T>(string display_name) where T : BlueprintUnitFact
+        {
+            return Kingmaker.Cheats.Utilities.GetScriptableObjects<T>().Where(b => b.Name == display_name).ToList();
+        }
+
+
+        // Holic75_SC
+        static public string ReplaceFirstOccurrence(string target_string, string old_token, string new_token)
+        {
+            int indx = target_string.IndexOf(old_token);
+            if (indx >= 0)
+            {
+                return target_string.Remove(indx, old_token.Length).Insert(indx, new_token);
+            }
+
+            return target_string;
+
+        }
+
 
 
         #endregion

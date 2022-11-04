@@ -50,6 +50,11 @@ namespace TomeOfDarkness.NewContent.Spells
             string ObscuringMistName = "Obscuring Mist";
             string ObscuringMistDescription = "A misty vapor arises around you. It is stationary. The vapor obscures all sight, including darkvision, beyond 5 feet. A creature 5 feet away has concealment (attacks have a 20% miss chance). Creatures farther away have total concealment (50% miss chance, and the attacker cannot use sight to locate the target).";
 
+            var air_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("750bfcd133cd52f42acbd4f7bc9cc365");
+            var darkness_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("1e1b4128290b11a41ba55280ede90d7d");
+            var weather_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("c18a821ee662db0439fb873165da25be");
+            var water_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("e63d9133cebf2cf4788e61432a939084");
+
             var Obscuring_Mist_Area = Mind_Fog_Area.CreateCopy(ToDContext, "ObscuringMistArea", bp => {
                 bp.Fx = HlEX.CreatePrefabLink(Stinking_Cloud_Fx_ID);
                 bp.Size = 20.Feet();
@@ -119,8 +124,17 @@ namespace TomeOfDarkness.NewContent.Spells
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WizardSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WitchSpellList, 1);
 
+            HlEX.ReplaceDomainSpell(air_domain_progression, Obscuring_Mist_Spell, 1);
+            HlEX.ReplaceDomainSpell(darkness_domain_progression, Obscuring_Mist_Spell, 1);
+            HlEX.ReplaceDomainSpell(weather_domain_progression, Obscuring_Mist_Spell, 1);
+            HlEX.ReplaceDomainSpell(water_domain_progression, Obscuring_Mist_Spell, 1);
+
             ToDContext.Logger.LogPatch("Created Obscuring Mist spell.", Obscuring_Mist_Spell);
             ToDContext.Logger.LogPatch("Created Obscuring Mist scroll and added to vendors.", ObscuringMistScroll);
+            ToDContext.Logger.LogPatch("Added Obscuring Mist spell to Air Domain.", air_domain_progression);
+            ToDContext.Logger.LogPatch("Added Obscuring Mist spell to Darkness Domain.", darkness_domain_progression);
+            ToDContext.Logger.LogPatch("Added Obscuring Mist spell to Weather Domain.", weather_domain_progression);
+            ToDContext.Logger.LogPatch("Added Obscuring Mist spell to Water Domain.", water_domain_progression);
 
         }
     }
