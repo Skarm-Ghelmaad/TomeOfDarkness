@@ -87,7 +87,9 @@
     <Compile Include="NewContent\Spells\FxTester.cs" />
     <Compile Include="NewContent\Spells\ObscuringMist.cs" />
     <Compile Include="NewContent\StyleStrikes\FlyingKick.cs" />
+    <Compile Include="NewEnums\InoffensivenessEvaluationType.cs" />
     <Compile Include="NewEnums\OffensiveActionEffect.cs" />
+    <Compile Include="NewUIStrings\NewUITooltips.cs" />
     <Compile Include="NewUnitParts\AdditiveUnitPart.cs" />
     <Compile Include="NewUnitParts\UnitPartCustomMechanicsFeaturesToD.cs" />
     <Compile Include="NewUnitParts\UnitPartIgnoreConcealmentDescriptor.cs" />
