@@ -1,6 +1,50 @@
 ﻿{
   "LocalizedStrings": [
     {
+      "Key": "52e29036fc434ed5b444abb799ca785d",
+      "SimpleName": "AirDomainBaseFeature.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate lightning, mist, and wind, and are resistant to electricity damage.\nLightning Arc: As a standard action, you can unleash an arc of electricity targeting any foe within 30 feet as a ranged touch attack. This arc of electricity deals 1d6 points of electricity damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nElectricity Resistance: At 6th level, you gain resist electricity 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to electricity.\nDomain Spells: obscuring mist, protection from arrows, lightning bolt, shout, cloudkill, chain lightning, elemental body IV (air), greater shout, elemental swarm (air).",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "702edc8933d24c06a0037ad61f87cd61",
+      "SimpleName": "AirDomainProgression.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate lightning, mist, and wind, and are resistant to electricity damage.\nLightning Arc: As a standard action, you can unleash an arc of electricity targeting any foe within 30 feet as a ranged touch attack. This arc of electricity deals 1d6 points of electricity damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nElectricity Resistance: At 6th level, you gain resist electricity 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to electricity.\nDomain Spells: obscuring mist, protection from arrows, lightning bolt, shout, cloudkill, chain lightning, elemental body IV (air), greater shout, elemental swarm (air).",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "6ff3333228d84387b4852ad08eca06c2",
+      "SimpleName": "AirDomainProgressionDruid.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate lightning, mist, and wind, and are resistant to electricity damage.\nLightning Arc: As a standard action, you can unleash an arc of electricity targeting any foe within 30 feet as a ranged touch attack. This arc of electricity deals 1d6 points of electricity damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nElectricity Resistance: At 6th level, you gain resist electricity 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to electricity.\nDomain Spells: obscuring mist, protection from arrows, lightning bolt, shout, cloudkill, chain lightning, elemental body IV (air), greater shout, elemental swarm (air).",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "3d84d8fc2be9471682c7e661a336d063",
+      "SimpleName": "AirDomainProgressionSecondary.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate lightning, mist, and wind, and are resistant to electricity damage.\nLightning Arc: As a standard action, you can unleash an arc of electricity targeting any foe within 30 feet as a ranged touch attack. This arc of electricity deals 1d6 points of electricity damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nElectricity Resistance: At 6th level, you gain resist electricity 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to electricity.\nDomain Spells: obscuring mist, protection from arrows, lightning bolt, shout, cloudkill, chain lightning, elemental body IV (air), greater shout, elemental swarm (air).",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
       "Key": "af8d8b5f46ad433999f3e1bcc43ccde8",
       "SimpleName": "CharismaKiPoolCanonFeature.Description",
       "ProcessTemplates": true,
@@ -16,6 +60,94 @@
       "SimpleName": "CharismaKiPoolCanonFeature.Name",
       "ProcessTemplates": false,
       "enGB": "Ki Pool - Charisma",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "bc9294120d804c3da0a22cb38f3b9728",
+      "SimpleName": "CustomFactBypassFailure.UIString",
+      "ProcessTemplates": false,
+      "enGB": " fails to overcome  of .",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "6b2d295da2ec47f7b86c5c481c3f985a",
+      "SimpleName": "CustomFactBypassSuccess.UIString",
+      "ProcessTemplates": false,
+      "enGB": " successfuly overcomes  of .",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "51593779302d431d96c5f20177b801c6",
+      "SimpleName": "CustomFactImmunity.UIString",
+      "ProcessTemplates": false,
+      "enGB": " is immune to  of .",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "1991938dbd54486cae3b62cd91fc4934",
+      "SimpleName": "CustomFactInvalidation.UIString",
+      "ProcessTemplates": false,
+      "enGB": " invalidates  against .",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "c3a8c53633e442a49ecaec4cac039958",
+      "SimpleName": "DarknessDomainBaseFeature.Description",
+      "ProcessTemplates": true,
+      "enGB": "You manipulate shadows and darkness.\nTouch of Darkness: As a melee touch attack, you can cause a creature's vision to be fraught with shadows and darkness. The creature touched treats all other creatures as if they had concealment, suffering a 20% miss chance on all attack rolls. This effect lasts for a number of rounds equal to 1/2 your level in the class that gave you access to this domain (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nMoonfire: At 8th level, as a standard action you can shoot a blast of divine moonlight from your eyes, as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 levels in the class that gave you access to this domain, and the target is dazzled for 1 round per level in the class that gave you access to this domain. Moonfire deals 1d10 points of damage per level in the class that gave you access to this domain against lycanthropes. You can use this ability once per day at 8th level, and one additional time per day for every 4 levels beyond 8th.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "830127a656e64c14bd15162ed75fe6f9",
+      "SimpleName": "DarknessDomainProgression.Description",
+      "ProcessTemplates": true,
+      "enGB": "You manipulate shadows and darkness.\nTouch of Darkness: As a melee touch attack, you can cause a creature's vision to be fraught with shadows and darkness. The creature touched treats all other creatures as if they had concealment, suffering a 20% miss chance on all attack rolls. This effect lasts for a number of rounds equal to 1/2 your level in the class that gave you access to this domain (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nMoonfire: At 8th level, as a standard action you can shoot a blast of divine moonlight from your eyes, as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 levels in the class that gave you access to this domain, and the target is dazzled for 1 round per level in the class that gave you access to this domain. Moonfire deals 1d10 points of damage per level in the class that gave you access to this domain against lycanthropes. You can use this ability once per day at 8th level, and one additional time per day for every 4 levels beyond 8th.\nDomain Spells: obscuring mist, blindness, vampiric touch, shadow conjuration, mind fog, umbral strike, power word blind, greater shadow evocation, polar midnight.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "799f3af67c454a0d8969ec1bc110a12b",
+      "SimpleName": "DarknessDomainProgressionDruid.Description",
+      "ProcessTemplates": true,
+      "enGB": "You manipulate shadows and darkness.\nTouch of Darkness: As a melee touch attack, you can cause a creature's vision to be fraught with shadows and darkness. The creature touched treats all other creatures as if they had concealment, suffering a 20% miss chance on all attack rolls. This effect lasts for a number of rounds equal to 1/2 your level in the class that gave you access to this domain (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nMoonfire: At 8th level, as a standard action you can shoot a blast of divine moonlight from your eyes, as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 levels in the class that gave you access to this domain, and the target is dazzled for 1 round per level in the class that gave you access to this domain. Moonfire deals 1d10 points of damage per level in the class that gave you access to this domain against lycanthropes. You can use this ability once per day at 8th level, and one additional time per day for every 4 levels beyond 8th.\nDomain Spells: obscuring mist, blindness, vampiric touch, shadow conjuration, mind fog, umbral strike, power word blind, greater shadow evocation, polar midnight.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "37101e3e38b74d508bbae16f4ab3fa1e",
+      "SimpleName": "DarknessDomainProgressionSecondary.Description",
+      "ProcessTemplates": true,
+      "enGB": "You manipulate shadows and darkness.\nTouch of Darkness: As a melee touch attack, you can cause a creature's vision to be fraught with shadows and darkness. The creature touched treats all other creatures as if they had concealment, suffering a 20% miss chance on all attack rolls. This effect lasts for a number of rounds equal to 1/2 your level in the class that gave you access to this domain (minimum 1). You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nMoonfire: At 8th level, as a standard action you can shoot a blast of divine moonlight from your eyes, as a ranged touch attack against a single target within 30 feet. Moonfire deals 1d8 points of damage per 2 levels in the class that gave you access to this domain, and the target is dazzled for 1 round per level in the class that gave you access to this domain. Moonfire deals 1d10 points of damage per level in the class that gave you access to this domain against lycanthropes. You can use this ability once per day at 8th level, and one additional time per day for every 4 levels beyond 8th.\nDomain Spells: obscuring mist, blindness, vampiric touch, shadow conjuration, mind fog, umbral strike, power word blind, greater shadow evocation, polar midnight.",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -45,32 +177,10 @@
       "esES": null
     },
     {
-      "Key": "b5a56dc3eef74464abc16dbafa0d4a06",
-      "SimpleName": "FlurryOfStarsBuff.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken (and darts). During that attack, she can throw two additional shuriken (or darts) at her highest attack bonus, but all of her shuriken (or darts) attacks are made at a –2 penalty, including the two extra attacks. Additionaly, shuriken and darts are considered as light weapons for the purpose of two-weapon fighting.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
       "Key": "6d203ffb6b2a451a85b1adadb2570d4b",
       "SimpleName": "FlurryOfStarsBuff.Name",
       "ProcessTemplates": false,
       "enGB": "Flurry of Stars",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
-      "Key": "92f8dc2c2d6a43a28ac918e6cd350ba2",
-      "SimpleName": "HerbalCompoundBuff.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this trick can consume specially prepared herbs to strengthen her mind. The character can spend 1 ki point and smoke, eat, or inject an herbal compound as a move action. The character takes a –2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per relevant class level.",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -353,17 +463,6 @@
       "esES": null
     },
     {
-      "Key": "d8a56d102adf43bc9eb4f508e8f62895",
-      "SimpleName": "NinjaLightStepsAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "At 6th level, a ninja learns to move while barely touching the surface underneath her. As a full-round action, she can move to any location within medium range, ignoring difficult terrain. While moving in this way, any surface will support her, no matter how much she weighs. This allows her to move across water, lava, or even the thinnest tree branches. She must end her move on a surface that can support her normally. She cannot move across air in this way, nor can she walk up walls or other vertical surfaces. When moving in this way, she does not take damage from surfaces or hazards that react to being touched, such as lava or caltrops, nor does she need to make Mobility checks to avoid falling on slippery or rough surfaces. Finally, when using light steps, the ninja ignores any mechanical traps that use a location-based trigger.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
       "Key": "6029ecc5c5344e6eb646adcd88ab4b02",
       "SimpleName": "NinjaLightStepsAbility.Name",
       "ProcessTemplates": false,
@@ -529,17 +628,6 @@
       "esES": null
     },
     {
-      "Key": "5e882cb1a1ab4d87a42157ab6cb92408",
-      "SimpleName": "NinjaTrickAccelerationOfFormAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this trick can spend 1 ki point as a standard action to gain the benefits of Displacement and Haste for 1 round per 2 relevant class levels.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
       "Key": "9cfa10e5b7074ead83ac36598422ef95",
       "SimpleName": "NinjaTrickAccelerationOfFormAbility.Duration",
       "ProcessTemplates": false,
@@ -573,32 +661,10 @@
       "esES": null
     },
     {
-      "Key": "a2face3837634cc5ac377c0ef18c096b",
-      "SimpleName": "NinjaTrickFlurryOfStarsAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken (and darts). During that attack, she can throw two additional shuriken (or darts) at her highest attack bonus, but all of her shuriken (or darts) attacks are made at a –2 penalty, including the two extra attacks. Additionaly, shuriken and darts are considered as light weapons for the purpose of two-weapon fighting.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
       "Key": "8148e43ee87643c8a6091a627416a813",
       "SimpleName": "NinjaTrickFlurryOfStarsFeature.Description",
       "ProcessTemplates": true,
       "enGB": "A character with this ability can expend 1 ki point from her ki pool as a swift action before she makes a full-attack attack with shuriken (and darts). During that attack, she can throw two additional shuriken (or darts) at her highest attack bonus, but all of her shuriken (or darts) attacks are made at a –2 penalty, including the two extra attacks. Additionaly, shuriken and darts are considered as light weapons for the purpose of two-weapon fighting.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
-      "Key": "f0efe65ba01b45c58048fa89188271f2",
-      "SimpleName": "NinjaTrickHerbalCompoundAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this trick can consume specially prepared herbs to strengthen her mind. The character can spend 1 ki point and smoke, eat, or inject an herbal compound as a move action. The character takes a –2 penalty to AC and on Reflex saves but gains a +4 alchemical bonus on Will saves for 10 minutes per relevant class level.",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -694,17 +760,6 @@
       "esES": null
     },
     {
-      "Key": "dd89e15395fd4c13a0be2c4846be0637",
-      "SimpleName": "NinjaTrickKamikazeBaseAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level. The character can also spend 1 ki point to dismiss this effect as a free action.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
       "Key": "676fe0ece9834e9bab60ee4a55506faa",
       "SimpleName": "NinjaTrickKamikazeDismissAbility.Description",
       "ProcessTemplates": true,
@@ -731,17 +786,6 @@
       "SimpleName": "NinjaTrickKamikazeFeature.Description",
       "ProcessTemplates": true,
       "enGB": "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level. The character can also spend 1 ki point to dismiss this effect as a free action.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
-      "Key": "0f91d0169fe042dc80f96250b91c07d5",
-      "SimpleName": "NinjaTrickKiExtraAttackAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "By spending 1 point from his ki pool as a swift action, a ninja can make one additional attack at his highest attack bonus when making a full attack. This bonus attack stacks with haste and similar effects.",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -786,17 +830,6 @@
       "SimpleName": "NinjaTrickKiSpeedBoostAbility.Name",
       "ProcessTemplates": false,
       "enGB": "Ninja Trick: Speed Burst",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
-      "Key": "ad1fd78236834603a6219ade73adf71a",
-      "SimpleName": "NinjaTrickSeeTheUnseen.Description",
-      "ProcessTemplates": true,
-      "enGB": "A character with this trick learns how to see that which cannot be seen. As a swift action, the character can cast See Invisibility, using her relevant class level as the caster level. Each use of this ability uses up 1 ki point.",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -914,17 +947,6 @@
       "esES": null
     },
     {
-      "Key": "bdf98ab295084fb4b702c4392cd6667e",
-      "SimpleName": "NinjaTrickVanishingTrickAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "As a swift action, the character can disappear for 1 round per level. This ability functions as Invisibility. Using this ability uses up 1 ki point.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
       "Key": "fcf02c9537e64737bf22fd0456097c50",
       "SimpleName": "NinjaTrickVanishingTrickAbility.Duration",
       "ProcessTemplates": false,
@@ -951,17 +973,6 @@
       "SimpleName": "NinjaTrickVanishingTrickFeature.Description",
       "ProcessTemplates": true,
       "enGB": "As a swift action, the character can disappear for 1 round per level. This ability functions as Invisibility. Using this ability uses up 1 ki point.",
-      "ruRU": null,
-      "deDE": null,
-      "frFR": null,
-      "zhCN": null,
-      "esES": null
-    },
-    {
-      "Key": "864478a8966541edb64595a32b3cc739",
-      "SimpleName": "ObscuringMistAbility.Description",
-      "ProcessTemplates": true,
-      "enGB": "A misty vapor arises around you. It is stationary. The vapor obscures all sight, including darkvision, beyond 5 feet. A creature 5 feet away has concealment (attacks have a 20% miss chance). Creatures farther away have total concealment (50% miss chance, and the attacker cannot use sight to locate the target).",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -1024,6 +1035,39 @@
       "esES": null
     },
     {
+      "Key": "e311f7bed1824c8aad100bc5c5d5b871",
+      "SimpleName": "ProtectionDomainBaseFeature.Description",
+      "ProcessTemplates": true,
+      "enGB": "Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess.\nResistant Touch: As a standard action, you can touch an ally to grant them your resistance bonus for 1 minute. When you use this ability, you lose your resistance bonus granted by the Protection domain for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nAura of Protection: At 8th level, you can emit a 30-foot aura of protection for a number of rounds per day equal to your level in the class that gave you access to this domain. You and your allies within this aura gain a +1 deflection bonus to AC and resistance 5 against all elements (acid, cold, electricity, fire, and sonic). The deflection bonus increases by +1 for every four levels you possess in the class that gave you access to this domain beyond 8th. At 14th level, the resistance against all elements increases to 10. These rounds do not need to be consecutive.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "6a54ab7cf15b4072ae0c8fa9f07bcb45",
+      "SimpleName": "ProtectionDomainProgression.Description",
+      "ProcessTemplates": true,
+      "enGB": "Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess in the class that gave you access to this domain.\nResistant Touch: As a standard action, you can touch an ally to grant them your resistance bonus for 1 minute. When you use this ability, you lose your resistance bonus granted by the Protection domain for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nAura of Protection: At 8th level, you can emit a 30-foot aura of protection for a number of rounds per day equal to your level in the class that gave you access to this domain. You and your allies within this aura gain a +1 deflection bonus to AC and resistance 5 against all elements (acid, cold, electricity, fire, and sonic). The deflection bonus increases by +1 for every four levels you possess in the class that gave you access to this domain beyond 8th. At 14th level, the resistance against all elements increases to 10. These rounds do not need to be consecutive.\nDomain Spells: sanctuary, barkskin, protection from energy, communal protection from energy, spell resistance, communal stoneskin, greater restoration, protection from spells, seamantle.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "89c84ee165bd49ed93b70d88170fde5a",
+      "SimpleName": "ProtectionDomainProgressionSecondary.Description",
+      "ProcessTemplates": true,
+      "enGB": "Your faith is your greatest source of protection, and you can use that faith to defend others. In addition, you receive a +1 resistance bonus on saving throws. This bonus increases by 1 for every 5 levels you possess in the class that gave you access to this domain.\nResistant Touch: As a standard action, you can touch an ally to grant them your resistance bonus for 1 minute. When you use this ability, you lose your resistance bonus granted by the Protection domain for 1 minute. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nAura of Protection: At 8th level, you can emit a 30-foot aura of protection for a number of rounds per day equal to your level in the class that gave you access to this domain. You and your allies within this aura gain a +1 deflection bonus to AC and resistance 5 against all elements (acid, cold, electricity, fire, and sonic). The deflection bonus increases by +1 for every four levels you possess in the class that gave you access to this domain beyond 8th. At 14th level, the resistance against all elements increases to 10. These rounds do not need to be consecutive.\nDomain Spells: sanctuary, barkskin, protection from energy, communal protection from energy, spell resistance, communal stoneskin, greater restoration, protection from spells, seamantle.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
       "Key": "e36226bfcc40435db0c3cb1b117edeb0",
       "SimpleName": "RogueMartialArtsTrainingProgression.Description",
       "ProcessTemplates": true,
@@ -1039,6 +1083,39 @@
       "SimpleName": "RogueMartialArtsTrainingProgression.Name",
       "ProcessTemplates": false,
       "enGB": "Rogue Martial Training",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "9895589dc44a475e8dff1bf340e6ab39",
+      "SimpleName": "SanctuaryAbility.Description",
+      "ProcessTemplates": true,
+      "enGB": "Any opponent attempting to directly attack the warded creature, even with a targeted spell, must attempt a Will save. If the save succeeds, the opponent can attack normally and is unaffected by that casting of the spell. If the save fails, the opponent can’t follow through with the attack, that part of its action is lost, and it can’t directly attack the warded creature for the duration of the spell. Those not attempting to attack the subject remain unaffected. This spell does not prevent the warded creature from being attacked or affected by area of effect spells. The subject cannot attack without breaking the spell but may use non-attack spells or otherwise act.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "9cfaf8d7c4164d26b4aa6d33982860fe",
+      "SimpleName": "SanctuaryAbility.SavingThrow",
+      "ProcessTemplates": false,
+      "enGB": "Will negates",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "bf30af002b6143bab32d07937236c248",
+      "SimpleName": "SanctuaryBuff.Name",
+      "ProcessTemplates": false,
+      "enGB": "Sanctuary",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
@@ -1094,6 +1171,94 @@
       "SimpleName": "UniversalUnarmedStrike.Name",
       "ProcessTemplates": false,
       "enGB": "Unarmed Strike (Generic)",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "7590bfd85f5e48aa97ce9462ddb555ac",
+      "SimpleName": "WaterDomainBaseFeature.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate water and mist and ice, conjure creatures of water, and resist cold.\nIcicle: As a standard action, you can fire an icicle from your finger, targeting any foe within 30 feet as a ranged touch attack. The icicle deals 1d6 points of cold damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nCold Resistance: At 6th level, you gain resist cold 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to cold.\nDomain Spells: obscuring mist, acid arrow, stinking cloud, freedom of movement, ice storm, cone of cold, elemental body IV (water), horrid wilting, tsunami.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "d12c5dabfe414df3b52c4737e80a7aec",
+      "SimpleName": "WaterDomainProgression.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate water and mist and ice, conjure creatures of water, and resist cold.\nIcicle: As a standard action, you can fire an icicle from your finger, targeting any foe within 30 feet as a ranged touch attack. The icicle deals 1d6 points of cold damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nCold Resistance: At 6th level, you gain resist cold 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to cold.\nDomain Spells: obscuring mist, acid arrow, stinking cloud, freedom of movement, ice storm, cone of cold, elemental body IV (water), horrid wilting, tsunami.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "8685ea86d682482ca38c0bc9fd7f10ac",
+      "SimpleName": "WaterDomainProgressionDruid.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate water and mist and ice, conjure creatures of water, and resist cold.\nIcicle: As a standard action, you can fire an icicle from your finger, targeting any foe within 30 feet as a ranged touch attack. The icicle deals 1d6 points of cold damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nCold Resistance: At 6th level, you gain resist cold 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to cold.\nDomain Spells: obscuring mist, acid arrow, stinking cloud, freedom of movement, ice storm, cone of cold, elemental body IV (water), horrid wilting, tsunami.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "b3bda6fcab3241e18d044485124bf007",
+      "SimpleName": "WaterDomainProgressionSecondary.Description",
+      "ProcessTemplates": true,
+      "enGB": "You can manipulate water and mist and ice, conjure creatures of water, and resist cold.\nIcicle: As a standard action, you can fire an icicle from your finger, targeting any foe within 30 feet as a ranged touch attack. The icicle deals 1d6 points of cold damage + 1 point for every two levels you possess in the class that gave you access to this domain. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nCold Resistance: At 6th level, you gain resist cold 10. This resistance increases to 20 at 12th level. At 20th level, you gain immunity to cold.\nDomain Spells: obscuring mist, acid arrow, stinking cloud, freedom of movement, ice storm, cone of cold, elemental body IV (water), horrid wilting, tsunami.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "2ecd66b9a26d419e9366252407c8d2ff",
+      "SimpleName": "WeatherDomainBaseFeature.Description",
+      "ProcessTemplates": true,
+      "enGB": "With power over storm and sky, you can call down the wrath of the gods upon the world below.\nStorm Burst: As a standard action, you can create a storm burst targeting any foe within 30 feet as a ranged touch attack. The storm burst deals 1d6 points of damage + 1 point for every two levels you possess in the class that gave you access to this domain. In addition, the target is buffeted by winds and rain, causing it to take a –2 penalty on attack rolls for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nLightning Lord: At 8th level, as a swift action, you can call down a bolt of lightning. You can call down a bolt of lightning a number of times per day equal to your level in the class that gave you access to this domain. This ability otherwise functions as call lightning.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "79984e67698a4ecf849080eb613d8ec7",
+      "SimpleName": "WeatherDomainProgression.Description",
+      "ProcessTemplates": true,
+      "enGB": "With power over storm and sky, you can call down the wrath of the gods upon the world below.\nStorm Burst: As a standard action, you can create a storm burst targeting any foe within 30 feet as a ranged touch attack. The storm burst deals 1d6 points of damage + 1 point for every two levels you possess in the class that gave you access to this domain. In addition, the target is buffeted by winds and rain, causing it to take a –2 penalty on attack rolls for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nLightning Lord: At 8th level, as a swift action, you can call down a bolt of lightning. You can call down a bolt of lightning a number of times per day equal to your level in the class that gave you access to this domain. This ability otherwise functions as call lightning.\nDomain Spells: obscuring mist, summon small elemental, call lightning, slowing mud, ice storm, sirocco, fire storm, sunburst, tsunami.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "e8f4b8b82da04ed4a1bd333cd6691b68",
+      "SimpleName": "WeatherDomainProgressionDruid.Description",
+      "ProcessTemplates": true,
+      "enGB": "With power over storm and sky, you can call down the wrath of the gods upon the world below.\nStorm Burst: As a standard action, you can create a storm burst targeting any foe within 30 feet as a ranged touch attack. The storm burst deals 1d6 points of damage + 1 point for every two levels you possess in the class that gave you access to this domain. In addition, the target is buffeted by winds and rain, causing it to take a –2 penalty on attack rolls for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nLightning Lord: At 8th level, as a swift action, you can call down a bolt of lightning. You can call down a bolt of lightning a number of times per day equal to your level in the class that gave you access to this domain. This ability otherwise functions as call lightning.\nDomain Spells: obscuring mist, summon small elemental, call lightning, slowing mud, ice storm, sirocco, fire storm, sunburst, tsunami.",
+      "ruRU": null,
+      "deDE": null,
+      "frFR": null,
+      "zhCN": null,
+      "esES": null
+    },
+    {
+      "Key": "6296c93033224d8691311562603118aa",
+      "SimpleName": "WeatherDomainProgressionSecondary.Description",
+      "ProcessTemplates": true,
+      "enGB": "With power over storm and sky, you can call down the wrath of the gods upon the world below.\nStorm Burst: As a standard action, you can create a storm burst targeting any foe within 30 feet as a ranged touch attack. The storm burst deals 1d6 points of damage + 1 point for every two levels you possess in the class that gave you access to this domain. In addition, the target is buffeted by winds and rain, causing it to take a –2 penalty on attack rolls for 1 round. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\nLightning Lord: At 8th level, as a swift action, you can call down a bolt of lightning. You can call down a bolt of lightning a number of times per day equal to your level in the class that gave you access to this domain. This ability otherwise functions as call lightning.\nDomain Spells: obscuring mist, summon small elemental, call lightning, slowing mud, ice storm, sirocco, fire storm, sunburst, tsunami.",
       "ruRU": null,
       "deDE": null,
       "frFR": null,
