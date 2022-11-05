@@ -1,0 +1,20 @@
+﻿{
+  "NewSettingsOffByDefault": false,
+  "BaseFixes": {
+    "DisableAll": false,
+    "Settings": {
+    },
+    "IsExpanded": true
+  },
+  "Spells": {
+    "DisableAll": false,
+    "Settings": {
+      "ConcealingCloudsFix": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "Adds concealment to Stinking Cloud, Cloudkill, Mind Fog, Acid Fog, Plague Storm, Volcanic Storm and Hallucinogenic Cloud spells and to all Cloud infusions."
+      }
+    },
+    "IsExpanded": true
+  }
+}

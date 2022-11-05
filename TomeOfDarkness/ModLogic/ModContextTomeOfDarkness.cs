@@ -10,7 +10,7 @@ namespace TomeOfDarkness.ModLogic
 {
     class ModContextTomeOfDarkness : ModContextBase
     {
-
+        public Config.Bugfixes Fixes;
         public Config.NewContent NewContent;
 
         public ModContextTomeOfDarkness(UnityModManager.ModEntry modEntry) : base(modEntry)
@@ -25,6 +25,7 @@ namespace TomeOfDarkness.ModLogic
         public override void LoadAllSettings()
         {
             LoadBlueprints("TomeOfDarkness.Config", this);
+            LoadSettings("Fixes.json", "TomeOfDarkness.Config", ref Fixes);
             LoadSettings("NewContent.json", "TomeOfDarkness.Config", ref NewContent);
 
             LoadLocalization("TomeOfDarkness.Localization");
@@ -45,6 +46,7 @@ namespace TomeOfDarkness.ModLogic
         public override void SaveAllSettings()
         {
             base.SaveAllSettings();
+            SaveSettings("Fixes.json", Fixes);
             SaveSettings("NewContent.json", NewContent);
         }
 

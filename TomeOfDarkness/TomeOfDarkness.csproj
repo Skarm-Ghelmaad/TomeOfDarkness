@@ -38,6 +38,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="lib\**" />
+    <Compile Include="Bugfixes\Spells\ConcealingCloudsFix.cs" />
+    <Compile Include="Config\Bugfixes.cs" />
     <Compile Include="Config\NewContent.cs" />
     <Compile Include="MechanicsChanges\ConcealmentDescriptorToD.cs" />
     <Compile Include="MechanicsChanges\CustomStatTypesToD.cs" />
@@ -106,6 +108,7 @@
     <None Remove="lib\**" />
     <EmbeddedResource Include="Config\Blueprints.json" />
     <EmbeddedResource Include="Config\NewContent.json" />
+    <None Include="Config\Fixes.json" />
     <None Include="Info.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

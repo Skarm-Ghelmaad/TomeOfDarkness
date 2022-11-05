@@ -39,8 +39,7 @@ using Kingmaker.Blueprints.Root.Strings;
 using TabletopTweaks.Core.Config;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using Kingmaker.PubSubSystem;
-
-
+using Kingmaker.UnitLogic;
 
 namespace TomeOfDarkness.NewComponents
 {
@@ -57,6 +56,58 @@ namespace TomeOfDarkness.NewComponents
         {
             this.Owner.Ensure<UnitPartInoffensiveness>().RemoveUnitPartFlag();
 
+        }
+
+        public BlueprintBuff MarkingBuff
+        {
+            get
+            {
+                BlueprintBuffReference buff = this.m_MarkingBuff;
+                if (buff == null)
+                {
+                    return null;
+                }
+                return buff.Get();
+            }
+        }
+
+        public void AddMarkingBuff(UnitEntityData unit)
+        {
+            if ((!this.Marked_Units.Any() || !this.Marked_Units.Contains(unit)) && !unit.HasFact(this.MarkingBuff))
+            {
+                unit.Buffs.AddBuff(this.MarkingBuff, null, null, null);
+                this.Marked_Units.Add(unit);
+                return;
+            }
+        }
+
+        public void RemoveMarkingBuff(UnitEntityData unit)
+        {
+            if ((this.Marked_Units.Any() || this.Marked_Units.Contains(unit)) && (unit.HasFact(this.MarkingBuff)))
+            {
+                unit.Buffs.RemoveFact(this.MarkingBuff);
+                this.Marked_Units.Remove(unit);
+                return;
+            }
+        }
+
+        public void RemoveAllMarkingBuffs()
+        {
+            if (this.Marked_Units.Any())
+            {
+                foreach (var unit in this.Marked_Units)
+                {
+                    if (!unit.IsDisposed && unit.HasFact(this.MarkingBuff))
+                    {
+                        unit.Buffs.RemoveFact(this.MarkingBuff);
+                        this.Marked_Units.Remove(unit);
+                    }
+                    else
+                    {
+                        this.Marked_Units.Remove(unit);
+                    }
+                }
+            }
         }
 
         public bool CanBeAttackedBy(UnitEntityData unit)
@@ -79,6 +130,10 @@ namespace TomeOfDarkness.NewComponents
             {
                 HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactImmunity, rep_dict, Color.red, target_icon, null, false);
                 this.Can_Attack.Add(unit);
+                if (this.HasMarkingBuff)
+                {
+                    this.RemoveMarkingBuff(unit);
+                }
                 return true;
             }
       
@@ -86,12 +141,20 @@ namespace TomeOfDarkness.NewComponents
             {
                 HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactBypassSuccess, rep_dict, Color.blue, target_icon, null, false);
                 this.Can_Attack.Add(unit);
+                if (this.HasMarkingBuff)
+                {
+                    this.RemoveMarkingBuff(unit);
+                }
                 return true;
             }
             else
             {
                 HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactBypassFailure, rep_dict, Color.red, target_icon, null, false);
                 this.Cannot_Attack.Add(unit);
+                if (this.HasMarkingBuff)
+                {
+                    this.AddMarkingBuff(unit);
+                }
                 return true;
             }
 
@@ -145,7 +208,12 @@ namespace TomeOfDarkness.NewComponents
         {
             if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_OWNER)
             {
+                if (this.HasMarkingBuff)
+                {
+                    this.RemoveAllMarkingBuffs();
+                }
                 this.Buff.Remove();
+
             }
             else if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_TARGET && !this.Can_Attack.Contains(target))
             {
@@ -156,6 +224,10 @@ namespace TomeOfDarkness.NewComponents
 
                 this.Can_Attack.Add(target);
                 this.Cannot_Attack.Remove(target);
+                if (this.HasMarkingBuff)
+                {
+                    this.RemoveMarkingBuff(target);
+                }
                 HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactInvalidation, rep_dict, Color.blue, target_icon, null, false);
             }
         }
@@ -213,6 +285,7 @@ namespace TomeOfDarkness.NewComponents
 
         public InoffensivenessEvaluationType Type;
 
+        bool HasMarkingBuff = false;
 
         [HideInInspector]
         [ShowIf("IsEvaluationOnSavingThrow")]
@@ -244,6 +317,13 @@ namespace TomeOfDarkness.NewComponents
 
         [ShowIf("IsEvaluationCustomProperty")]
         public ContextValue CustomPropertyThreshold;
+
+        [ShowIf("HasMarkingBuff")]
+        [SerializeField]
+        public BlueprintBuffReference m_MarkingBuff;
+
+        [ShowIf("HasMarkingBuff")]
+        private List<UnitEntityData> Marked_Units = new List<UnitEntityData>();
 
         public bool ReverseCheck = false;
 
