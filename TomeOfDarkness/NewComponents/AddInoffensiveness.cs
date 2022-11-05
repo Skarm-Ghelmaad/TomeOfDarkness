@@ -285,7 +285,7 @@ namespace TomeOfDarkness.NewComponents
 
         public InoffensivenessEvaluationType Type;
 
-        bool HasMarkingBuff = false;
+        public bool HasMarkingBuff = false;
 
         [HideInInspector]
         [ShowIf("IsEvaluationOnSavingThrow")]

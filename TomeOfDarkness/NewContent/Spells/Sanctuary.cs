@@ -48,7 +48,7 @@ namespace TomeOfDarkness.NewContent.Spells
                 c.Type = NewEnums.InoffensivenessEvaluationType.SavingThrow;
                 c.m_SavingThrowType = SavingThrowType.Will;
                 c.ReverseCheck = false;
-                c.asMarkingBuff = false;
+                c.HasMarkingBuff = false;
             });
 
             var Sanctuary_Buff = Invisibility_Buff.CreateCopy(ToDContext, "SanctuaryBuff", bp => {

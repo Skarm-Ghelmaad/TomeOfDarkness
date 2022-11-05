@@ -20,10 +20,11 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
     {
         public override void OnUnitEnter(MechanicsContext context, AreaEffectEntityData areaEffect, UnitEntityData unit)
         {
-            if (!this.IsOnsetTimeSet())
+            if (this.OnsetTimeSet == false)
             {
                 this.SetOnsetTime(areaEffect);
-            }            
+                this.OnsetTimeSet = true;
+            }
             if (!this.UnitEnter.HasActions || !this.IsOnsetTimeExpired() )
             {
                 return;
@@ -46,9 +47,10 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
 
         public override void OnUnitExit(MechanicsContext context, AreaEffectEntityData areaEffect, UnitEntityData unit)
         {
-            if (!this.IsOnsetTimeSet())
+            if (this.OnsetTimeSet == false)
             {
                 this.SetOnsetTime(areaEffect);
+                this.OnsetTimeSet = true;
             }
             if (!this.UnitExit.HasActions || !this.IsOnsetTimeExpired())
             {
@@ -73,9 +75,10 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
 
         public override void OnUnitMove(MechanicsContext context, AreaEffectEntityData areaEffect, UnitEntityData unit)
         {
-            if (!this.IsOnsetTimeSet())
+            if (this.OnsetTimeSet == false)
             {
                 this.SetOnsetTime(areaEffect);
+                this.OnsetTimeSet = true;
             }
             if (!this.UnitMove.HasActions || !this.IsOnsetTimeExpired())
             {
@@ -99,9 +102,10 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
 
         public override void OnRound(MechanicsContext context, AreaEffectEntityData areaEffect)
         {
-            if (!this.IsOnsetTimeSet())
+            if (this.OnsetTimeSet == false)
             {
                 this.SetOnsetTime(areaEffect);
+                this.OnsetTimeSet = true;
             }
             if (!this.Round.HasActions && !this.PreOnsetRound.HasActions)
             {
@@ -142,21 +146,10 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
 
         }
 
-        public bool IsOnsetTimeSet()
-        {
-            if (this.OnsetTime != null)
-            {
-                return true;
-            }
-            
-            return false;
-
-        }
-
-        public TimeSpan SetOnsetTime(AreaEffectEntityData areaEffect)
+        public void SetOnsetTime(AreaEffectEntityData areaEffect)
         {
 
-            return areaEffect.m_CreationTime + this.Delay.Calculate(areaEffect.Context).Seconds;
+            this.OnsetTime = areaEffect.m_CreationTime + this.Delay.Calculate(areaEffect.Context).Seconds;
 
         }
 
@@ -173,5 +166,7 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
         public ContextDurationValue Delay;
 
         private TimeSpan OnsetTime;
+
+        private bool OnsetTimeSet = false;
     }
 }
