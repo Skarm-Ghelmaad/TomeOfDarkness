@@ -85,7 +85,8 @@ Acknowledgments:
 -   Pathfinder Wrath of The Righteous Discord channel members
 -   Holic75 for his majestic Call of the Wild mod for Pathfinder Kingmaker.
 -   A huge thank to @Kurufinve and @kreaddy for helping me out when I was lost in the labirinths of my OWN code!!
--   @Vek17 ,@Bubbles, @Balkoth, @Narria, @edoipi, @SpaceHamster and the rest of our great Discord modding community - help.
+-   Special thanks for @Bubbles for helping me understanding how the Combat Log worked and for suggesting to check his BubbleBuff mod and to @Vek17 for shedding light     on a lot of other intricate stuff!
+-   @Balkoth, @Narria, @edoipi, @SpaceHamster and the rest of our great Discord modding community - help.
 -   PS: Wolfie's [Modding Wiki](https://github.com/WittleWolfie/OwlcatModdingWiki/wiki) is an excellent place to start if you want to start modding on your own.
 -   Join our [Discord](https://discord.com/invite/wotr)
 

@@ -25,6 +25,8 @@ Since I want to recognize when an element is essentially a "port" I will use the
 
 ## Credits Coding
 
+#<Author>_PC# = "Partial Copy". This code was partly copied (or heavily influenced) from original code from the author.
+
 #<Author>_SC# = "Straight Copy". This code was merely copy-and-pasted from the original as it needed no change. In some cases I just altered the naming conventions of classes and methods to match my tastes.
 
 #<Author>_PT# = "Port". This code was ported and required some adjustments to ensure that the code would work for Pathfinder Wrath of the Righteous. Please note that, in many cases, these adjustments involve changing the variable names to match the 
@@ -34,5 +36,7 @@ Since I want to recognize when an element is essentially a "port" I will use the
 #Holic75_SC# = This code was merely copy-and-pasted from [Holic75](https://github.com/Holic75)'s code, generally from his main [Call of the Wild](https://github.com/Holic75/KingmakerRebalance) mod for Pathfinder Kingmaker.
 
 #Holic75_PT# = This code was ported from [Holic75](https://github.com/Holic75)'s code, generally from his main [Call of the Wild](https://github.com/Holic75/KingmakerRebalance) mod for Pathfinder Kingmaker.
+	
+#Bubbles_PC# - This code was partly copied from [Bubbles](https://github.com/factubsio))'s code, generally from his main [BubbleBuffs](https://github.com/factubsio/BubbleBuffs) mod for Pathfinder Wrath of the Righteous.
 
 
