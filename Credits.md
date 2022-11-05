@@ -37,6 +37,9 @@ Since I want to recognize when an element is essentially a "port" I will use the
 
 #Holic75_PT# = This code was ported from [Holic75](https://github.com/Holic75)'s code, generally from his main [Call of the Wild](https://github.com/Holic75/KingmakerRebalance) mod for Pathfinder Kingmaker.
 	
-#Bubbles_PC# - This code was partly copied from [Bubbles](https://github.com/factubsio))'s code, generally from his main [BubbleBuffs](https://github.com/factubsio/BubbleBuffs) mod for Pathfinder Wrath of the Righteous.
+#Bubbles_PC# - This code was partly copied from [Bubbles](https://github.com/factubsio)'s code, generally from his main [BubbleBuffs](https://github.com/factubsio/BubbleBuffs) mod for Pathfinder Wrath of the Righteous.
+	
+#Vek17_SC# - This code was merely copy-and-pasted from [Vek17](https://github.com/Vek17)'s code, generally due to protection issues in his main [TabletopTweaks Core
+](https://github.com/Vek17/TabletopTweaks-Core) mod for Pathfinder Wrath of the Righteous.
 
 
