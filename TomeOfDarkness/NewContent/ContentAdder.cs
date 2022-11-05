@@ -41,6 +41,7 @@ namespace TomeOfDarkness.NewContent
                 //New spells
                 Spells.FxTester.ConfigureFxTester();
                 Spells.ObscuringMist.ConfigureObscuringMist();
+                Spells.Sanctuary.ConfigureSanctuary();
 
             }
 

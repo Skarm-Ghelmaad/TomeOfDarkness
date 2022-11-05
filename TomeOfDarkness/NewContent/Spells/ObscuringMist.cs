@@ -118,9 +118,11 @@ namespace TomeOfDarkness.NewContent.Spells
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.BloodragerSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.ClericSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.DruidSpellList, 1);
+            Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.HunterSpelllist, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.MagusSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.RangerSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.ShamanSpelllist, 1);
+            Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WarpriestSpelllist, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WizardSpellList, 1);
             Obscuring_Mist_Spell.AddToSpellList(SpellTools.SpellList.WitchSpellList, 1);
 

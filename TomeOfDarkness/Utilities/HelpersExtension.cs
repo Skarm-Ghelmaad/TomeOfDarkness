@@ -555,6 +555,18 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |-----------------------------------------------------------| ( Spells ) Components Creators |-------------------------------------------------------------|
+
+        public static SpellComponent CreateSpellComponent(SpellSchool school)
+        {
+            var c = Helpers.Create<SpellComponent>();
+            c.School = school;
+            return c;
+        }
+
+
+        #endregion
+
         #region |-----------------------------------------------------| ( FactLogic ) Component Delegates Creators |-------------------------------------------------------|
 
         // Holic75_SC

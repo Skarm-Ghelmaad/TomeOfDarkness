@@ -86,6 +86,7 @@
     <Compile Include="NewContent\NinjaTricks\VanishingTrick.cs" />
     <Compile Include="NewContent\Spells\FxTester.cs" />
     <Compile Include="NewContent\Spells\ObscuringMist.cs" />
+    <Compile Include="NewContent\Spells\Sanctuary.cs" />
     <Compile Include="NewContent\StyleStrikes\FlyingKick.cs" />
     <Compile Include="NewEnums\InoffensivenessEvaluationType.cs" />
     <Compile Include="NewEnums\OffensiveActionEffect.cs" />
