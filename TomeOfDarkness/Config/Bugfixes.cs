@@ -22,7 +22,6 @@ namespace TomeOfDarkness.Config
         {
             var loadedSettings = userSettings as Bugfixes;
             NewSettingsOffByDefault = loadedSettings.NewSettingsOffByDefault;
-
             BaseFixes.LoadSettingGroup(loadedSettings.BaseFixes, NewSettingsOffByDefault);
             Spells.LoadSettingGroup(loadedSettings.Spells, NewSettingsOffByDefault);
 

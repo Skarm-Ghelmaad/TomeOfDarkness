@@ -51,6 +51,16 @@ using TabletopTweaks.Core.UMMTools.Utility;
 using UnityEngine.UI.Extensions;
 using Kingmaker.UI.Models.Log.CombatLog_ThreadSystem.LogThreads.Common;
 using static RootMotion.FinalIK.InteractionObject;
+using JetBrains.Annotations;
+using Kingmaker.Localization.Shared;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using TabletopTweaks.Core.Localization;
+using TabletopTweaks.Core.ModLogic;
+using TabletopTweaks.Core.NewComponents.OwlcatReplacements.DamageResistance;
+using TabletopTweaks.Core.UMMTools;
+
+
 
 namespace TomeOfDarkness.Utilities
 {
@@ -2214,19 +2224,21 @@ namespace TomeOfDarkness.Utilities
             string new_description = "";
             string new_base_feature_description = "";
             string domain_progression_description = domain_progression.Description;
+            string domain_progression_description_no_encyclopedia_tags = domain_progression_description.StripHTML().RemoveEncyclopediaTags();
             string old_spell_name = old_spell.Get().Name;
             string old_spell_name_lc = old_spell_name.ToLower();
             string new_spell_name = new_spell.Name;
             string new_spell_name_lc = new_spell_name.ToLower();
             string domain_base_feature_description = domain_base_feature.Get().Description;
+            string domain_base_feature_description_no_encyclopedia_tags = domain_base_feature_description.StripHTML().RemoveEncyclopediaTags();
 
             if (level < 9)
             {
-                new_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ",", new_spell_name_lc + ",");
+                new_description = ReplaceFirstOccurrence(domain_progression_description_no_encyclopedia_tags, old_spell_name_lc + ",", new_spell_name_lc + ",");
             }
             else
             {
-                new_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ".", new_spell_name_lc + ".");
+                new_description = ReplaceFirstOccurrence(domain_progression_description_no_encyclopedia_tags, old_spell_name_lc + ".", new_spell_name_lc + ".");
             }
 
             var domain_blueprints = GetBlueprintsByDescription<BlueprintProgression>(domain_progression_description).ToArray();
@@ -2238,11 +2250,11 @@ namespace TomeOfDarkness.Utilities
 
             if (level < 9)
             {
-                new_base_feature_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ",", new_spell_name_lc + ",");
+                new_base_feature_description = ReplaceFirstOccurrence(domain_base_feature_description_no_encyclopedia_tags, old_spell_name_lc + ",", new_spell_name_lc + ",");
             }
             else
             {
-                new_base_feature_description = ReplaceFirstOccurrence(domain_progression_description, old_spell_name_lc + ".", new_spell_name_lc + ".");
+                new_base_feature_description = ReplaceFirstOccurrence(domain_base_feature_description_no_encyclopedia_tags, old_spell_name_lc + ".", new_spell_name_lc + ".");
             }
 
             domain_base_feature.Get().SetDescription(ToDContext, new_base_feature_description);
@@ -2482,6 +2494,18 @@ namespace TomeOfDarkness.Utilities
             }
             return new_replacement_dictionary;
         }
+
+        #endregion
+
+        #region |-------------------------------------------------------|  ( Strings ) Miscellaneous Functions |----------------------------------------------------------|
+
+        //Vek17_SC
+        // THis was copied straight-away from Vek's TabletopTweaks Core because access issues made the original method unusable.
+        public static string RemoveEncyclopediaTags(this string str)
+        {
+            return Regex.Replace(str, "{.*?}", string.Empty);
+        }
+
 
         #endregion
 

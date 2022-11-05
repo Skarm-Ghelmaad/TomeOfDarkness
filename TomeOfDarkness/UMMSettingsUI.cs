@@ -16,14 +16,30 @@ namespace TomeOfDarkness
             UI.AutoWidth();
             UI.TabBar(ref selectedTab,
                     () => UI.Label("SETTINGS WILL NOT BE UPDATED UNTIL YOU RESTART YOUR GAME.".yellow().bold()),
+                    new NamedAction("Fixes", () => SettingsTabs.Fixes()),
                     new NamedAction("Added Content", () => SettingsTabs.NewContent())
             );
         }
     }
 
+
+
     static class SettingsTabs
     {
+        public static void Fixes()
+        {
+            var TabLevel = SetttingUI.TabLevel.Zero;
+            var Fixes = Main.ToDContext.Fixes;
+            UI.Div(0, 15);
+            using (UI.VerticalScope())
+            {
+                UI.Toggle("New Settings Off By Default".bold(), ref Fixes.NewSettingsOffByDefault);
+                UI.Space(25);
 
+                SetttingUI.SettingGroup("Base Fixes", TabLevel, Fixes.BaseFixes);
+                SetttingUI.SettingGroup("Spells", TabLevel, Fixes.Spells);
+            }
+        }
         public static void NewContent()
         {
             var TabLevel = SetttingUI.TabLevel.Zero;

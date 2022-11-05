@@ -108,7 +108,7 @@
     <None Remove="lib\**" />
     <EmbeddedResource Include="Config\Blueprints.json" />
     <EmbeddedResource Include="Config\NewContent.json" />
-    <None Include="Config\Fixes.json" />
+    <EmbeddedResource Include="Config\Fixes.json" />
     <None Include="Info.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

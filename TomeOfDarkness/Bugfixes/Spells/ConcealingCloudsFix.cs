@@ -142,7 +142,7 @@ namespace TomeOfDarkness.Bugfixes.Spells
                 var Cloud_Blizzard_Blast_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("6ea87a0ff5df41c459d641326f9973d5");
                 var Cloud_Sandstorm_Blast_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("48aa66d1a15515e40b07bc1f5fb80f64");
                 var Cloud_Steam_Blast_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("35a62ad81dd5ae3478956c61d6cd2d2e");
-                var Cloud_Thunderstorm_Blast_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("6462a12f53252aa4fbd3b18f99c9d1a8");
+                var Cloud_Thunderstorm_Blast_Area = BlueprintTools.GetBlueprint<BlueprintAbilityAreaEffect>("3659ce23ae102ca47a7bf3a30dd98609");
                 Cloud_Blizzard_Blast_Area.AddComponents(Obscuring_Generic_Component_Array);
                 Cloud_Sandstorm_Blast_Area.AddComponents(Obscuring_Generic_Component_Array);
                 Cloud_Steam_Blast_Area.AddComponents(Obscuring_Generic_Component_Array);
