@@ -53,6 +53,7 @@
     <Compile Include="NewComponents\AddInoffensiveness.cs" />
     <Compile Include="NewComponents\AddOutgoingConcealment.cs" />
     <Compile Include="NewComponents\AreaEffects\AbilityAreaEffectRunActionWithDelay.cs" />
+    <Compile Include="NewComponents\BindAbilitiesToSharedValueAndConditionalStat.cs" />
     <Compile Include="NewComponents\BuffExtraAttackCategorySpecific.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlock.cs" />
     <Compile Include="NewComponents\ConditionalFactsFeaturesUnlockData.cs" />
@@ -247,6 +248,9 @@
     <Content Include="Assets\Features\Icon_AlchemyTraining.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Features\Icon_AsceticPractice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Features\Icon_HiddenMaster.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -305,6 +309,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_NinjaTrickSelection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_NinjutsuTraining.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_PoisonCraftTraining.png">
