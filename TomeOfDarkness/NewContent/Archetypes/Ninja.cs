@@ -451,6 +451,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             Kamikaze.ConfigureKamikaze();
             UnarmedCombatMastery.ConfigureUnarmedCombatMastery();
             FlurryOfStars.ConfigureFlurryOfStars();
+            NinjaCanonBombs.ConfigureNinjaCanonBombs()
 
             var ninja_style_master = BlueprintTools.GetModBlueprint<BlueprintFeatureSelection>(ToDContext, "NinjaStyleMasterFeatureSelection");
             var n_trick_accelleration_form = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickAccelerationOfFormFeature");
@@ -462,6 +463,9 @@ namespace TomeOfDarkness.NewContent.Archetypes
             var n_trick_kamikaze = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickKamikazeFeature");
             var n_trick_unarmed_combat_mastery = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickUnarmedCombatMasteryNinjaFeature");
             var n_trick_flurry_stars = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickFlurryOfStarsFeature");
+            var n_trick_smoke_bomb = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickSmokeBombFeature");
+            var n_trick_choking_bomb = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickChokingBombFeature");
+            var n_trick_blinding_bomb = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickBlindingBombFeature");
 
             FeatToolsExtension.AddAsNinjaTrick(improved_unarmed_strike, false);
             FeatToolsExtension.AddAsNinjaTrick(ninja_style_master, false);
@@ -475,6 +479,9 @@ namespace TomeOfDarkness.NewContent.Archetypes
             FeatToolsExtension.AddAsNinjaTrick(n_trick_unarmed_combat_mastery, true);
             FeatToolsExtension.AddAsNinjaTrick(evasion, true);
             FeatToolsExtension.AddAsNinjaTrick(n_trick_flurry_stars, false);
+            FeatToolsExtension.AddAsNinjaTrick(n_trick_smoke_bomb, false);
+            FeatToolsExtension.AddAsNinjaTrick(n_trick_choking_bomb, false);
+            FeatToolsExtension.AddAsNinjaTrick(n_trick_blinding_bomb, true);
 
             ToDContext.Logger.LogPatch("Created (canon) Ninja Tricks.", ninja_trick);
 

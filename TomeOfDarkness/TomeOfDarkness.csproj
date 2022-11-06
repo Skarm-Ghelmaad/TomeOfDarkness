@@ -82,6 +82,7 @@
     <Compile Include="NewContent\NinjaTricks\HerbalCompound.cs" />
     <Compile Include="NewContent\NinjaTricks\InvisibleBlade.cs" />
     <Compile Include="NewContent\NinjaTricks\Kamikaze.cs" />
+    <Compile Include="NewContent\NinjaTricks\NinjaCanonBombs.cs" />
     <Compile Include="NewContent\NinjaTricks\SeeTheUnseen.cs" />
     <Compile Include="NewContent\NinjaTricks\ShadowClone.cs" />
     <Compile Include="NewContent\NinjaTricks\StyleMaster.cs" />
@@ -225,6 +226,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_KamikazeDismiss.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_NinjaBombBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_NinjaBombGreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_NinjaBombPurple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_NinjaBombYellow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_NinjaStyleStrike.png">

@@ -294,6 +294,21 @@ namespace TomeOfDarkness.Utilities
             return result;
         }
 
+        // Holic75_SC
+        static public ContextActionConditionalSaved CreateContextActionConditionalSaved(GameAction[] success, GameAction[] failed)
+        {
+            var r = Helpers.Create<ContextActionConditionalSaved>();
+            r.Succeed = Helpers.CreateActionList(success);
+            r.Failed = Helpers.CreateActionList(failed);
+            return r;
+        }
+
+        // Holic75_SC
+        static public ContextActionConditionalSaved CreateContextActionConditionalSaved(GameAction success, GameAction failed)
+        {
+            return CreateContextActionConditionalSaved( success == null ? new GameAction[0] : new GameAction[] { success }, failed == null ? new GameAction[0] : new GameAction[] { failed });
+        }
+
         // Holic75_PT
         static public ContextActionRemoveBuff CreateContextActionRemoveBuff(BlueprintBuff buff)
         {
@@ -309,6 +324,33 @@ namespace TomeOfDarkness.Utilities
             r.SpellDescriptor = descriptor;
             r.NotSelf = not_self;
             return r;
+        }
+
+        // Holic75_SC
+        static public ContextActionSavingThrow CreateContextActionSavingThrow(SavingThrowType saving_throw, Kingmaker.ElementsSystem.ActionList action)
+        {
+            var r = Helpers.Create<ContextActionSavingThrow>();
+            r.Type = saving_throw;
+            r.Actions = action;
+            return r;
+        }
+
+        // Holic75_SC
+        static public ContextActionSkillCheck CreateContextActionSkillCheck(StatType skill, Kingmaker.ElementsSystem.ActionList success = null, Kingmaker.ElementsSystem.ActionList failure = null, ContextValue custom_dc = null)
+        {
+            var r = Helpers.Create<ContextActionSkillCheck>();
+            r.UseCustomDC = custom_dc != null;
+            r.CustomDC = custom_dc;
+            r.Success = success == null ? Helpers.CreateActionList() : success;
+            r.Failure = failure == null ? Helpers.CreateActionList() : failure;
+            r.Stat = skill;
+            return r;
+        }
+
+        // Holic75_SC
+        static public ContextActionSkillCheck CreateContextActionSkillCheck(StatType skill, GameAction success = null, GameAction failure = null, ContextValue custom_dc = null)
+        {
+            return CreateContextActionSkillCheck(skill, success == null ? null : Helpers.CreateActionList(success) , failure == null ? null : Helpers.CreateActionList(failure), custom_dc);
         }
 
         static public ContextActionSpawnAreaEffect CreateContextActionSpawnAreaEffect(BlueprintAbilityAreaEffectReference area_effect, ContextDurationValue duration)
