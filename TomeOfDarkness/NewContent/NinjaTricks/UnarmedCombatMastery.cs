@@ -63,6 +63,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             var monk_fake_levels = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "MartialArtsTrainingFakeLevel");
 
+            var Universal_Unarmed_Strike = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "UniversalUnarmedStrike");
+
             var RogueMartialArtsTrainingProgression = Helpers.CreateBlueprint<BlueprintProgression>(ToDContext, "RogueMartialArtsTrainingProgression", bp => {
                 bp.SetName(ToDContext, "Rogue Martial Training");
                 bp.SetDescription(ToDContext, "The character treats his rogue level -4 as monk level for the purposes of unarmed strike damage.");
@@ -90,7 +92,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetName(ToDContext, "Unarmed Combat Mastery");
                 bp.SetDescription(ToDContext, "A ninja who selects this trick deals damage with her unarmed strikes as if she were a monk of her ninja level –4. If the rogue has levels in monk (or other similar features), this ability stacks with monk levels to determine how much damage she can do with her unarmed strikes. A ninja must have the Improved Unarmed Strike feat before taking this trick.");
                 bp.m_Icon = MartialArtsTrainingBlackIcon;
-                bp.AddComponent(HlEX.CreateHasFactFeatureUnlock(monk_1d6_unarmed_strike.ToReference<BlueprintUnitFactReference>(), UniversalUnarmedStrike.ToReference<BlueprintUnitFactReference>(), true));
+                bp.AddComponent(HlEX.CreateHasFactFeatureUnlock(monk_1d6_unarmed_strike.ToReference<BlueprintUnitFactReference>(), Universal_Unarmed_Strike.ToReference<BlueprintUnitFactReference>(), true));
                 bp.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
                     c.m_Feature = RogueMartialArtsTrainingProgression.ToReference<BlueprintFeatureReference>();
                 }));
@@ -106,7 +108,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetName(ToDContext, "Unarmed Combat Mastery");
                 bp.SetDescription(ToDContext, "A rogue who selects this trick deals damage with her unarmed strikes as if she were a monk of her rogue level –4. If the rogue has levels in monk (or other similar features), this ability stacks with monk levels to determine how much damage she can do with her unarmed strikes. A rogue must have the Improved Unarmed Strike feat before taking this trick.");
                 bp.m_Icon = UnarmedCombatMasteryIcon;
-                bp.AddComponent(HlEX.CreateHasFactFeatureUnlock(monk_1d6_unarmed_strike.ToReference<BlueprintUnitFactReference>(), UniversalUnarmedStrike.ToReference<BlueprintUnitFactReference>(), true));
+                bp.AddComponent(HlEX.CreateHasFactFeatureUnlock(monk_1d6_unarmed_strike.ToReference<BlueprintUnitFactReference>(), Universal_Unarmed_Strike.ToReference<BlueprintUnitFactReference>(), true));
                 bp.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
                     c.m_Feature = RogueMartialArtsTrainingProgression.ToReference<BlueprintFeatureReference>();
                 }));

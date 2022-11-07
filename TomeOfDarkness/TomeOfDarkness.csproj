@@ -41,6 +41,7 @@
     <Compile Include="Bugfixes\Spells\ConcealingCloudsFix.cs" />
     <Compile Include="Config\Bugfixes.cs" />
     <Compile Include="Config\NewContent.cs" />
+    <Compile Include="MechanicsChanges\AssassinationTraining.cs" />
     <Compile Include="MechanicsChanges\ConcealmentDescriptorToD.cs" />
     <Compile Include="MechanicsChanges\CustomStatTypesToD.cs" />
     <Compile Include="MechanicsChanges\KiResourceChanges.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="NewContent\Features\LightSteps.cs" />
     <Compile Include="NewContent\Features\NoTrace.cs" />
     <Compile Include="NewContent\NinjaTricks\AccelerationOfForm.cs" />
+    <Compile Include="NewContent\NinjaTricks\Assassinate.cs" />
     <Compile Include="NewContent\NinjaTricks\FlurryOfStars.cs" />
     <Compile Include="NewContent\NinjaTricks\HerbalCompound.cs" />
     <Compile Include="NewContent\NinjaTricks\InvisibleBlade.cs" />
@@ -210,6 +212,12 @@
     <Content Include="Assets\Abilities\Icon_AccelerationOfForm.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Abilities\Icon_AssassinateNinja.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_AssassinateSlayer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Abilities\Icon_FlurryOfStars.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -262,6 +270,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_AsceticPractice.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_AssassinationTraining.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_HiddenMaster.png">

@@ -44,11 +44,6 @@ namespace TomeOfDarkness.MechanicsChanges
     {
         // This is an attempt to allow for the acquisition (and stacking) of the Monk's Unarmed Strike feature.
 
-        static public BlueprintFeature MartialArtsTrainingFakeLevel;
-        static public BlueprintUnitProperty MartialArtsTrainingProperty;
-        static public BlueprintFeature UniversalUnarmedStrike;
-
-
         public static void ConfigureMonkMartialArtsTraining()
         {
             ConfigureMartialArtsTrainingFakeLevelFeature();
@@ -68,7 +63,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             var monk_other_fists = new BlueprintFeature[] { monk_1d8_unarmed_strike, monk_1d10_unarmed_strike, monk_2d6_unarmed_strike, monk_2d8_unarmed_strike, monk_2d10_unarmed_strike };
 
-
+            var Martial_Arts_Training_FakeLevel =  BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "MartialArtsTrainingFakeLevel");
 
             #region |-----------------------------------------------------/ CREATED MARTIAL ARTS TRAINING PROPERTY /-------------------------------------------------------------|
 
@@ -80,7 +75,7 @@ namespace TomeOfDarkness.MechanicsChanges
                     c.Properties = new CompositeCustomPropertyGetter.ComplexCustomProperty[] {
                         new CompositeCustomPropertyGetter.ComplexCustomProperty(){
                             Property = new FactRankGetter(){
-                                m_Fact = MartialArtsTrainingFakeLevel.ToReference<BlueprintUnitFactReference>()
+                                m_Fact = Martial_Arts_Training_FakeLevel.ToReference<BlueprintUnitFactReference>()
                             }
                         },
                         new CompositeCustomPropertyGetter.ComplexCustomProperty(){
@@ -140,7 +135,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             });
 
-            ToDContext.Logger.LogPatch("Creaded generic (monk) unarmed strike.", generic_1d6_unarmed_strike);
+            ToDContext.Logger.LogPatch("Created generic (monk) unarmed strike.", generic_1d6_unarmed_strike);
 
 
             #endregion
