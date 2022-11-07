@@ -79,7 +79,6 @@
     <Compile Include="NewContent\Features\LightSteps.cs" />
     <Compile Include="NewContent\Features\NoTrace.cs" />
     <Compile Include="NewContent\NinjaTricks\AccelerationOfForm.cs" />
-    <Compile Include="NewContent\NinjaTricks\Assassinate.cs" />
     <Compile Include="NewContent\NinjaTricks\FlurryOfStars.cs" />
     <Compile Include="NewContent\NinjaTricks\HerbalCompound.cs" />
     <Compile Include="NewContent\NinjaTricks\InvisibleBlade.cs" />
