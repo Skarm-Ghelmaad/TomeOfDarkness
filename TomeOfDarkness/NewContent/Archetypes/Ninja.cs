@@ -182,8 +182,6 @@ namespace TomeOfDarkness.NewContent.Archetypes
 
         static void ConfigureNinjaKiPool()
         {
-            MechanicsChanges.KiResourceChanges.ConfigureBasicKiResourceChanges();
-
             var InstinctiveStealthIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_InstinctiveStealth.png");
             var kiResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("9d9c90a9a1f52d04799294bf91c80a82");
             var Abundant_Ki_Pool = BlueprintTools.GetBlueprint<BlueprintFeature>("e8752f9126d986748b10d0bdac693264");

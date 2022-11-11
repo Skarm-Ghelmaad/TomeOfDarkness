@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TabletopTweaks.Core.Utilities;
+using TomeOfDarkness.MechanicsChanges;
+using TomeOfDarkness.NewContent.Features;
 using static TomeOfDarkness.Main;
 
 
@@ -36,7 +38,9 @@ namespace TomeOfDarkness.NewContent
 
                 // Basic setup needed for new content
 
-
+                KiResourceChanges.ConfigureBasicKiResourceChanges();        //Changes to the Monk's Ki Pool feature to make it universal. 
+                MartialArtsTraining.ConfigureMonkMartialArtsTraining();     //Changes to the Monk's unarmed attack feature to make it universal. 
+                UniversalPoisonUse.ConfigureUniversalPoisonUse();           //Changes to the Assassin's Poison Use feature to make it universal.
 
 
                 //New archetypes

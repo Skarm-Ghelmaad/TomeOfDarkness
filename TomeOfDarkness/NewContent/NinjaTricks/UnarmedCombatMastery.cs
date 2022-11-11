@@ -59,8 +59,6 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             var MartialArtsTrainingYellowIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_MartialArtsTrainingYellow.png");
             var UnarmedCombatMasteryIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_UnarmedCombatMastery.png");
 
-            MartialArtsTraining.ConfigureMonkMartialArtsTraining();
-
             var monk_fake_levels = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "MartialArtsTrainingFakeLevel");
 
             var Universal_Unarmed_Strike = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "UniversalUnarmedStrike");
