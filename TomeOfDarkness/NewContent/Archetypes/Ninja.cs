@@ -129,6 +129,8 @@ namespace TomeOfDarkness.NewContent.Archetypes
                                                                 };
 
 
+            if (ToDContext.NewContent.Archetypes.IsDisabled("Ninja")) { return; }
+
             RogueClass.TemporaryContext(bp => {
 
                 bp.Progression.m_UIDeterminatorsGroup = bp.Progression.m_UIDeterminatorsGroup.AppendToArray(ninja_prof.Get().ToReference<BlueprintFeatureBaseReference>());
@@ -451,7 +453,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             Kamikaze.ConfigureKamikaze();
             UnarmedCombatMastery.ConfigureUnarmedCombatMastery();
             FlurryOfStars.ConfigureFlurryOfStars();
-            NinjaCanonBombs.ConfigureNinjaCanonBombs()
+            NinjaCanonBombs.ConfigureNinjaCanonBombs();
 
             var ninja_style_master = BlueprintTools.GetModBlueprint<BlueprintFeatureSelection>(ToDContext, "NinjaStyleMasterFeatureSelection");
             var n_trick_accelleration_form = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickAccelerationOfFormFeature");

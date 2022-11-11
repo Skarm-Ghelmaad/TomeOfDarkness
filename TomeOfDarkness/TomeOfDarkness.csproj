@@ -50,6 +50,7 @@
     <Compile Include="MechanicsChanges\NinjutsuTraining.cs" />
     <Compile Include="MechanicsChanges\PoisonCraftTraining.cs" />
     <Compile Include="ModLogic\ModContextTomeOfDarkness.cs" />
+    <Compile Include="NewActions\ContextActionRepeatedApplyBuff.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterHasFacts.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterHasResource.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterKnowsSpell.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="NewComponents\IncreaseResourceAmountBasedOnStat.cs" />
     <Compile Include="NewComponents\OwlcatReplacements\DoubleDamageDiceOnAttackLOS.cs" />
     <Compile Include="NewComponents\OwlcatReplacements\IncreaseResourcesByClassLOS.cs" />
+    <Compile Include="NewComponents\Properties\PropertyMulipliedByFactRankGetter.cs" />
     <Compile Include="NewComponents\ReduceConcealmentByOneStep.cs" />
     <Compile Include="NewComponents\SetVisibilityLimit.cs" />
     <Compile Include="NewComponents\SpecificConcealmentBase.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="NewContent\Features\Dispatchment.cs" />
     <Compile Include="NewContent\Features\LightSteps.cs" />
     <Compile Include="NewContent\Features\NoTrace.cs" />
+    <Compile Include="MechanicsChanges\UniversalPoisonUse.cs" />
     <Compile Include="NewContent\NinjaTricks\AccelerationOfForm.cs" />
     <Compile Include="NewContent\NinjaTricks\FlurryOfStars.cs" />
     <Compile Include="NewContent\NinjaTricks\HerbalCompound.cs" />
@@ -341,6 +344,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_PoisonCraftTraining.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_PoisonUseBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_PoisonUseGreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_PoisonUsePurple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_PoisonUseRed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_PoisonUseWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Features\Icon_PoisonUseYellow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Features\Icon_UnarmedCombatMastery.png">

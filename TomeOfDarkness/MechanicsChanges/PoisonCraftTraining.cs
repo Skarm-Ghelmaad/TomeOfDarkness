@@ -98,5 +98,6 @@ namespace TomeOfDarkness.MechanicsChanges
             ToDContext.Logger.LogPatch("Created Poisoncraft Training Fake Level.", PoisonCraftTrainingFakeLevel);
 
         }
+
     }
 }

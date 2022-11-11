@@ -59,6 +59,9 @@ using TabletopTweaks.Core.Localization;
 using TabletopTweaks.Core.ModLogic;
 using TabletopTweaks.Core.NewComponents.OwlcatReplacements.DamageResistance;
 using TabletopTweaks.Core.UMMTools;
+using TomeOfDarkness.NewComponents.Properties;
+using TabletopTweaks.Core.NewActions;
+using TomeOfDarkness.NewActions;
 
 
 
@@ -294,6 +297,39 @@ namespace TomeOfDarkness.Utilities
             return result;
         }
 
+
+        static public ContextActionApplyBuffRanks CreateContextActionApplyBuffRanks(this BlueprintBuff buff, ContextDurationValue duration, ContextValue applied_ranks, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false, bool linked_to_area = true)
+        {
+            var result = Helpers.Create<ContextActionApplyBuffRanks>();
+            result.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            result.Rank = applied_ranks;
+            result.DurationValue = duration;
+            result.IsFromSpell = fromSpell;
+            result.IsNotDispelable = !dispellable;
+            result.ToCaster = toCaster;
+            result.AsChild = asChild;
+            result.Permanent = permanent;
+            result.NotLinkToAreaEffect = !linked_to_area;
+
+            return result;
+        }
+
+        static public ContextActionRepeatedApplyBuff CreateContextActionRepeatedApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, ContextValue buff_applications, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false, bool linked_to_area = true)
+        {
+            var result = Helpers.Create<ContextActionRepeatedApplyBuff>();
+            result.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            result.BuffApplications = buff_applications;
+            result.DurationValue = duration;
+            result.IsFromSpell = fromSpell;
+            result.IsNotDispelable = !dispellable;
+            result.ToCaster = toCaster;
+            result.AsChild = asChild;
+            result.Permanent = permanent;
+            result.NotLinkToAreaEffect = !linked_to_area;
+
+            return result;
+        }
+
         // Holic75_SC
         static public ContextActionConditionalSaved CreateContextActionConditionalSaved(GameAction[] success, GameAction[] failed)
         {
@@ -314,6 +350,14 @@ namespace TomeOfDarkness.Utilities
         {
             var r = Helpers.Create<ContextActionRemoveBuff>();
             r.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            return r;
+        }
+
+        static public ContextActionRemoveBuff CreateContextActionRemoveBuffRank(BlueprintBuff buff)
+        {
+            var r = Helpers.Create<ContextActionRemoveBuff>();
+            r.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            r.RemoveRank = true;
             return r;
         }
 
@@ -929,6 +973,14 @@ namespace TomeOfDarkness.Utilities
             return ppv;
         }
 
+        public static CustomPropertyGetter CreateCustomPropertyGetter(BlueprintUnitProperty property)
+        {
+            var ppv = Helpers.Create<CustomPropertyGetter>();
+            ppv.m_Property = property.ToReference<BlueprintUnitPropertyReference>();
+            return ppv;
+        }
+
+
         public static CompanionsCountGetter CreateCompanionsCountGetter()
         {
             var ppv = Helpers.Create<CompanionsCountGetter>();
@@ -1005,6 +1057,18 @@ namespace TomeOfDarkness.Utilities
             var ppv = Helpers.Create<UnitWeaponEnhancementGetter>();
             return ppv;
         }
+
+        public static PropertyMulipliedByFactRankGetter CreatePropertyMulipliedByFactRankGetter(UnitProperty property, BlueprintUnitFactReference fact, int bonus = 0, float numerator = 1, float denominator = 1)
+        {
+            var ppv = Helpers.Create<PropertyMulipliedByFactRankGetter>();
+            ppv.m_Property = property;
+            ppv.m_Fact = fact;
+            ppv.Bonus = bonus;
+            ppv.Numerator = numerator;
+            ppv.Denominator = denominator;
+            return ppv;
+        }
+
 
         #endregion
 

@@ -8,7 +8,7 @@ using static TabletopTweaks.Core.NewUnitParts.CustomStatTypes;
 
 namespace TomeOfDarkness.MechanicsChanges
 {
-    internal class ConcealmentDescriptorToD
+    public class ConcealmentDescriptorToD
     {
         public static class NewConcealmentDescriptor
         {

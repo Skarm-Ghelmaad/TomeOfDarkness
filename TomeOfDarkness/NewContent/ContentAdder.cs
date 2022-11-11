@@ -34,6 +34,10 @@ namespace TomeOfDarkness.NewContent
                 Initialized = true;
                 ToDContext.Logger.LogHeader("Loading New Content");
 
+                // Basic setup needed for new content
+
+
+
 
                 //New archetypes
                 Archetypes.Ninja.ConfigureNinjaArchetype();
