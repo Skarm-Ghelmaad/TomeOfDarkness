@@ -81,6 +81,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             LightSteps.ConfigureLightSteps();
             Dispatchment.ConfigureDispatchment();
             ConfigureNinjaStyleStrikes();
+            ConfigureNinjaPoisonUse();
             ConfigureNinjaTrick();
 
             var ninja_prof = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaProficiencies");
@@ -90,6 +91,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             var ninja_dispatchment = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "DispatchmentFeature");
             var ninja_light_steps = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "LightStepsFeature");
             var ninja_style_strikes = BlueprintTools.GetModBlueprintReference<BlueprintFeatureSelectionReference>(ToDContext, "NinjaStyleStrike");
+            var ninja_poison_use = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaCreatePoison");
 
             Ninja_Archetype.RemoveFeatures = new LevelEntry[] {
                                                                 Helpers.CreateLevelEntry(1, rogue_proficiencies, trapfinding ),
@@ -110,7 +112,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
                                                                 };
 
             Ninja_Archetype.AddFeatures = new LevelEntry[] {
-                                                                Helpers.CreateLevelEntry(1, ninja_prof ),
+                                                                Helpers.CreateLevelEntry(1, ninja_prof, ninja_poison_use ),
                                                                 Helpers.CreateLevelEntry(2, ninja_ki_pool, ninja_trick  ),
                                                                 Helpers.CreateLevelEntry(3, ninja_no_trace ),
                                                                 Helpers.CreateLevelEntry(4, ninja_trick, ninja_dispatchment),
@@ -452,6 +454,9 @@ namespace TomeOfDarkness.NewContent.Archetypes
             UnarmedCombatMastery.ConfigureUnarmedCombatMastery();
             FlurryOfStars.ConfigureFlurryOfStars();
             NinjaCanonBombs.ConfigureNinjaCanonBombs();
+            PressurePoints.ConfigurePressurePoints();
+            NinjaAssassinate.ConfigureNinjaAssassinate();
+
 
             var ninja_style_master = BlueprintTools.GetModBlueprint<BlueprintFeatureSelection>(ToDContext, "NinjaStyleMasterFeatureSelection");
             var n_trick_accelleration_form = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickAccelerationOfFormFeature");
@@ -466,6 +471,9 @@ namespace TomeOfDarkness.NewContent.Archetypes
             var n_trick_smoke_bomb = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickSmokeBombFeature");
             var n_trick_choking_bomb = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickChokingBombFeature");
             var n_trick_blinding_bomb = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickBlindingBombFeature");
+            var n_trick_pressure_points = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickPressurePointsFeature");
+            var n_trick_assassinate = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickAssassinateFeature");
+
 
             FeatToolsExtension.AddAsNinjaTrick(improved_unarmed_strike, false);
             FeatToolsExtension.AddAsNinjaTrick(ninja_style_master, false);
@@ -482,6 +490,8 @@ namespace TomeOfDarkness.NewContent.Archetypes
             FeatToolsExtension.AddAsNinjaTrick(n_trick_smoke_bomb, false);
             FeatToolsExtension.AddAsNinjaTrick(n_trick_choking_bomb, false);
             FeatToolsExtension.AddAsNinjaTrick(n_trick_blinding_bomb, true);
+            FeatToolsExtension.AddAsNinjaTrick(n_trick_pressure_points, false);
+            FeatToolsExtension.AddAsNinjaTrick(n_trick_assassinate, true);
 
             ToDContext.Logger.LogPatch("Created (canon) Ninja Tricks.", ninja_trick);
 
@@ -489,12 +499,46 @@ namespace TomeOfDarkness.NewContent.Archetypes
         }
 
 
-        //static void ConfigureNinjaPoisonUse()
-        //{
-        //    var Assassin_Poison_Use = BlueprintTools.GetBlueprint<BlueprintFeature>("8dd826513ba857645b38e918f17b59e6");
-        //    var Assassin_Poison_Resource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("d54b614eb42da7d48b927b57de337b95");
+        static void ConfigureNinjaPoisonUse()
+        {
+            var Assassin_Create_Poison_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("8dd826513ba857645b38e918f17b59e6");
+            var Assassin_Create_Poison_Swift_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bb7b571cadb6cc147a52431385a40a0d");
 
-        //}
+            var assassin_fake_levels = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "PoisonCraftTrainingFakeLevel");
+
+            var PoisonCraftTrainingIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_PoisonCraftTraining.png");
+
+            var RoguePoisonCraftTrainingProgression = Helpers.CreateBlueprint<BlueprintProgression>(ToDContext, "RoguePoisonCraftTrainingProgression", bp => {
+                bp.SetName(ToDContext, "Rogue Poison Craft Training");
+                bp.SetDescription(ToDContext, "The character treats his rogue level as assassin level for the purposes of poison use.");
+                bp.m_Icon = PoisonCraftTrainingIcon;
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
+                bp.GiveFeaturesForPreviousLevels = true;
+                bp.ReapplyOnLevelUp = true;
+                bp.m_ExclusiveProgression = new BlueprintCharacterClassReference();
+                bp.m_FeaturesRankIncrease = new List<BlueprintFeatureReference>();
+                bp.LevelEntries = Enumerable.Range(1, 20)
+                    .Select(i => new LevelEntry
+                    {
+                        Level = i,
+                        m_Features = new List<BlueprintFeatureBaseReference> {
+                            assassin_fake_levels.Get().ToReference<BlueprintFeatureBaseReference>()
+                        },
+                    })
+                    .ToArray();
+                bp.AddClass(ClassTools.ClassReferences.RogueClass);
+                bp.m_Classes[0].AdditionalLevel = 0;
+                bp.HideInUI = true;
+                bp.HideInCharacterSheetAndLevelUp = true;
+            });
+
+            var Ninja_Create_Poison_Feature = HlEX.ConvertFeatureToFeature(Assassin_Create_Poison_Feature, "", "", "", "", "Assassin", "", "", "Ninja", "", "", false);
+            Ninja_Create_Poison_Feature.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
+                c.m_Feature = RoguePoisonCraftTrainingProgression.ToReference<BlueprintFeatureReference>();
+            }));
+            Ninja_Create_Poison_Feature.SetDescription(ToDContext, "At 1st level, a ninja gains the assassin’s poison use class feature.  He uses his rogue level as his effective rogue level to determine the effects of poison use.");
+        }
 
     }
 }

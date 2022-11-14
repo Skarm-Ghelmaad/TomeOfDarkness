@@ -66,7 +66,7 @@ namespace TomeOfDarkness.MechanicsChanges
                         },
                         new CompositeCustomPropertyGetter.ComplexCustomProperty(){
                             Property = new ClassLevelGetter(){
-                                m_Class = ClassTools.ClassReferences.RogueClass
+                                m_Class = ClassTools.ClassReferences.AssassinClass
                             }
                         }
                     };

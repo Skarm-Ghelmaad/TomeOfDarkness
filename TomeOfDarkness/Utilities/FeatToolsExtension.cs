@@ -17,6 +17,7 @@ using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using HarmonyLib;
 using static UnityModManagerNet.UnityModManager;
+using static TomeOfDarkness.MechanicsChanges.FeatureGroupToD;
 
 namespace TomeOfDarkness.Utilities
 {
@@ -66,6 +67,7 @@ namespace TomeOfDarkness.Utilities
             var NinjaTrickSelections = new BlueprintFeatureSelection[] { ninja_tricks };
 
             feature.Groups = feature.Groups.AddToArray(FeatureGroup.RogueTalent);
+            feature.Groups = feature.Groups.AddToArray(NewFeatureGroup.NinjaTrick);
             NinjaTrickSelections.ForEach(selection => selection.AddFeatures(feature));
 
             if (advanced_trick)
@@ -75,6 +77,18 @@ namespace TomeOfDarkness.Utilities
             }
 
 
+        }
+
+        public static void AddAsSlayerTalent(BlueprintFeature feature, bool advanced_talent = false, params BlueprintFeatureSelection[] ignore)
+        {
+            var advanced_talents = BlueprintTools.GetBlueprint<BlueprintFeature>("a33b99f95322d6741af83e9381b2391c");
+
+            var SlayerTalentSelections = new BlueprintFeatureSelection[] {
+                Selections.SlayerTalentSelection2,
+                Selections.SlayerTalentSelection6,
+                Selections.SlayerTalentSelection10
+            };
+            SlayerTalentSelections.Where(selection => !ignore?.Contains(selection) ?? true).ForEach(selection => selection.AddFeatures(feature));
         }
 
         //GetStyleFeat needs to be changed as gives mistake...

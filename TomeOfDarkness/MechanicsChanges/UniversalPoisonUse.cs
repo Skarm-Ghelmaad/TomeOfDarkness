@@ -1062,66 +1062,96 @@ namespace TomeOfDarkness.NewContent.Features
 
             #endregion
 
-            #region |------------------------------------------| Change Assassin Poison Use Con Unlock to be Universal |-------------------------------------------------------|
 
+            #region |---------------------------------------------------|  Make Assassin's Poison Use Con-Damage Universal |---------------------------------------------------|
 
-            var Assassin_Create_Poison_Con_Unlock = BlueprintTools.GetBlueprint<BlueprintFeature>("4b28d5c267df88743afb272a2a874220");
+            var Assassin_Create_Poison_Con_Unlock_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("4b28d5c267df88743afb272a2a874220");
 
-            var Universal_Create_Poison_Con_Unlock = Assassin_Create_Poison_Con_Unlock.CreateCopy(ToDContext, "UniversalCreatePoisonConUnlock", bp =>
-             {
-                 bp.SetDescription(ToDContext, "The character gains access to poison that deals {g|Encyclopedia:Constitution}Constitution{/g} {g|Encyclopedia:Damage}damage{/g}.");
-                 bp.HideInUI = true;
-                 bp.HideInCharacterSheetAndLevelUp = true;
-
-             });
-
-            ToDContext.Logger.LogPatch("Created universal Use Poison - Con Damage Poison unlock.", Universal_Create_Poison_Con_Unlock);
-
-
-            Assassin_Create_Poison_Con_Unlock.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Universal_Create_Poison_Con_Unlock.ToReference<BlueprintUnitFactReference>() }));
+            var Universal_Create_Poison_Con_Unlock_Feature = Assassin_Create_Poison_Con_Unlock_Feature.CreateCopy(ToDContext, "UniversalCreatePoisonConUnlock", bp => {
+                bp.SetDescription(ToDContext, "The character gains access to poison that deals {g|Encyclopedia:Constitution}Constitution{/g} {g|Encyclopedia:Damage}damage{/g}.");
+                bp.HideInUI = true;
+                bp.HideInCharacterSheetAndLevelUp = true;
+                bp.Ranks = 1;
+            });
 
             Assassin_Create_Poison_Ability_Con.GetComponent<AbilityShowIfCasterHasFact>().TemporaryContext(c => {
-                c.m_UnitFact = Universal_Create_Poison_Con_Unlock.ToReference<BlueprintUnitFactReference>();
+                c.m_UnitFact = Universal_Create_Poison_Con_Unlock_Feature.ToReference<BlueprintUnitFactReference>();
             });
 
             Assassin_Create_Poison_Ability_Swift_Con.GetComponent<AbilityShowIfCasterHasFact>().TemporaryContext(c => {
-                c.m_UnitFact = Universal_Create_Poison_Con_Unlock.ToReference<BlueprintUnitFactReference>();
+                c.m_UnitFact = Universal_Create_Poison_Con_Unlock_Feature.ToReference<BlueprintUnitFactReference>();
             });
 
-            ToDContext.Logger.LogPatch("Changed the Assassin's Use Poison - Con Damage Poison unlock to add the universal unlock.", Assassin_Create_Poison_Con_Unlock);
+            Assassin_Create_Poison_Con_Unlock_Feature.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Universal_Create_Poison_Con_Unlock_Feature.ToReference<BlueprintUnitFactReference>() }));
+
+            ToDContext.Logger.LogPatch("Changed Assassin Poison Con Damage unlock to be universal.", Assassin_Create_Poison_Con_Unlock_Feature);
 
             #endregion
+
+            #region |----------------------------------------------|  Make Assassin's Poison Use Buffs to include Toxicity Adj. |----------------------------------------------|
+
+            var Assassin_Create_Poison_Ability_Str_Buff_Context_Action_Saving_Throws = Assassin_Create_Poison_Ability_Str_Buff.FlattenAllActions().OfType<ContextActionSavingThrow>().ToArray();
+            var Assassin_Create_Poison_Ability_Dex_Buff_Context_Action_Saving_Throws = Assassin_Create_Poison_Ability_Dex_Buff.FlattenAllActions().OfType<ContextActionSavingThrow>().ToArray();
+            var Assassin_Create_Poison_Ability_Con_Buff_Context_Action_Saving_Throws = Assassin_Create_Poison_Ability_Con_Buff.FlattenAllActions().OfType<ContextActionSavingThrow>().ToArray();
+
+            var Assassin_Create_Poison_Ability_Buff_Toxicity_Conditional_DC_Increase = new ContextActionSavingThrow.ConditionalDCIncrease();
+
+            Assassin_Create_Poison_Ability_Buff_Toxicity_Conditional_DC_Increase.Condition = HlEX.CreateConditionsCheckerAnd(new Condition[] { HlEX.CreateConditionTrue() });
+            Assassin_Create_Poison_Ability_Buff_Toxicity_Conditional_DC_Increase.Value = new ContextValue()
+            {
+                ValueType = ContextValueType.CasterCustomProperty,
+                m_CustomProperty = Create_Poison_Toxicity_Adjustment_Property.ToReference<BlueprintUnitPropertyReference>()
+            };
+
+
+            foreach (var cont_act_saving_throw in Assassin_Create_Poison_Ability_Str_Buff_Context_Action_Saving_Throws)
+            {
+                cont_act_saving_throw.TemporaryContext(c => {
+                    c.m_ConditionalDCIncrease.AppendToArray(Assassin_Create_Poison_Ability_Buff_Toxicity_Conditional_DC_Increase); 
+                });
+            }
+
+            ToDContext.Logger.LogPatch("Altered Assassin Poison Use — Strength Ability Buff to adjust the buff's DC based on the Toxicity property.", Assassin_Create_Poison_Ability_Str_Buff);
+
+            foreach (var cont_act_saving_throw in Assassin_Create_Poison_Ability_Dex_Buff_Context_Action_Saving_Throws)
+            {
+                cont_act_saving_throw.TemporaryContext(c => {
+                    c.m_ConditionalDCIncrease.AppendToArray(Assassin_Create_Poison_Ability_Buff_Toxicity_Conditional_DC_Increase);
+                });
+            }
+
+            ToDContext.Logger.LogPatch("Altered Assassin Poison Use — Dexterity Ability Buff to adjust the buff's DC based on the Toxicity property.", Assassin_Create_Poison_Ability_Dex_Buff);
+
+            foreach (var cont_act_saving_throw in Assassin_Create_Poison_Ability_Con_Buff_Context_Action_Saving_Throws)
+            {
+                cont_act_saving_throw.TemporaryContext(c => {
+                    c.m_ConditionalDCIncrease.AppendToArray(Assassin_Create_Poison_Ability_Buff_Toxicity_Conditional_DC_Increase);
+                });
+            }
+
+            ToDContext.Logger.LogPatch("Altered Assassin Poison Use — Constitution Ability Buff to adjust the buff's DC based on the Toxicity property.", Assassin_Create_Poison_Ability_Con_Buff);
+
+            #endregion
+
 
             #region |-------------------------------------------------------| Change Assassin Poison Use Descriptions |--------------------------------------------------------|
 
-            string Assassin_Create_Poison_Ability_New_Description = "This character specialized in poison use. Every day he creates special combat poisons, the number of their doses equal to 3 + relevant classes' level, which he can use to envenom his weapons (both melee and ranged). As a {g|Encyclopedia:Move_Action}move action{/g}, the character can apply one of the poisons to his weapons (both melee and ranged), and the next successful {g|Encyclopedia:Attack}attack{/g} applies it to the target. {g|Encyclopedia:Saving_Throw}Save{/g} {g|Encyclopedia:DC}DC{/g} of all poisons is 10 + relevant classes' level + Poison Use attribute modifier. If the attack that applied the poison was a sneak attack, the DC is increased by 2.\nThe character has access to poisons that deal {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Strength}Strength{/g} or {g|Encyclopedia:Dexterity}Dexterity{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.";
-
-            string Assassin_Create_Poison_Con_Unlock_New_Description = "At 5th level, the character gains access to poison that deals {g|Encyclopedia:Constitution}Constitution{/g} {g|Encyclopedia:Damage}damage{/g}.";
-
-            string Assassin_Create_Poison_Swift_Feature_New_Description = "At 10th level, the character can apply the poisons as a move or a {g|Encyclopedia:Swift_Action}swift action{/g}.";
-
-            string Assassin_Create_Poison_Swift_Ability_New_Description = "This character specialized in poison use. Every day he creates special combat poisons, the number of their doses equal to 3 + relevant classes' level, which he can use to envenom his weapons (both melee and ranged). As a {g|Encyclopedia:Swift_Action}swift action{/g}, the character can apply one of the poisons to his weapons (both melee and ranged), and the next successful {g|Encyclopedia:Attack}attack{/g} applies it to the target. {g|Encyclopedia:Saving_Throw}Save{/g} {g|Encyclopedia:DC}DC{/g} of all poisons is 10 + relevant classes' level + Poison Use attribute modifier. If the attack that applied the poison was a sneak attack, the DC is increased by 2.\nThe character has access to all special combat poisons he currently knows and can apply them swiftly in this way.";
+            string Assassin_Create_Poison_Ability_New_Description = "Assassins specialize in poison use. Every day they create special combat poisons, the number of their doses equal to 3 + assassin level, which they can use to envenom their weapons (both melee and ranged). As a {g|Encyclopedia:Move_Action}move action{/g}, an assassin can apply one of the poisons to their weapons (both melee and ranged), and the next successful {g|Encyclopedia:Attack}attack{/g} applies it to the target. {g|Encyclopedia:Saving_Throw}Save{/g} {g|Encyclopedia:DC}DC{/g} of all poisons is 10 + assassin level + relevant stat modifier. If the attack that applied the poison was a sneak attack, the DC is increased by 2.\nAt 1st level, an assassin has access to poisons that deal {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Strength}Strength{/g} or {g|Encyclopedia:Dexterity}Dexterity{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.";
+            string Assassin_Create_Poison_Swift_Ability_New_Description = "Assassins specialize in poison use. Every day they create special combat poisons, the number of their doses equal to 3 + assassin level, which they can use to envenom their weapons (both melee and ranged). As a {g|Encyclopedia:Swift_Action}swift action{/g}, an assassin can apply one of the poisons to their weapons (both melee and ranged), and the next successful {g|Encyclopedia:Attack}attack{/g} applies it to the target. {g|Encyclopedia:Saving_Throw}Save{/g} {g|Encyclopedia:DC}DC{/g} of all poisons is 10 + assassin level + relevant stat modifier. If the attack that applied the poison was a sneak attack, the DC is increased by 2.\nThe assassin has access to all special combat poisons currently known to him and to any feature that would affect the base Poison Use ability (with {g|Encyclopedia:Move_Action}move action{/g} activation).";
 
 
             Assassin_Create_Poison_Ability.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description);
-            Assassin_Create_Poison_Ability_Str.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description);
-            Assassin_Create_Poison_Ability_Dex.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description);
-            Assassin_Create_Poison_Ability_Con.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description);
+            Assassin_Create_Poison_Ability_Str.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description + "\n When produced with its basic formula, this specific combat poison deals {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Strength}Strength{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.");
+            Assassin_Create_Poison_Ability_Dex.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description  + "\n When produced with its basic formula, this specific combat poison deals {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Dexterity}Dexterity{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.");
+            Assassin_Create_Poison_Ability_Con.SetDescription(ToDContext, Assassin_Create_Poison_Ability_New_Description + "\n When produced with its basic formula, this specific combat poison deals {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Constitution}Constitution{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.");
 
-            Assassin_Create_Poison_Swift_Feature.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Feature_New_Description);
             Assassin_Create_Poison_Swift_Ability.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description);
-            Assassin_Create_Poison_Ability_Swift_Str.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description);
-            Assassin_Create_Poison_Ability_Swift_Dex.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description);
-            Assassin_Create_Poison_Ability_Swift_Con.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description);
+            Assassin_Create_Poison_Ability_Swift_Str.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description + "\n When produced with its basic formula, this specific combat poison deals {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Strength}Strength{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.");
+            Assassin_Create_Poison_Ability_Swift_Dex.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description + "\n When produced with its basic formula, this specific combat poison deals {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Dexterity}Dexterity{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.");
+            Assassin_Create_Poison_Ability_Swift_Con.SetDescription(ToDContext, Assassin_Create_Poison_Swift_Ability_New_Description + "\n When produced with its basic formula, this specific combat poison deals {g|Encyclopedia:Dice}1d4{/g} stat {g|Encyclopedia:Damage}damage{/g} to {g|Encyclopedia:Constitution}Constitution{/g} for 4 {g|Encyclopedia:Combat_Round}rounds{/g}.");
 
-            Assassin_Create_Poison_Con_Unlock.SetDescription(ToDContext, Assassin_Create_Poison_Con_Unlock_New_Description);
 
             UnityModManagerNet.UnityModManager.Logger.Log("Changed description of the Poison Use feature.");
-
-            #endregion
-
-
-            #region |----------------------------------------------------------------| ResourceLinks Creators |----------------------------------------------------------------|
 
             #endregion
 

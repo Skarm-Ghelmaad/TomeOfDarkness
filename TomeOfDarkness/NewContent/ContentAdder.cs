@@ -46,6 +46,10 @@ namespace TomeOfDarkness.NewContent
                 //New archetypes
                 Archetypes.Ninja.ConfigureNinjaArchetype();
 
+
+                //New slayer talents
+                SlayerTalents.SlayerAssassinate.ConfigureSlayerAssassinate();
+
                 //New spells
                 Spells.FxTester.ConfigureFxTester();
                 Spells.ObscuringMist.ConfigureObscuringMist();

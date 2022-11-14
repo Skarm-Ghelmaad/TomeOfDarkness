@@ -62,6 +62,10 @@ using TabletopTweaks.Core.UMMTools;
 using TomeOfDarkness.NewComponents.Properties;
 using TabletopTweaks.Core.NewActions;
 using TomeOfDarkness.NewActions;
+using Kingmaker.Enums.Damage;
+using Kingmaker.RuleSystem.Rules.Damage;
+using Kingmaker.RuleSystem.Rules;
+using Kingmaker.Designers.EventConditionActionSystem.Conditions;
 
 
 
@@ -166,6 +170,12 @@ namespace TomeOfDarkness.Utilities
         {
             return new ContextValue() { ValueType = ContextValueType.Shared, ValueShared = value };
         }
+
+        public static ContextValue CreateContextValue(this int value)
+        {
+            return new ContextValue() { ValueType = ContextValueType.Simple, Value = value };
+        }
+
 
         // Holic75_SC
         public static ContextDiceValue CreateContextDiceValue(this DiceType dice, ContextValue diceCount = null, ContextValue bonus = null)
@@ -283,6 +293,21 @@ namespace TomeOfDarkness.Utilities
 
         #region  |-----------------------------------------------------------| ( Mechanics ) Actions Creators |-------------------------------------------------------------|
 
+
+        public static AddInitiatorAttackRollTrigger CreateAddInitiatorAttackRollTrigger(Kingmaker.ElementsSystem.ActionList action, bool only_hit = true, bool critical_hit = false, bool sneak_attack = false, bool on_owner = false, bool affect_friendly_touch = false, bool check_weapon = false, WeaponCategory weapon_category = WeaponCategory.UnarmedStrike)
+        {
+            var result = Helpers.Create<AddInitiatorAttackRollTrigger>();
+            result.Action = action;
+            result.OnlyHit = only_hit;
+            result.CriticalHit = critical_hit;
+            result.SneakAttack = sneak_attack;
+            result.OnOwner = on_owner;
+            result.AffectFriendlyTouchSpells = affect_friendly_touch;
+            result.CheckWeapon = check_weapon;
+            result.WeaponCategory = weapon_category;
+            return result;
+        }
+
         // Holic75_SC
         public static ContextActionApplyBuff CreateContextActionApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false)
         {
@@ -314,22 +339,6 @@ namespace TomeOfDarkness.Utilities
             return result;
         }
 
-        static public ContextActionRepeatedApplyBuff CreateContextActionRepeatedApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, ContextValue buff_applications, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false, bool linked_to_area = true)
-        {
-            var result = Helpers.Create<ContextActionRepeatedApplyBuff>();
-            result.m_Buff = buff.ToReference<BlueprintBuffReference>();
-            result.BuffApplications = buff_applications;
-            result.DurationValue = duration;
-            result.IsFromSpell = fromSpell;
-            result.IsNotDispelable = !dispellable;
-            result.ToCaster = toCaster;
-            result.AsChild = asChild;
-            result.Permanent = permanent;
-            result.NotLinkToAreaEffect = !linked_to_area;
-
-            return result;
-        }
-
         // Holic75_SC
         static public ContextActionConditionalSaved CreateContextActionConditionalSaved(GameAction[] success, GameAction[] failed)
         {
@@ -342,7 +351,109 @@ namespace TomeOfDarkness.Utilities
         // Holic75_SC
         static public ContextActionConditionalSaved CreateContextActionConditionalSaved(GameAction success, GameAction failed)
         {
-            return CreateContextActionConditionalSaved( success == null ? new GameAction[0] : new GameAction[] { success }, failed == null ? new GameAction[0] : new GameAction[] { failed });
+            return CreateContextActionConditionalSaved(success == null ? new GameAction[0] : new GameAction[] { success }, failed == null ? new GameAction[0] : new GameAction[] { failed });
+        }
+
+        // Holic75_SC
+        public static ContextActionDealDamage CreateContextActionDealDamage(DamageEnergyType energy, ContextDiceValue damage, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false)
+        {
+            var result = Helpers.Create<ContextActionDealDamage>();
+            result.DamageType = new DamageTypeDescription()
+            {
+                Type = DamageType.Energy,
+                Energy = energy,
+                Common = new DamageTypeDescription.CommomData(),
+                Physical = new DamageTypeDescription.PhysicalData()
+            };
+            result.Duration = CreateContextDuration(0);
+            result.Value = damage;
+            result.IsAoE = isAoE;
+            result.HalfIfSaved = halfIfSaved;
+            result.IgnoreCritical = IgnoreCritical;
+            return result;
+        }
+
+        // Holic75_SC
+        public static ContextActionDealDamage CreateContextActionDealDirectDamage(ContextDiceValue damage, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false)
+        {
+            var result = Helpers.Create<ContextActionDealDamage>();
+            result.DamageType = new DamageTypeDescription()
+            {
+                Type = DamageType.Direct,
+                Common = new DamageTypeDescription.CommomData(),
+                Physical = new DamageTypeDescription.PhysicalData()
+            };
+            result.Duration = CreateContextDuration(0);
+            result.Value = damage;
+            result.IsAoE = isAoE;
+            result.HalfIfSaved = halfIfSaved;
+            result.IgnoreCritical = IgnoreCritical;
+            return result;
+        }
+
+        // Holic75_SC
+        public static ContextActionDealDamage CreateContextActionDealForceDamage(ContextDiceValue damage, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false)
+        {
+            var result = Helpers.Create<ContextActionDealDamage>();
+            result.DamageType = new DamageTypeDescription()
+            {
+                Type = DamageType.Force,
+                Common = new DamageTypeDescription.CommomData(),
+                Physical = new DamageTypeDescription.PhysicalData()
+            };
+            result.Duration = CreateContextDuration(0);
+            result.Value = damage;
+            result.IsAoE = isAoE;
+            result.HalfIfSaved = halfIfSaved;
+            result.IgnoreCritical = IgnoreCritical;
+            return result;
+        }
+
+        // Holic75_SC
+        public static ContextActionDealDamage CreateContextActionDealDamage(PhysicalDamageForm physical, ContextDiceValue damage, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false)
+        {
+            var result = Helpers.Create<ContextActionDealDamage>();
+            result.DamageType = new DamageTypeDescription()
+            {
+                Type = DamageType.Physical,
+                Common = new DamageTypeDescription.CommomData(),
+                Physical = new DamageTypeDescription.PhysicalData() { Form = physical }
+            };
+            result.Duration = CreateContextDuration(0);
+            result.Value = damage;
+            result.IsAoE = isAoE;
+            result.HalfIfSaved = halfIfSaved;
+            result.IgnoreCritical = IgnoreCritical;
+            return result;
+        }
+
+        // Holic75_SC
+        public static ContextActionDealDamage CreateContextActionDealEnergyDrain(ContextDiceValue damage, ContextDurationValue duration_value, EnergyDrainType drain_type, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false)
+        {
+            var result = Helpers.Create<ContextActionDealDamage>();
+            result.m_Type = ContextActionDealDamage.Type.EnergyDrain;
+            result.Duration = duration_value;
+            result.EnergyDrainType = drain_type;
+            result.Value = damage;
+            result.IsAoE = isAoE;
+            result.HalfIfSaved = halfIfSaved;
+            result.IgnoreCritical = IgnoreCritical;
+            return result;
+        }
+
+        // Holic75_SC
+        public static ContextActionDealDamage CreateContextActionDealDamage(StatType abilityType, ContextDiceValue damage, bool drain = false, bool isAoE = false, bool halfIfSaved = false, bool IgnoreCritical = false)
+        {
+            var result = Helpers.Create<ContextActionDealDamage>();
+            result.m_Type = ContextActionDealDamage.Type.AbilityDamage;
+            result.Duration = CreateContextDuration(0);
+            result.AbilityType = abilityType;
+            result.Value = damage;
+            result.IsAoE = isAoE;
+            result.Drain = drain;
+            result.HalfIfSaved = halfIfSaved;
+            result.IgnoreCritical = IgnoreCritical;
+            return result;
         }
 
         // Holic75_PT
@@ -368,6 +479,23 @@ namespace TomeOfDarkness.Utilities
             r.SpellDescriptor = descriptor;
             r.NotSelf = not_self;
             return r;
+        }
+
+
+        static public ContextActionRepeatedApplyBuff CreateContextActionRepeatedApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, ContextValue buff_applications, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false, bool linked_to_area = true)
+        {
+            var result = Helpers.Create<ContextActionRepeatedApplyBuff>();
+            result.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            result.BuffApplications = buff_applications;
+            result.DurationValue = duration;
+            result.IsFromSpell = fromSpell;
+            result.IsNotDispelable = !dispellable;
+            result.ToCaster = toCaster;
+            result.AsChild = asChild;
+            result.Permanent = permanent;
+            result.NotLinkToAreaEffect = !linked_to_area;
+
+            return result;
         }
 
         // Holic75_SC
@@ -690,6 +818,24 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |------------------------------------------------------------| ( Events ) Conditions Creators |------------------------------------------------------------|
+
+        public static False CreateConditionFalse()
+        {
+            var c = Helpers.Create<False>();
+            c.Not = false;
+            return c;
+        }
+
+        public static False CreateConditionTrue()
+        {
+            var c = Helpers.Create<False>();
+            c.Not = true;
+            return c;
+        }
+
+        #endregion
+
         #region |----------------------------------------------------------| ( Mechanics ) Conditions Creators |-----------------------------------------------------------|
 
         // Holic75_SC
@@ -714,9 +860,18 @@ namespace TomeOfDarkness.Utilities
         // Holic75_SC
         public static ContextConditionHasBuff CreateConditionHasBuff(this BlueprintBuff buff)
         {
-            var hasBuff = Helpers.Create<ContextConditionHasBuff>();
-            hasBuff.m_Buff = buff.ToReference<BlueprintBuffReference>();
-            return hasBuff;
+            var c = Helpers.Create<ContextConditionHasBuff>();
+            c.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            return c;
+        }
+
+        // Holic75_SC
+        public static ContextConditionHasBuffFromCaster CreateConditionHasBuffFromCaster(this BlueprintBuff buff, bool has = true)
+        {
+            var c = Helpers.Create<ContextConditionHasBuffFromCaster>();
+            c.m_Buff = buff.ToReference<BlueprintBuffReference>();
+            c.Not = !has;
+            return c;
         }
 
         // Holic75_SC
@@ -796,6 +951,23 @@ namespace TomeOfDarkness.Utilities
         #endregion
 
         #region |---------------------------------------------------------------| Prerequisite Creators |------------------------------------------------------------------|
+
+        public static PrerequisiteNoArchetype CreatePrerequisiteNoArchetype(this BlueprintCharacterClass character_class, BlueprintArchetype archetype)
+        {
+            var p = Helpers.Create<PrerequisiteNoArchetype>();
+            p.m_CharacterClass = character_class.ToReference<BlueprintCharacterClassReference>();
+            p.m_Archetype = archetype.ToReference<BlueprintArchetypeReference>();
+            return p;
+        }
+
+        public static PrerequisiteClassLevel CreatePrerequisiteClassLevel(this BlueprintCharacterClass character_class, int level = 1, bool not = false)
+        {
+            var p = Helpers.Create<PrerequisiteClassLevel>();
+            p.m_CharacterClass = character_class.ToReference<BlueprintCharacterClassReference>();
+            p.Level = level;
+            p.Not = not;
+            return p;
+        }
 
         public static PrerequisiteNoFeature CreatePrerequisiteNoFeature(this BlueprintFeature feat, bool any = false)
         {

@@ -45,10 +45,12 @@
     <Compile Include="MechanicsChanges\AssassinationTraining.cs" />
     <Compile Include="MechanicsChanges\ConcealmentDescriptorToD.cs" />
     <Compile Include="MechanicsChanges\CustomStatTypesToD.cs" />
+    <Compile Include="MechanicsChanges\FeatureGroupToD.cs" />
     <Compile Include="MechanicsChanges\KiResourceChanges.cs" />
     <Compile Include="MechanicsChanges\MartialArtsTraining.cs" />
     <Compile Include="MechanicsChanges\NinjutsuTraining.cs" />
     <Compile Include="MechanicsChanges\PoisonCraftTraining.cs" />
+    <Compile Include="MechanicsChanges\UniversalAssassination.cs" />
     <Compile Include="ModLogic\ModContextTomeOfDarkness.cs" />
     <Compile Include="NewActions\ContextActionRepeatedApplyBuff.cs" />
     <Compile Include="NewComponents\AbilityShowIfCasterHasFacts.cs" />
@@ -89,12 +91,15 @@
     <Compile Include="NewContent\NinjaTricks\HerbalCompound.cs" />
     <Compile Include="NewContent\NinjaTricks\InvisibleBlade.cs" />
     <Compile Include="NewContent\NinjaTricks\Kamikaze.cs" />
+    <Compile Include="NewContent\NinjaTricks\NinjaAssassinate.cs" />
     <Compile Include="NewContent\NinjaTricks\NinjaCanonBombs.cs" />
+    <Compile Include="NewContent\NinjaTricks\PressurePoints.cs" />
     <Compile Include="NewContent\NinjaTricks\SeeTheUnseen.cs" />
     <Compile Include="NewContent\NinjaTricks\ShadowClone.cs" />
     <Compile Include="NewContent\NinjaTricks\StyleMaster.cs" />
     <Compile Include="NewContent\NinjaTricks\UnarmedCombatMastery.cs" />
     <Compile Include="NewContent\NinjaTricks\VanishingTrick.cs" />
+    <Compile Include="NewContent\SlayerTalents\SlayerAssassinate.cs" />
     <Compile Include="NewContent\Spells\FxTester.cs" />
     <Compile Include="NewContent\Spells\ObscuringMist.cs" />
     <Compile Include="NewContent\Spells\Sanctuary.cs" />
@@ -223,6 +228,9 @@
     <Content Include="Assets\Abilities\Icon_AssassinateSlayer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Abilities\Icon_AssassinateStudyNinja.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Abilities\Icon_FlurryOfStars.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -257,6 +265,27 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_ObscuringMist.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePoints.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePointsCha.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePointsCon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePointsDex.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePointsInt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePointsStr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_PressurePointsWis.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_SeeTheUnseen.png">

@@ -28,6 +28,11 @@
   "SlayerTalents": {
     "DisableAll": false,
     "Settings": {
+      "SlayerAssassinate": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "A slayer with this advanced talent can kill foes that are unable to defend themselves. To attempt to assassinate a target, the slayer must have studied that opponent, but thereafter he can attempt to instantly kill him (or any other studied opponent). This ability can only be used out of combat and the target must not see the slayer, but this special {g|Encyclopedia:Attack}attack{/g} automatically hits, scores a {g|Encyclopedia:Critical}critical hit{/g} and, if the victim survives, must make a {g|Encyclopedia:Saving_Throw}Fortitude save{/g} ({g|Encyclopedia:DC}DC{/g} 10 + slayer level + relevant stat modifier or die. This special attack is a full-round-action that provokes attacks of opportunity from threatening opponents."
+      }
     }
   },
   "WildTalents": {
