@@ -17,6 +17,7 @@ using Kingmaker.UnitLogic;
 
 namespace TomeOfDarkness.NewComponents.Properties
 {
+    [TypeId("C84C27F17E9B4A8E9F22E0481322D86E")]
     public class PropertyMulipliedByFactRankGetter : PropertyValueGetter
     {
         public BlueprintUnitFact Fact

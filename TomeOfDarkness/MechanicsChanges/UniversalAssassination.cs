@@ -43,6 +43,7 @@ using Kingmaker.UnitLogic.ActivatableAbilities;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
 using static RootMotion.FinalIK.GrounderQuadruped;
 using System.Collections.Generic;
+using Kingmaker.Armies.Blueprints;
 
 namespace TomeOfDarkness.MechanicsChanges
 {
@@ -179,6 +180,7 @@ namespace TomeOfDarkness.MechanicsChanges
                 bp.SetDescription(ToDContext, "Each rank of this feature adds +1 to the Death Attack's and Assassination's DC.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Assassination Mortality Boost buff.", Universal_Assassination_Mortality_Boost_Buff);
@@ -198,6 +200,7 @@ namespace TomeOfDarkness.MechanicsChanges
                 bp.SetDescription(ToDContext, "Each rank of this buff adds -1 to the Death Attack's and Assassination's DC.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Assassination Mortality Reduction feature.", Universal_Assassination_Mortality_Reduction_Buff);
@@ -235,23 +238,23 @@ namespace TomeOfDarkness.MechanicsChanges
 
             #region |-------------------------------------------------| Change Assassin Death Attack to Use Custom Property |--------------------------------------------------|
 
-            var Assassin_Death_Attack_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("d86609703c0b37445828a23140385721");
-            var Assassin_Death_Attack_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("744e7c7fd58bd6040b40210cf0864692");
-            var Assassin_Death_Attack_Ability_Kill = BlueprintTools.GetBlueprint<BlueprintAbility>("ca5575accdf8ee64cb32608a77aaf989");
-            var Assassin_Death_Attack_Ability_Paralyze = BlueprintTools.GetBlueprint<BlueprintAbility>("452b64ffab80cff40bd27dc5f350d80c");
+            var Assassin_Death_Attack_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("d86609703c0b37445828a23140385721");                                   //[CHECKED]
+            var Assassin_Death_Attack_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("744e7c7fd58bd6040b40210cf0864692");                                   //[CHECKED]
+            var Assassin_Death_Attack_Ability_Kill = BlueprintTools.GetBlueprint<BlueprintAbility>("ca5575accdf8ee64cb32608a77aaf989");                              //[CHECKED]
+            var Assassin_Death_Attack_Ability_Paralyze = BlueprintTools.GetBlueprint<BlueprintAbility>("452b64ffab80cff40bd27dc5f350d80c");                          //[CHECKED]
 
-            var Assassin_Death_Attack_Standard_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("b2bcc7efc9d59af42836bc5ba9e1a5e0");
-            var Assassin_Death_Attack_Standard_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("68a6086913b7cca4283c62be2295ce81");
-            var Assassin_Death_Attack_Ability_Kill_Standard = BlueprintTools.GetBlueprint<BlueprintAbility>("02d129b799da92d40b6377bac27d843f");
-            var Assassin_Death_Attack_Ability_Paralyze_Standard = BlueprintTools.GetBlueprint<BlueprintAbility>("614422dc5cdd3eb4ebf0f9900dd0e0ab");
+            var Assassin_Death_Attack_Standard_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("b2bcc7efc9d59af42836bc5ba9e1a5e0");                          //[CHECKED]
+            var Assassin_Death_Attack_Standard_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("68a6086913b7cca4283c62be2295ce81");                          //[CHECKED]
+            var Assassin_Death_Attack_Ability_Kill_Standard = BlueprintTools.GetBlueprint<BlueprintAbility>("02d129b799da92d40b6377bac27d843f");                     //[CHECKED]
+            var Assassin_Death_Attack_Ability_Paralyze_Standard = BlueprintTools.GetBlueprint<BlueprintAbility>("614422dc5cdd3eb4ebf0f9900dd0e0ab");                 //[CHECKED]
 
-            var Assassin_Death_Attack_Ability_Kill_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("3740fdf85036ec34bbd0b09f218a9cce");
-            var Assassin_Death_Attack_Ability_Paralyze_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("b6ebb41266c137c4384b4b279a7f631c");
+            var Assassin_Death_Attack_Ability_Kill_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("3740fdf85036ec34bbd0b09f218a9cce");                            //[CHECKED]
+            var Assassin_Death_Attack_Ability_Paralyze_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("b6ebb41266c137c4384b4b279a7f631c");                        //[CHECKED]
 
-            var Assassin_Death_Attack_Ability_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("857ddbe8d4a742c49a933b893653649f");
+            var Assassin_Death_Attack_Ability_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("857ddbe8d4a742c49a933b893653649f");                     //[CHECKED]
 
-            var Assassin_Death_Attack_Ability_Kill_Effect_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("fa7cf97ea4dfc4d4aa600e18fd7d419b");
-            var Assassin_Death_Attack_Ability_Paralyze_Effect_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("b6ebb41266c137c4384b4b279a7f631c");
+            var Assassin_Death_Attack_Ability_Kill_Effect_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("fa7cf97ea4dfc4d4aa600e18fd7d419b");                     //[CHECKED]
+
 
             Assassin_Death_Attack_Ability_Property.RemoveComponents<ClassLevelGetter>();
             Assassin_Death_Attack_Ability_Property.RemoveComponents<SimplePropertyGetter>();
@@ -382,15 +385,6 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Changed Death Attack - Kill effect buff to use custom properties.", Assassin_Death_Attack_Ability_Kill_Effect_Buff);
 
-            var dth_atk_par_eff_buf_comp = Assassin_Death_Attack_Ability_Paralyze_Effect_Buff.GetComponents<ContextRankConfig>().FirstOrDefault();
-
-            dth_atk_par_eff_buf_comp.TemporaryContext(c => {
-                c.m_Class = new BlueprintCharacterClassReference[0];
-                c.m_BaseValueType = ContextRankBaseValueType.CustomProperty;
-                c.m_CustomProperty = Assassination_Training_Property.ToReference<BlueprintUnitPropertyReference>();
-            });
-
-            ToDContext.Logger.LogPatch("Changed Death Attack - Paralyze effect buff to use custom properties.", Assassin_Death_Attack_Ability_Paralyze_Effect_Buff);
 
 
             #endregion
@@ -408,15 +402,15 @@ namespace TomeOfDarkness.MechanicsChanges
             #region |-----------------------------------------------| Change Executioner's Assassination to Become Universal |-------------------------------------------------|
 
 
-            var Executioner_Assassinate_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bd7e70e98f9036f4ba27ef3e29a177c2");
+            var Executioner_Assassinate_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bd7e70e98f9036f4ba27ef3e29a177c2");                                        //[CHECKED]
             var ExecutionerAssassinateOldIcon = Executioner_Assassinate_Feature.m_Icon;
-            var UniversalGoryAssassinationIcon = BlueprintTools.GetBlueprint<BlueprintAbility>("c3d2294a6740bc147870fff652f3ced5").m_Icon; // Death Clutch icon 
-            var Executioner_Assassinate_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("3dad7f131aa884f4c972f2fb759d0df4");
-            var Executioner_Assassinate19_Messy_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("c81f15dbbadbb3a48b37e95a5a7ef759");
-            var Executioner_Assassinate14_Terroristic_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("c81f15dbbadbb3a48b37e95a5a7ef759");
+            var UniversalGoryAssassinationIcon = BlueprintTools.GetBlueprint<BlueprintAbility>("c3d2294a6740bc147870fff652f3ced5").m_Icon; // Death Clutch icon             //[CHECKED]
+            var Executioner_Assassinate_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("3dad7f131aa884f4c972f2fb759d0df4");                                        //[CHECKED]
+            var Executioner_Assassinate19_Messy_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("a10abd69551134341a6f771d23535165");                                //[CHECKED]
+            var Executioner_Assassinate14_Terroristic_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("c81f15dbbadbb3a48b37e95a5a7ef759");                          //[CHECKED]
 
-            var Main_Weapon_Damage_Stat_Bonus_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("9955f9c72c350254daff5a029ee32712");
-            var Main_Weapon_Critical_Modifier_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("6ac8613eca0083d438b48f9e1391f09b");
+            var Main_Weapon_Damage_Stat_Bonus_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("9955f9c72c350254daff5a029ee32712");                            //[CHECKED]
+            var Main_Weapon_Critical_Modifier_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("6ac8613eca0083d438b48f9e1391f09b");                            //[CHECKED]
 
             var Universal_Terroristic_Execution_Active_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalTerroristicExecutionActiveBuff", bp => {
                 bp.SetName(ToDContext, "Terroristic Execution");
@@ -544,13 +538,16 @@ namespace TomeOfDarkness.MechanicsChanges
             ToDContext.Logger.LogPatch("Changed Assassin's Death Attack Kill effect buff to have a custom conditional DC.", Assassin_Death_Attack_Ability_Kill_Effect_Buff);
 
 
-            var Assassin_Death_Attack_Ability_Paralyze_Effect_Buff_Context_Save = Assassin_Death_Attack_Ability_Paralyze_Effect_Buff.FlattenAllActions().OfType<ContextActionSavingThrow>().FirstOrDefault();
+            // Note that there is an asymmetry between Death Attack - Kill ability and Death Attack - Paralyze ability, since, in the former, the Saving Throw is on the effect buff, while,
+            // in the latter, the Saving Throw is on the effect-applying buff. 
 
-            Assassin_Death_Attack_Ability_Paralyze_Effect_Buff_Context_Save.TemporaryContext(c => {
+            var Assassin_Death_Attack_Ability_Paralyze_Buff_Context_Save = Assassin_Death_Attack_Ability_Paralyze_Buff.FlattenAllActions().OfType<ContextActionSavingThrow>().FirstOrDefault();
+
+            Assassin_Death_Attack_Ability_Paralyze_Buff_Context_Save.TemporaryContext(c => {
                 c.m_ConditionalDCIncrease = new ContextActionSavingThrow.ConditionalDCIncrease[] { Executioner_Assassinate_Ability_Conditional_DC_Increase };
             });
 
-            ToDContext.Logger.LogPatch("Changed Assassin's Death Attack Paralyze effect buff to have a custom conditional DC.", Assassin_Death_Attack_Ability_Paralyze_Effect_Buff);
+            ToDContext.Logger.LogPatch("Changed Assassin's Death Attack Paralyze buff to have a custom conditional DC.", Assassin_Death_Attack_Ability_Paralyze_Buff);
 
             #endregion
 

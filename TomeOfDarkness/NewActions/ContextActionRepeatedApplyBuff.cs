@@ -19,6 +19,7 @@ namespace TomeOfDarkness.NewActions
 {
     // Vek17_SC
     // This is a variant of Vek17's "ContextActionApplyBuffRanks" that is specifically designed to work for poison buffs (which use a non-rank stacking method).
+    [TypeId("9407383B23AF491E95AAD286A018AD8E")]
     public class ContextActionRepeatedApplyBuff : ContextAction
     {
         public BlueprintBuff Buff => m_Buff?.Get();

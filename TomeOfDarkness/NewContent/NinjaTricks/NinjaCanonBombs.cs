@@ -81,6 +81,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.LocalizedSavingThrow = new Kingmaker.Localization.LocalizedString();
                 bp.ReplaceComponents<AbilityEffectRunAction>(HlEX.CreateRunActions(Smoke_Bomb_Spawn_Action));
                 bp.AddComponent(kiResource.CreateResourceLogic());
+                bp.AddComponent(HlEX.CreateAbilityDeliverDelay(0.8F));
                 bp.AddComponent(HlEX.CreateContextCalculateAbilityParamsBasedOnClass(ClassTools.ClassReferences.RogueClass, StatType.Charisma));
 
             });

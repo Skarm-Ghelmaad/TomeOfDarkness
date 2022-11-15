@@ -43,6 +43,7 @@ using Kingmaker.UnitLogic;
 
 namespace TomeOfDarkness.NewComponents
 {
+    [TypeId("A73BDB5B66D446A4AFE2EC493653B8AB")]
     public class AddInoffensiveness : UnitBuffComponentDelegate, IUnitMakeOffensiveActionHandler, IUnitSubscriber
     {
 

@@ -583,6 +583,24 @@ namespace TomeOfDarkness.Utilities
             return a;
         }
 
+        public static AbilityDeliverDelay CreateAbilityDeliverDelay(float delay_seconds = 1.0F)
+        {
+            var c = Helpers.Create<AbilityDeliverDelay>();
+            c.DelaySeconds = delay_seconds;
+            return c;
+        }
+
+        // Holic75_SC
+        public static AbilityDeliverProjectile CreateAbilityDeliverProjectile(AbilityProjectileType type, BlueprintProjectile projectile, Feet length, Feet width)
+        {
+            var c = Helpers.Create<AbilityDeliverProjectile>();
+            c.Type = type;
+            c.m_Projectiles = new BlueprintProjectileReference[] { projectile.ToReference<BlueprintProjectileReference>() };
+            c.m_Length = length;
+            c.m_LineWidth = width;
+            return c;
+        }
+
         // Holic75_SC
         public static AbilitySpawnFx CreateAbilitySpawnFx(string asset_id,
                                                   AbilitySpawnFxAnchor position_anchor = AbilitySpawnFxAnchor.None,

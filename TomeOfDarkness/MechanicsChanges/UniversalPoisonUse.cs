@@ -180,6 +180,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this buff add +1 to the Poison Use's DC.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Toxicity Boost buff.", Universal_Create_Poison_Toxicity_Boost_Buff);
@@ -199,6 +200,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this buff adds -1 to the Poison Use's DC.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Toxicity Reduction feature.", Universal_Create_Poison_Toxicity_Reduction_Buff);
@@ -253,6 +255,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this feature add +1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Duration Boost buff.", Universal_Create_Poison_Duration_Boost_Buff);
@@ -272,6 +275,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this feature add -1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Duration Reduction buff.", Universal_Create_Poison_Duration_Reduction_Buff);
@@ -326,6 +330,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this buff adds +1 save to recover from Poison Use.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Worsen Recovery buff.", Universal_Create_Poison_Recovery_Worsen_Buff);
@@ -345,6 +350,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this buff adds -1 save to recover from Poison Use.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Improve Recovery buff.", Universal_Create_Poison_Recovery_Improve_Buff);
@@ -398,6 +404,7 @@ namespace TomeOfDarkness.NewContent.Features
                 bp.SetDescription(ToDContext, "Each rank of this buff adds +1 attack infused with Poison Use.");
                 bp.Ranks = 100;
                 bp.m_Flags = BlueprintBuff.Flags.HiddenInUi;
+                bp.Stacking = StackingType.Rank;
             });
 
             ToDContext.Logger.LogPatch("Added Create Poison - Stickiness buff.", Universal_Create_Poison_Stickiness_Buff);
@@ -489,10 +496,10 @@ namespace TomeOfDarkness.NewContent.Features
                             Property = HlEX.CreatePropertyMulipliedByFactRankGetter(UnitProperty.StatCharisma, Universal_Create_Poison_Stickiness_Boost_Charisma_Feature.ToReference<BlueprintUnitFactReference>())
                             },
                        new CompositeCustomPropertyGetter.ComplexCustomProperty(){
-                            Property = HlEX.CreateFactRankGetter(Poisoncraft_Wisdom_Feature.ToReference<BlueprintUnitFactReference>())
+                            Property = HlEX.CreateFactRankGetter(Universal_Create_Poison_Stickiness_Feature.ToReference<BlueprintUnitFactReference>())
                             },
                        new CompositeCustomPropertyGetter.ComplexCustomProperty(){
-                            Property = HlEX.CreateFactRankGetter(Poisoncraft_Charisma_Feature.ToReference<BlueprintUnitFactReference>())
+                            Property = HlEX.CreateFactRankGetter(Universal_Create_Poison_Stickiness_Buff.ToReference<BlueprintUnitFactReference>())
                             }
                         };
                     bp.BaseValue = 1;
@@ -547,29 +554,31 @@ namespace TomeOfDarkness.NewContent.Features
 
             #region |----------------------------------------------------| Make Assassin's Poison Use Based On Properties |----------------------------------------------------|
 
-            var Assassin_Create_Poison_Increased_Duration = BlueprintTools.GetBlueprint<BlueprintFeature>("953e47bbeb7c55145884de118f812b28");
-            var Assassin_Create_Poison_Increased_Saving_Throws = BlueprintTools.GetBlueprint<BlueprintFeature>("0cbb2201a65cb374fb4d73d6c9830b01");
-            
-            var Assassin_Create_Poison_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("8dd826513ba857645b38e918f17b59e6");
-            var Assassin_Create_Poison_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("46660d0da7797124aa221818778edc9d");
-            var Assassin_Create_Poison_Ability_Str = BlueprintTools.GetBlueprint<BlueprintAbility>("67aa1843adeed0346a30125c29d8df8b");
-            var Assassin_Create_Poison_Ability_Dex = BlueprintTools.GetBlueprint<BlueprintAbility>("3fbbc2843598d8146b1ca3415df6ecdd");
-            var Assassin_Create_Poison_Ability_Con = BlueprintTools.GetBlueprint<BlueprintAbility>("5a72db7750919864ba9cc2afa335fd2f");
+            //[CHECKED]
 
-            var Assassin_Create_Poison_Swift_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bb7b571cadb6cc147a52431385a40a0d");
-            var Assassin_Create_Poison_Swift_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("eadfd2e82d4e3684893543668aa55312");
-            var Assassin_Create_Poison_Ability_Swift_Str = BlueprintTools.GetBlueprint<BlueprintAbility>("ca95feaf38593534f91becc31d097756");
-            var Assassin_Create_Poison_Ability_Swift_Dex = BlueprintTools.GetBlueprint<BlueprintAbility>("e7730af415f91c44e9306e1aa15c5a85");
-            var Assassin_Create_Poison_Ability_Swift_Con = BlueprintTools.GetBlueprint<BlueprintAbility>("eff246d4ceae9b14e8bc4a99fe508808");
+            var Assassin_Create_Poison_Increased_Duration = BlueprintTools.GetBlueprint<BlueprintFeature>("953e47bbeb7c55145884de118f812b28");                       //[CHECKED]
+            var Assassin_Create_Poison_Increased_Saving_Throws = BlueprintTools.GetBlueprint<BlueprintFeature>("0cbb2201a65cb374fb4d73d6c9830b01");                  //[CHECKED]
 
-            var Assassin_Create_Poison_Ability_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("0482fffc039d46fc86a86bda03e00f1a");
+            var Assassin_Create_Poison_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("8dd826513ba857645b38e918f17b59e6");                                  //[CHECKED]
+            var Assassin_Create_Poison_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("46660d0da7797124aa221818778edc9d");                                  //[CHECKED]
+            var Assassin_Create_Poison_Ability_Str = BlueprintTools.GetBlueprint<BlueprintAbility>("67aa1843adeed0346a30125c29d8df8b");                              //[CHECKED]
+            var Assassin_Create_Poison_Ability_Dex = BlueprintTools.GetBlueprint<BlueprintAbility>("3fbbc2843598d8146b1ca3415df6ecdd");                              //[CHECKED]
+            var Assassin_Create_Poison_Ability_Con = BlueprintTools.GetBlueprint<BlueprintAbility>("5a72db7750919864ba9cc2afa335fd2f");                              //[CHECKED]
 
-            var Assassin_Create_Poison_Ability_Str_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("c219da8e56fb30045bb69247c695b8c8");
-            var Assassin_Create_Poison_Ability_Dex_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("385c07aa91442094f9385510504dde3c");
-            var Assassin_Create_Poison_Ability_Con_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("ac4d4b3f14f2b6e41a19a3d8e13e7ee7");
-            var Assassin_Create_Poison_Ability_Str_Buff_Effect = BlueprintTools.GetBlueprint<BlueprintBuff>("285290cc80941bc4c97461d6f50aaad9");
-            var Assassin_Create_Poison_Ability_Dex_Buff_Effect = BlueprintTools.GetBlueprint<BlueprintBuff>("c766f0606ac12e24e8a9fdb8beabc6c2");
-            var Assassin_Create_Poison_Ability_Con_Buff_Effect = BlueprintTools.GetBlueprint<BlueprintBuff>("6542e025d84501a41b652bcdc57f6901");
+            var Assassin_Create_Poison_Swift_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bb7b571cadb6cc147a52431385a40a0d");                            //[CHECKED]
+            var Assassin_Create_Poison_Swift_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("eadfd2e82d4e3684893543668aa55312");                            //[CHECKED]
+            var Assassin_Create_Poison_Ability_Swift_Str = BlueprintTools.GetBlueprint<BlueprintAbility>("ca95feaf38593534f91becc31d097756");                        //[CHECKED]
+            var Assassin_Create_Poison_Ability_Swift_Dex = BlueprintTools.GetBlueprint<BlueprintAbility>("e7730af415f91c44e9306e1aa15c5a85");                        //[CHECKED]
+            var Assassin_Create_Poison_Ability_Swift_Con = BlueprintTools.GetBlueprint<BlueprintAbility>("eff246d4ceae9b14e8bc4a99fe508808");                        //[CHECKED]
+
+            var Assassin_Create_Poison_Ability_Property = BlueprintTools.GetBlueprint<BlueprintUnitProperty>("0482fffc039d46fc86a86bda03e00f1a");                    //[CHECKED]
+
+            var Assassin_Create_Poison_Ability_Str_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("c219da8e56fb30045bb69247c695b8c8");                            //[CHECKED]
+            var Assassin_Create_Poison_Ability_Dex_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("385c07aa91442094f9385510504dde3c");                            //[CHECKED]
+            var Assassin_Create_Poison_Ability_Con_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("ac4d4b3f14f2b6e41a19a3d8e13e7ee7");                            //[CHECKED]
+            var Assassin_Create_Poison_Ability_Str_Buff_Effect = BlueprintTools.GetBlueprint<BlueprintBuff>("285290cc80941bc4c97461d6f50aaad9");                     //[CHECKED]
+            var Assassin_Create_Poison_Ability_Dex_Buff_Effect = BlueprintTools.GetBlueprint<BlueprintBuff>("c766f0606ac12e24e8a9fdb8beabc6c2");                     //[CHECKED]
+            var Assassin_Create_Poison_Ability_Con_Buff_Effect = BlueprintTools.GetBlueprint<BlueprintBuff>("6542e025d84501a41b652bcdc57f6901");                     //[CHECKED]
 
             Assassin_Create_Poison_Increased_Duration.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Universal_Create_Poison_Duration_Boost_Feature.ToReference<BlueprintUnitFactReference>() }));
 
@@ -1052,7 +1061,7 @@ namespace TomeOfDarkness.NewContent.Features
 
             #region |------------------------------------------------------------| Add Poison Use Stat to Assassin |-----------------------------------------------------------|
 
-            var Assassin_Progression = BlueprintTools.GetBlueprint<BlueprintProgression>("a02e1f0e13baa8c43b758425eda9e973");
+            var Assassin_Progression = BlueprintTools.GetBlueprint<BlueprintProgression>("a02e1f0e13baa8c43b758425eda9e973");                                               //[CHECKED]
 
             var AssassinLevelEntry1 = Assassin_Progression.LevelEntries.Where(entry => entry.Level == 1).FirstOrDefault();
 
@@ -1065,7 +1074,7 @@ namespace TomeOfDarkness.NewContent.Features
 
             #region |---------------------------------------------------|  Make Assassin's Poison Use Con-Damage Universal |---------------------------------------------------|
 
-            var Assassin_Create_Poison_Con_Unlock_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("4b28d5c267df88743afb272a2a874220");
+            var Assassin_Create_Poison_Con_Unlock_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("4b28d5c267df88743afb272a2a874220");                              //[CHECKED]
 
             var Universal_Create_Poison_Con_Unlock_Feature = Assassin_Create_Poison_Con_Unlock_Feature.CreateCopy(ToDContext, "UniversalCreatePoisonConUnlock", bp => {
                 bp.SetDescription(ToDContext, "The character gains access to poison that deals {g|Encyclopedia:Constitution}Constitution{/g} {g|Encyclopedia:Damage}damage{/g}.");

@@ -505,6 +505,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             var Assassin_Create_Poison_Swift_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bb7b571cadb6cc147a52431385a40a0d");
 
             var assassin_fake_levels = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "PoisonCraftTrainingFakeLevel");
+            var Poison_Craft_Charisma_Feature = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "PoisonCraftCharismaStatFeature");
 
             var PoisonCraftTrainingIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_PoisonCraftTraining.png");
 
@@ -537,6 +538,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             Ninja_Create_Poison_Feature.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
                 c.m_Feature = RoguePoisonCraftTrainingProgression.ToReference<BlueprintFeatureReference>();
             }));
+            Ninja_Create_Poison_Feature.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Poison_Craft_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
             Ninja_Create_Poison_Feature.SetDescription(ToDContext, "At 1st level, a ninja gains the assassin’s poison use class feature.  He uses his rogue level as his effective rogue level to determine the effects of poison use.");
         }
 

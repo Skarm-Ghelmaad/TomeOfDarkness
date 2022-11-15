@@ -55,9 +55,10 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
     {
         public static void ConfigureNinjaAssassinate()
         {
-            var Executioner_Assassinate_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bd7e70e98f9036f4ba27ef3e29a177c2");
-            var Executioner_Assassinate_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("3dad7f131aa884f4c972f2fb759d0df4");
-            var Slayer_Study_Target_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("b96d810ceb1708b4e895b695ddbb1813");
+            //[CHECKED]
+            var Executioner_Assassinate_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bd7e70e98f9036f4ba27ef3e29a177c2");                                        //[CHECKED]
+            var Executioner_Assassinate_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("3dad7f131aa884f4c972f2fb759d0df4");                                        //[CHECKED]
+            var Slayer_Study_Target_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("b96d810ceb1708b4e895b695ddbb1813");                                            //[CHECKED]
             var AssassinateStudyIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_AssassinateStudyNinja.png");
             var NinjaTrickAssassinateMeleeIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_AssassinateNinja.png");
             var Rogue_Assassination_Training_Progression = BlueprintTools.GetModBlueprint<BlueprintProgression>(ToDContext, "RogueAssassinationTrainingProgression");
@@ -118,6 +119,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             }));
 
             Ninja_Trick_Assassinate_Feature.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Assassination_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
+
+            Ninja_Trick_Assassinate_Feature.Ranks = 1;
 
             ToDContext.Logger.LogPatch("Created Assassinate ninja trick.", Ninja_Trick_Assassinate_Feature);
         }

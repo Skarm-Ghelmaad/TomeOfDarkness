@@ -1,4 +1,5 @@
 ﻿using Kingmaker;
+using Kingmaker.Blueprints.JsonSystem;
 using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.UnitLogic.Abilities.Components.AreaEffects;
@@ -18,6 +19,7 @@ namespace TomeOfDarkness.NewComponents.AreaEffects
 {
     // The original component from Holic75 was "AbilityAreaEffectRunActionWithFirstRound", but I wanted a more versatile component that allowed for more fine-tuned
     // (and longer) delay.
+    [TypeId("213BE70F28CF40A7B8D02F2A2D5BFDB7")]
     public class AbilityAreaEffectRunActionWithDelay : AbilityAreaEffectLogic
     {
         public override void OnUnitEnter(MechanicsContext context, AreaEffectEntityData areaEffect, UnitEntityData unit)
