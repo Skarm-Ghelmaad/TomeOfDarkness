@@ -7,12 +7,8 @@ using TomeOfDarkness.NewComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TabletopTweaks.Core.NewComponents.OwlcatReplacements;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
-using TomeOfDarkness.MechanicsChanges;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.Designers.Mechanics.Buffs;
@@ -23,25 +19,17 @@ using Kingmaker.UnitLogic.Mechanics;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.ResourceLinks;
-using Kingmaker.UnitLogic.Abilities.Components.Base;
 using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using TomeOfDarkness.Utilities;
-using Kingmaker.AreaLogic.Cutscenes;
-using Kingmaker.Designers.EventConditionActionSystem.Evaluators;
-using RootMotion.FinalIK;
 using static TabletopTweaks.Core.Utilities.FeatTools;
-using System.Runtime.ConstrainedExecution;
-using Kingmaker.Blueprints.Classes.Prerequisites;
 using static Kingmaker.Blueprints.Classes.Prerequisites.Prerequisite;
 using Kingmaker.UnitLogic.ActivatableAbilities;
 using TomeOfDarkness.NewComponents.OwlcatReplacements;
-using Kingmaker.UnitLogic.Abilities;
 using static Kingmaker.UnitLogic.Interaction.SpawnerInteractionPart;
 using Kingmaker.Blueprints.Classes.Selection;
 using TomeOfDarkness.NewContent.NinjaTricks;
 using TomeOfDarkness.NewContent.Features;
-using static UnityModManagerNet.UnityModManager;
 using HarmonyLib;
 
 
@@ -174,7 +162,8 @@ namespace TomeOfDarkness.NewContent.Archetypes
                 });
                 bp.SetName(ToDContext, "Ninja Proficiencies");
                 bp.SetDescription(ToDContext, "Ninja are proficient with all simple weapons, plus the kama, dueling sword, nunchaku, sai, shortbow, short sword, shuriken, and scimitar. Ninjas are proficient with light armor but not with shields.");
-
+                bp.IsClassFeature = true;
+                bp.Ranks = 1;
             });
             #endregion
 
@@ -198,16 +187,21 @@ namespace TomeOfDarkness.NewContent.Archetypes
 
             var NinjaKiSpeedBuff = Expeditious_Retreat_Buff.CreateCopy(ToDContext, "NinjaTrickKiSpeedBuff", bp =>
             {
+                bp.SetName(ToDContext, "Speed Burst");
+                bp.SetDescription(ToDContext, "You grant yourself a sudden burst of speed, increasing your base land speed by 20 feet for 1 round.");
                 bp.ReplaceComponents<BuffMovementSpeed>(Helpers.Create<BuffMovementSpeed>(c =>
                 {
+                    c.Descriptor = ModifierDescriptor.UntypedStackable;
                     c.Value = 20;
                 }));
 
             });
 
+
             var Instinctive_Stealth_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "NinjaTrickInstinctiveStealthBuff", bp =>
             {
                 bp.SetName(ToDContext, "Instinctive Stealth");
+                bp.SetDescription(ToDContext, "You grant yourself an insight on which place and ways are the best to be stealthy in the current circumstances. This grants you a +4 insight bonus on Stealth checks for 1 round.");
                 bp.m_Icon = InstinctiveStealthIcon;
                 bp.FxOnStart = HlEX.CreatePrefabLink(Shadow_Veil_Buff_Fx_Asset_ID);
                 bp.FxOnRemove = new PrefabLink();
@@ -218,6 +212,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
                     c.Value = 4;
                 }));
             });
+
 
             var Apply_Instinctive_Stealth_Buff = HlEX.CreateContextActionApplyBuff(Instinctive_Stealth_Buff.ToReference<BlueprintBuffReference>(),
                                                                                    HlEX.CreateContextDuration(1, DurationRate.Rounds),
@@ -236,15 +231,15 @@ namespace TomeOfDarkness.NewContent.Archetypes
             {
                 bp.SetName(ToDContext, "Ninja Trick: Speed Burst");
                 bp.SetDescription(ToDContext, "A ninja with this ki power can spend 1 point from his ki pool as a swift action to grant himself a sudden burst of speed. This increases the ninja's base land speed by 20 feet for 1 round.");
-                bp.FlattenAllActions()
-                    .OfType<ContextActionApplyBuff>()
-                    .ForEach(a =>
-                    {
-                        a.m_Buff = NinjaKiSpeedBuff.ToReference<BlueprintBuffReference>();
-                        a.DurationValue = HlEX.CreateContextDuration(1, DurationRate.Rounds);
-                    });
-
             });
+
+            NinjaKiSpeedBoostAbility.FlattenAllActions()
+                                    .OfType<ContextActionApplyBuff>()
+                                    .ForEach(a =>
+                                    {
+                                        a.m_Buff = NinjaKiSpeedBuff.ToReference<BlueprintBuffReference>();
+                                        a.DurationValue = HlEX.CreateContextDuration(1, DurationRate.Rounds);
+                                    });
 
             ToDContext.Logger.LogPatch("Created Ninja Speed Burst (minor) ninja trick.", NinjaKiSpeedBoostAbility);
 
@@ -268,6 +263,8 @@ namespace TomeOfDarkness.NewContent.Archetypes
             ToDContext.Logger.LogPatch("Created Instinctive Stealth (minor) ninja trick.", InstinctiveStealthAbility);
 
             var Ninja_Extra_Attack_feature = HlEX.ConvertAbilityToFeature(NinjaExtraAttackAbility, "", "", "Feature", "Ability", false);
+            Ninja_Extra_Attack_feature.IsClassFeature = true;
+            Ninja_Extra_Attack_feature.Ranks = 1;
 
 
 
@@ -306,6 +303,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
                 bp.AddComponent<HasFactsFeaturesUnlock>(c => {
                     c.m_CheckedFacts = canon_ki_modifier_exclusions;
                     c.m_Features = new BlueprintUnitFactReference[] { cha_ki_points_bonus.Get().ToReference<BlueprintUnitFactReference>() };
+                    c.Not = true;
                 });
                 bp.AddComponent<AddFacts>(c =>
                 {
@@ -503,6 +501,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
         {
             var Assassin_Create_Poison_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("8dd826513ba857645b38e918f17b59e6");
             var Assassin_Create_Poison_Swift_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bb7b571cadb6cc147a52431385a40a0d");
+            var Assassin_Create_Poison_Resource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("d54b614eb42da7d48b927b57de337b95");
 
             var assassin_fake_levels = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "PoisonCraftTrainingFakeLevel");
             var Poison_Craft_Charisma_Feature = BlueprintTools.GetModBlueprint<BlueprintFeature>(ToDContext, "PoisonCraftCharismaStatFeature");
@@ -540,6 +539,23 @@ namespace TomeOfDarkness.NewContent.Archetypes
             }));
             Ninja_Create_Poison_Feature.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Poison_Craft_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
             Ninja_Create_Poison_Feature.SetDescription(ToDContext, "At 1st level, a ninja gains the assassin’s poison use class feature.  He uses his rogue level as his effective rogue level to determine the effects of poison use.");
+            Ninja_Create_Poison_Feature.AddComponent(Helpers.Create<IncreaseResourceAmountBasedOnClassOnly>(c => {
+                c.m_Resource = Assassin_Create_Poison_Resource.ToReference<BlueprintAbilityResourceReference>();
+                c.m_CharacterClass = ClassTools.ClassReferences.RogueClass;
+                c.Subtract = false;
+                c.IncreasedByLevel = true;
+                c.IncreasedByLevelStartPlusDivStep = false;
+                c.StartingLevel = 0;
+                c.StartingIncrease = 0;
+                c.LevelIncrease = 1;
+                c.Subtract = false;
+            }));
+
+            Ninja_Create_Poison_Feature.IsClassFeature = true;
+            Ninja_Create_Poison_Feature.Ranks = 1;
+
+
+
         }
 
     }

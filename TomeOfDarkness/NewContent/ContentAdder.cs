@@ -1,14 +1,9 @@
 ﻿using HarmonyLib;
 using Kingmaker.Blueprints.Items;
 using Kingmaker.Blueprints.JsonSystem;
-using Kingmaker.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TabletopTweaks.Core.Utilities;
 using TomeOfDarkness.MechanicsChanges;
+using TomeOfDarkness.NewContent.Feat;
 using TomeOfDarkness.NewContent.Features;
 using static TomeOfDarkness.Main;
 
@@ -42,6 +37,10 @@ namespace TomeOfDarkness.NewContent
                 MartialArtsTraining.ConfigureMonkMartialArtsTraining();     //Changes to the Monk's unarmed attack feature to make it universal. 
                 UniversalPoisonUse.ConfigureUniversalPoisonUse();           //Changes to the Assassin's Poison Use feature to make it universal.
 
+                //New spells (added first to be used for archetypes and other things)
+                Spells.FxTester.ConfigureFxTester();
+                Spells.ObscuringMist.ConfigureObscuringMist();
+                Spells.Sanctuary.ConfigureSanctuary();
 
                 //New archetypes
                 Archetypes.Ninja.ConfigureNinjaArchetype();
@@ -50,14 +49,16 @@ namespace TomeOfDarkness.NewContent
                 //New slayer talents
                 SlayerTalents.SlayerAssassinate.ConfigureSlayerAssassinate();
 
-                //New spells
-                Spells.FxTester.ConfigureFxTester();
-                Spells.ObscuringMist.ConfigureObscuringMist();
-                Spells.Sanctuary.ConfigureSanctuary();
+                //New feats
+                ExtraNinjaTrick.ConfigureExtraNinjaTrick();
+                ExtraPoisonUse.ConfigureExtraPoisonUse();
+
+
+
 
             }
 
 
-       }
+        }
     }
 }

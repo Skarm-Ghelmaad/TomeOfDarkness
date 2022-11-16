@@ -1,18 +1,8 @@
 ﻿using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
-using Kingmaker.UnitLogic.Abilities.Components.AreaEffects;
-using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics;
-using Kingmaker.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using TabletopTweaks.Core.Utilities;
 using Kingmaker.Blueprints.Items.Equipment;
@@ -20,11 +10,8 @@ using TomeOfDarkness.NewComponents;
 using Kingmaker.EntitySystem.Stats;
 using static TomeOfDarkness.Main;
 using Kingmaker.Enums;
-using Kingmaker.RuleSystem;
 using Kingmaker.UnitLogic.Abilities;
-using System.Web;
 using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
 using Kingmaker.Craft;
 
 

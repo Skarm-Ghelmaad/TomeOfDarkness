@@ -1,39 +1,12 @@
 ﻿using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Designers.Mechanics.Facts;
-using Kingmaker.Enums;
-using Kingmaker.ResourceLinks;
-using Kingmaker.UnitLogic.Abilities.Blueprints;
-using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.Buffs.Components;
-using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.UnitLogic.Mechanics;
-using Kingmaker.Utility;
-using System.Diagnostics.Tracing;
-using Kingmaker.EntitySystem.Stats;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
-using Kingmaker.UnitLogic.Mechanics.Components;
-using TomeOfDarkness.NewComponents;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
-using Kingmaker.UnitLogic.Commands.Base;
-using Kingmaker.UnitLogic.Abilities;
-using TomeOfDarkness.Utilities;
-using Kingmaker.UnitLogic.Abilities.Components;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
-using Kingmaker.UnitLogic.Mechanics.Actions;
-using Kingmaker.RuleSystem;
-using static RootMotion.FinalIK.RagdollUtility;
-using System;
-using static RootMotion.FinalIK.InteractionTrigger;
 using Kingmaker.Blueprints.Classes.Selection;
-using TomeOfDarkness.MechanicsChanges;
-using static TomeOfDarkness.MechanicsChanges.MartialArtsTraining;
 using System.Collections.Generic;
 using System.Linq;
-using TabletopTweaks.Base.NewContent.Features;
 using Kingmaker.Blueprints.Classes.Prerequisites;
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
@@ -114,6 +87,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                     c.m_Feature = improved_unarmed_strike.ToReference<BlueprintFeatureReference>();
                     c.Group = Prerequisite.GroupType.All;
                 }));
+                bp.IsClassFeature = true;
+                bp.Ranks = 1;
             });
 
             ToDContext.Logger.LogPatch("Created Unarmed Combat Mastery (Rogue) ninja trick.", UnarmedCombatMasteryRogueFeature);

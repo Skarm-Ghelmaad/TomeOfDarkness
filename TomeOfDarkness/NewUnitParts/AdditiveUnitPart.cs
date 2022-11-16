@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
-using Kingmaker.EntitySystem.Entities;
-using Kingmaker.Enums.Damage;
-using Kingmaker.RuleSystem.Rules;
-using Kingmaker.RuleSystem.Rules.Damage;
-using Kingmaker.UI.MVVM._ConsoleView.Vendor;
-using Kingmaker.UnitLogic;
-using Kingmaker.UnitLogic.FactLogic;
+﻿using Kingmaker.UnitLogic;
 using Kingmaker.Utility;
 
 // Holic75_PT

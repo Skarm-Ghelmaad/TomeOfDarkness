@@ -1,35 +1,6 @@
-﻿using Kingmaker;
-using Kingmaker.Blueprints;
-using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Selection;
-using Kingmaker.Blueprints.Facts;
-using Kingmaker.UnitLogic.Mechanics.Components;
-using Kingmaker.Designers.Mechanics.Buffs;
-using Kingmaker.Designers.Mechanics.Facts;
-using Kingmaker.ElementsSystem;
-using Kingmaker.EntitySystem.Stats;
-using Kingmaker.RuleSystem;
+﻿using Kingmaker.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
-using Kingmaker.UnitLogic.Abilities.Components;
-using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.UnitLogic.Mechanics;
-using Kingmaker.UnitLogic.Mechanics.Actions;
-using JetBrains.Annotations;
-using Kingmaker.Armies.TacticalCombat;
-using Kingmaker.Armies.TacticalCombat.Parts;
-using Kingmaker.Blueprints.JsonSystem;
-using Kingmaker.Blueprints.Root;
-using Kingmaker.Localization;
-using Kingmaker.PubSubSystem;
-using Kingmaker.UI;
-using Kingmaker.UnitLogic;
-using Kingmaker.Utility;
-using UnityEngine;
-using UnityEngine.Serialization;
-using System.Linq;
 using TabletopTweaks.Core.Utilities;
-using static TomeOfDarkness.Main;
 
 namespace TomeOfDarkness.Utilities
 {

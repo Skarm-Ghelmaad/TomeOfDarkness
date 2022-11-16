@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using Kingmaker.View;
 using Kingmaker.ResourceLinks;
 using Kingmaker.Blueprints;
 using Kingmaker.UnitLogic.Mechanics.Components;
@@ -16,10 +13,8 @@ using Kingmaker.RuleSystem;
 using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.Utility;
 using static TomeOfDarkness.Main;
-using System.Web;
 using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.ElementsSystem;
-using Kingmaker.Designers.EventConditionActionSystem.ContextData;
 using Kingmaker.UnitLogic.ActivatableAbilities;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
 using static Kingmaker.UnitLogic.Commands.Base.UnitCommand;
@@ -47,17 +42,8 @@ using Kingmaker.UnitLogic.Class.Kineticist.Properties;
 using Kingmaker.Localization;
 using Kingmaker.UI.Models.Log.CombatLog_ThreadSystem;
 using Owlcat.Runtime.UI.Tooltips;
-using TabletopTweaks.Core.UMMTools.Utility;
-using UnityEngine.UI.Extensions;
 using Kingmaker.UI.Models.Log.CombatLog_ThreadSystem.LogThreads.Common;
-using static RootMotion.FinalIK.InteractionObject;
-using JetBrains.Annotations;
-using Kingmaker.Localization.Shared;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using TabletopTweaks.Core.Localization;
-using TabletopTweaks.Core.ModLogic;
-using TabletopTweaks.Core.NewComponents.OwlcatReplacements.DamageResistance;
 using TabletopTweaks.Core.UMMTools;
 using TomeOfDarkness.NewComponents.Properties;
 using TabletopTweaks.Core.NewActions;
@@ -481,6 +467,11 @@ namespace TomeOfDarkness.Utilities
             return r;
         }
 
+        static public ContextActionRemoveSelf CreateContextActionRemoveSelf()
+        {
+            var r = Helpers.Create<ContextActionRemoveSelf>();
+            return r;
+        }
 
         static public ContextActionRepeatedApplyBuff CreateContextActionRepeatedApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, ContextValue buff_applications, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false, bool linked_to_area = true)
         {

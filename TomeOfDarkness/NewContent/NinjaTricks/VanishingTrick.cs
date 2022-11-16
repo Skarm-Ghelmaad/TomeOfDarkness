@@ -1,33 +1,15 @@
 ﻿using Kingmaker.Blueprints;
-using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.Enums;
-using Kingmaker.ResourceLinks;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.Buffs.Components;
-using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.UnitLogic.Mechanics;
-using Kingmaker.Utility;
-using System.Diagnostics.Tracing;
-using Kingmaker.EntitySystem.Stats;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using Kingmaker.UnitLogic.Mechanics.Components;
-using TomeOfDarkness.NewComponents;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
 using Kingmaker.UnitLogic.Commands.Base;
-using Kingmaker.UnitLogic.Abilities;
 using TomeOfDarkness.Utilities;
-using Kingmaker.UnitLogic.Abilities.Components;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
-using Kingmaker.UnitLogic.Mechanics.Actions;
-using Kingmaker.RuleSystem;
-using static RootMotion.FinalIK.RagdollUtility;
 using System;
-using static RootMotion.FinalIK.InteractionTrigger;
+
 
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
@@ -84,6 +66,9 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             VanishingTrickAbility.SetMiscAbilityParametersSelfOnly();
 
             var vanishing_trick_feature = HlEX.ConvertAbilityToFeature(VanishingTrickAbility, "", "", "Feature", "Ability", false);
+
+            vanishing_trick_feature.IsClassFeature = true;
+            vanishing_trick_feature.Ranks = 1;
 
             n_trick_invisible_blade.Get().AddPrerequisiteFeature(vanishing_trick_feature);
 

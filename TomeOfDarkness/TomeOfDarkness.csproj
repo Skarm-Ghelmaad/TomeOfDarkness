@@ -86,6 +86,8 @@
     <Compile Include="NewContent\Features\LightSteps.cs" />
     <Compile Include="NewContent\Features\NoTrace.cs" />
     <Compile Include="MechanicsChanges\UniversalPoisonUse.cs" />
+    <Compile Include="NewContent\Feat\ExtraNinjaTrick.cs" />
+    <Compile Include="NewContent\Feat\ExtraPoisonUse.cs" />
     <Compile Include="NewContent\NinjaTricks\AccelerationOfForm.cs" />
     <Compile Include="NewContent\NinjaTricks\FlurryOfStars.cs" />
     <Compile Include="NewContent\NinjaTricks\HerbalCompound.cs" />

@@ -1,31 +1,17 @@
 ﻿using Kingmaker.Blueprints;
-using Kingmaker.Blueprints.Classes;
 using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Designers.Mechanics.Facts;
-using Kingmaker.Enums;
-using Kingmaker.ResourceLinks;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.Buffs.Components;
-using Kingmaker.UnitLogic.FactLogic;
 using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.Utility;
-using System.Diagnostics.Tracing;
 using Kingmaker.EntitySystem.Stats;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using Kingmaker.UnitLogic.Mechanics.Components;
-using TomeOfDarkness.NewComponents;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
-using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.UnitLogic.Abilities;
 using TomeOfDarkness.Utilities;
 using Kingmaker.UnitLogic.Abilities.Components;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
-using Kingmaker.Blueprints.Items.Ecnchantments;
-using System.Linq;
-using System;
 using Kingmaker.Craft;
 using Kingmaker.RuleSystem;
 using TomeOfDarkness.NewComponents.AreaEffects;
@@ -65,6 +51,10 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                                                     HlEX.CreateContextDuration(1, DurationRate.Minutes));
 
 
+            var Eggshell_Projectile = BlueprintTools.GetBlueprint<BlueprintProjectile>("c28e153e8c212c1458ec2ee4092a794f"); //Kinetic EarthBlast projectile
+
+            var Smoke_Bomb_Deliver_Eggshell_Projectile = HlEX.CreateAbilityDeliverProjectile(AbilityProjectileType.Simple, Eggshell_Projectile, 0.Feet(), 5.Feet());
+
             var Smoke_Bomb_Ability = obscuring_mist_spell.CreateCopy(ToDContext, "NinjaTrickSmokeBombAbility", bp =>
             {
                 bp.SetName(ToDContext, "Smoke Bomb");
@@ -81,12 +71,15 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.LocalizedSavingThrow = new Kingmaker.Localization.LocalizedString();
                 bp.ReplaceComponents<AbilityEffectRunAction>(HlEX.CreateRunActions(Smoke_Bomb_Spawn_Action));
                 bp.AddComponent(kiResource.CreateResourceLogic());
+                bp.AddComponent(Smoke_Bomb_Deliver_Eggshell_Projectile);
                 bp.AddComponent(HlEX.CreateAbilityDeliverDelay(0.8F));
                 bp.AddComponent(HlEX.CreateContextCalculateAbilityParamsBasedOnClass(ClassTools.ClassReferences.RogueClass, StatType.Charisma));
 
             });
 
             var Smoke_Bomb_Feature = HlEX.ConvertAbilityToFeature(Smoke_Bomb_Ability, "", "", "Feature", "Ability", false);
+            Smoke_Bomb_Feature.IsClassFeature = true;
+            Smoke_Bomb_Feature.Ranks = 1;
 
             ToDContext.Logger.LogPatch("Created Smoke Bomb Trick ninja trick.", Smoke_Bomb_Feature);
 
@@ -125,6 +118,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             var Choking_Bomb_Feature = HlEX.ConvertAbilityToFeature(Choking_Bomb_Ability, "", "", "Feature", "Ability", false);
 
             Choking_Bomb_Feature.AddPrerequisiteFeature(Smoke_Bomb_Feature);
+            Choking_Bomb_Feature.IsClassFeature = true;
+            Choking_Bomb_Feature.Ranks = 1;
 
             ToDContext.Logger.LogPatch("Created Choking Bomb Trick ninja trick.", Choking_Bomb_Feature);
 
@@ -162,6 +157,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             Blinding_Bomb_Feature.AddPrerequisiteFeature(Smoke_Bomb_Feature);
             Blinding_Bomb_Feature.AddPrerequisiteFeature(Choking_Bomb_Feature);
+            Blinding_Bomb_Feature.IsClassFeature = true;
+            Blinding_Bomb_Feature.Ranks = 1;
 
             ToDContext.Logger.LogPatch("Created Blinding Bomb Trick ninja trick.", Blinding_Bomb_Feature);
 

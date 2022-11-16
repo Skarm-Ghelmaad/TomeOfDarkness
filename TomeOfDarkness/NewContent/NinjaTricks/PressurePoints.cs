@@ -29,6 +29,7 @@ using System;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.RuleSystem;
 using Kingmaker.UnitLogic.ActivatableAbilities;
+using Kingmaker.ElementsSystem;
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
 {
@@ -45,7 +46,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             var PressurePointsChaIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_PressurePointsCha.png");
 
             var Debilitating_Injury_Bewildered_Active_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("116ee72b2149f4d44a330296a7e42d13");
-            
+            var Debilitating_Injury_Bewildered_Activatable_Ability = BlueprintTools.GetBlueprint<BlueprintActivatableAbility>("c74a63e0d2fd08149bfcfff8ded43313");
+
             var Pressure_Points_Str_Action_Deal_Damage = HlEX.CreateContextActionDealDamage(StatType.Strength, HlEX.CreateContextDiceValue(DiceType.Zero, HlEX.CreateContextValue(0), HlEX.CreateContextValue(1)), false, false, false, false);
             var Pressure_Points_Dex_Action_Deal_Damage = HlEX.CreateContextActionDealDamage(StatType.Dexterity, HlEX.CreateContextDiceValue(DiceType.Zero, HlEX.CreateContextValue(0), HlEX.CreateContextValue(1)), false, false, false, false);
             var Pressure_Points_Con_Action_Deal_Damage = HlEX.CreateContextActionDealDamage(StatType.Constitution, HlEX.CreateContextDiceValue(DiceType.Zero, HlEX.CreateContextValue(0), HlEX.CreateContextValue(1)), false, false, false, false);
@@ -89,80 +91,149 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.m_Icon = PressurePointsChaIcon;
             });
 
-            var Pressure_Points_Str_Active_Buff_Conditional_Action1 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Dex_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Active_Buff));
-            var Pressure_Points_Str_Active_Buff_Conditional_Action2 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Con_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Active_Buff));
-            var Pressure_Points_Str_Active_Buff_Conditional_Action3 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Int_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Active_Buff));
-            var Pressure_Points_Str_Active_Buff_Conditional_Action4 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Wis_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Active_Buff));
-            var Pressure_Points_Str_Active_Buff_Conditional_Action5 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Cha_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Active_Buff));
+            var Pressure_Points_Str_Effect_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsStrEffectBuff", bp => {
+                bp.SetName(ToDContext, "Pressure Points (Strength)");
+                bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Strength}Strength{/g}.");
+                bp.m_Icon = PressurePointsStrIcon;
+                bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Str_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+            });
 
-            var Pressure_Points_Dex_Active_Buff_Conditional_Action1 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Str_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Active_Buff));
-            var Pressure_Points_Dex_Active_Buff_Conditional_Action2 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Con_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Active_Buff));
-            var Pressure_Points_Dex_Active_Buff_Conditional_Action3 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Int_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Active_Buff));
-            var Pressure_Points_Dex_Active_Buff_Conditional_Action4 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Wis_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Active_Buff));
-            var Pressure_Points_Dex_Active_Buff_Conditional_Action5 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Cha_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Active_Buff));
+            var Pressure_Points_Dex_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexEffectBuff", bp => {
+                bp.SetName(ToDContext, "Pressure Points (Dexterity)");
+                bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Dexterity}Dexterity{/g}.");
+                bp.m_Icon = PressurePointsDexIcon;
+                bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Dex_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+            });
 
-            var Pressure_Points_Con_Active_Buff_Conditional_Action1 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Str_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Active_Buff));
-            var Pressure_Points_Con_Active_Buff_Conditional_Action2 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Dex_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Active_Buff));
-            var Pressure_Points_Con_Active_Buff_Conditional_Action3 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Int_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Active_Buff));
-            var Pressure_Points_Con_Active_Buff_Conditional_Action4 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Wis_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Active_Buff));
-            var Pressure_Points_Con_Active_Buff_Conditional_Action5 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Cha_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Active_Buff));
+            var Pressure_Points_Con_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsConEffectBuff", bp => {
+                bp.SetName(ToDContext, "Pressure Points (Constitution)");
+                bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Constitution}Constitution{/g}.");
+                bp.m_Icon = PressurePointsConIcon;
+                bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Con_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+            });
 
-            var Pressure_Points_Int_Active_Buff_Conditional_Action1 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Str_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Active_Buff));
-            var Pressure_Points_Int_Active_Buff_Conditional_Action2 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Dex_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Active_Buff));
-            var Pressure_Points_Int_Active_Buff_Conditional_Action3 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Con_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Active_Buff));
-            var Pressure_Points_Int_Active_Buff_Conditional_Action4 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Wis_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Active_Buff));
-            var Pressure_Points_Int_Active_Buff_Conditional_Action5 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Cha_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Active_Buff));
+            var Pressure_Points_Int_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntEffectBuff", bp => {
+                bp.SetName(ToDContext, "Pressure Points (Intelligence)");
+                bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Intelligence}Intelligence{/g}.");
+                bp.m_Icon = PressurePointsIntIcon;
+                bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Int_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+            });
 
-            var Pressure_Points_Wis_Active_Buff_Conditional_Action1 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Str_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Active_Buff));
-            var Pressure_Points_Wis_Active_Buff_Conditional_Action2 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Dex_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Active_Buff));
-            var Pressure_Points_Wis_Active_Buff_Conditional_Action3 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Con_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Active_Buff));
-            var Pressure_Points_Wis_Active_Buff_Conditional_Action4 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Int_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Active_Buff));
-            var Pressure_Points_Wis_Active_Buff_Conditional_Action5 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Cha_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Active_Buff));
+            var Pressure_Points_Wis_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisEffectBuff", bp => {
+                bp.SetName(ToDContext, "Pressure Points (Wisdom)");
+                bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Wisdom}Wisdom{/g}.");
+                bp.m_Icon = PressurePointsWisIcon;
+                bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Wis_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+            });
 
-            var Pressure_Points_Cha_Active_Buff_Conditional_Action1 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Str_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Active_Buff));
-            var Pressure_Points_Cha_Active_Buff_Conditional_Action2 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Dex_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Active_Buff));
-            var Pressure_Points_Cha_Active_Buff_Conditional_Action3 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Con_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Active_Buff));
-            var Pressure_Points_Cha_Active_Buff_Conditional_Action4 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Int_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Active_Buff));
-            var Pressure_Points_Cha_Active_Buff_Conditional_Action5 = HlEX.CreateConditional(HlEX.CreateConditionHasBuffFromCaster(Pressure_Points_Wis_Active_Buff), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Active_Buff));
+            var Pressure_Points_Cha_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaEffectBuff", bp => {
+                bp.SetName(ToDContext, "Pressure Points (Charisma)");
+                bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Charisma}Charisma{/g}.");
+                bp.m_Icon = PressurePointsChaIcon;
+                bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Cha_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+            });
 
 
-            var Add_Initiator_Attack_Roll_Trigger_Str_Damage_Action = HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Str_Action_Deal_Damage, Pressure_Points_Str_Active_Buff_Conditional_Action1, Pressure_Points_Str_Active_Buff_Conditional_Action2, Pressure_Points_Str_Active_Buff_Conditional_Action3, Pressure_Points_Str_Active_Buff_Conditional_Action4, Pressure_Points_Str_Active_Buff_Conditional_Action5), true, false, true);
-            var Add_Initiator_Attack_Roll_Trigger_Dex_Damage_Action = HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Dex_Action_Deal_Damage, Pressure_Points_Dex_Active_Buff_Conditional_Action1, Pressure_Points_Dex_Active_Buff_Conditional_Action2, Pressure_Points_Dex_Active_Buff_Conditional_Action3, Pressure_Points_Dex_Active_Buff_Conditional_Action4, Pressure_Points_Dex_Active_Buff_Conditional_Action5), true, false, true);
-            var Add_Initiator_Attack_Roll_Trigger_Con_Damage_Action = HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Con_Action_Deal_Damage, Pressure_Points_Con_Active_Buff_Conditional_Action1, Pressure_Points_Con_Active_Buff_Conditional_Action2, Pressure_Points_Con_Active_Buff_Conditional_Action3, Pressure_Points_Con_Active_Buff_Conditional_Action4, Pressure_Points_Con_Active_Buff_Conditional_Action5), true, false, true);
-            var Add_Initiator_Attack_Roll_Trigger_Int_Damage_Action = HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Int_Action_Deal_Damage, Pressure_Points_Int_Active_Buff_Conditional_Action1, Pressure_Points_Int_Active_Buff_Conditional_Action2, Pressure_Points_Int_Active_Buff_Conditional_Action3, Pressure_Points_Int_Active_Buff_Conditional_Action4, Pressure_Points_Int_Active_Buff_Conditional_Action5), true, false, true);
-            var Add_Initiator_Attack_Roll_Trigger_Wis_Damage_Action = HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Wis_Action_Deal_Damage, Pressure_Points_Wis_Active_Buff_Conditional_Action1, Pressure_Points_Wis_Active_Buff_Conditional_Action2, Pressure_Points_Wis_Active_Buff_Conditional_Action3, Pressure_Points_Wis_Active_Buff_Conditional_Action4, Pressure_Points_Wis_Active_Buff_Conditional_Action5), true, false, true);
-            var Add_Initiator_Attack_Roll_Trigger_Cha_Damage_Action = HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Cha_Action_Deal_Damage, Pressure_Points_Cha_Active_Buff_Conditional_Action1, Pressure_Points_Cha_Active_Buff_Conditional_Action2, Pressure_Points_Cha_Active_Buff_Conditional_Action3, Pressure_Points_Cha_Active_Buff_Conditional_Action4, Pressure_Points_Cha_Active_Buff_Conditional_Action5), true, false, true);
+            var Pressure_Points_Str_Active_Buff_Conditional_Action1 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Dex_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Effect_Buff), null);
+            var Pressure_Points_Str_Active_Buff_Conditional_Action2 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Con_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Effect_Buff), null);
+            var Pressure_Points_Str_Active_Buff_Conditional_Action3 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Int_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Effect_Buff), null);
+            var Pressure_Points_Str_Active_Buff_Conditional_Action4 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Wis_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Effect_Buff), null);
+            var Pressure_Points_Str_Active_Buff_Conditional_Action5 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Cha_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Effect_Buff), null);
 
-            Pressure_Points_Str_Active_Buff.AddComponent(Add_Initiator_Attack_Roll_Trigger_Str_Damage_Action);
-            Pressure_Points_Dex_Active_Buff.AddComponent(Add_Initiator_Attack_Roll_Trigger_Dex_Damage_Action);
-            Pressure_Points_Con_Active_Buff.AddComponent(Add_Initiator_Attack_Roll_Trigger_Con_Damage_Action);
-            Pressure_Points_Int_Active_Buff.AddComponent(Add_Initiator_Attack_Roll_Trigger_Int_Damage_Action);
-            Pressure_Points_Wis_Active_Buff.AddComponent(Add_Initiator_Attack_Roll_Trigger_Wis_Damage_Action);
-            Pressure_Points_Cha_Active_Buff.AddComponent(Add_Initiator_Attack_Roll_Trigger_Cha_Damage_Action);
+            var Pressure_Points_Dex_Active_Buff_Conditional_Action1 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Str_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Effect_Buff), null);
+            var Pressure_Points_Dex_Active_Buff_Conditional_Action2 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Con_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Effect_Buff), null);
+            var Pressure_Points_Dex_Active_Buff_Conditional_Action3 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Int_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Effect_Buff), null);
+            var Pressure_Points_Dex_Active_Buff_Conditional_Action4 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Wis_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Effect_Buff), null);
+            var Pressure_Points_Dex_Active_Buff_Conditional_Action5 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Cha_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Effect_Buff), null);
 
-            var Pressure_Points_Str_Activatable_Ability = HlEX.ConvertBuffToActivatableAbility(Pressure_Points_Str_Active_Buff, UnitCommand.CommandType.Free, true, "ToggleAbility", "ActiveBuff");
-            Pressure_Points_Str_Activatable_Ability.ActivationType = AbilityActivationType.Immediately;
-            Pressure_Points_Str_Activatable_Ability.m_ActivateOnUnitAction = AbilityActivateOnUnitActionType.Attack;
+            var Pressure_Points_Con_Active_Buff_Conditional_Action1 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Str_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Effect_Buff), null);
+            var Pressure_Points_Con_Active_Buff_Conditional_Action2 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Dex_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Effect_Buff), null);
+            var Pressure_Points_Con_Active_Buff_Conditional_Action3 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Int_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Effect_Buff), null);
+            var Pressure_Points_Con_Active_Buff_Conditional_Action4 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Wis_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Effect_Buff), null);
+            var Pressure_Points_Con_Active_Buff_Conditional_Action5 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Cha_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Effect_Buff), null);
 
-            var Pressure_Points_Dex_Activatable_Ability = HlEX.ConvertBuffToActivatableAbility(Pressure_Points_Dex_Active_Buff, UnitCommand.CommandType.Free, true, "ToggleAbility", "ActiveBuff");
-            Pressure_Points_Dex_Activatable_Ability.ActivationType = AbilityActivationType.Immediately;
-            Pressure_Points_Dex_Activatable_Ability.m_ActivateOnUnitAction = AbilityActivateOnUnitActionType.Attack;
+            var Pressure_Points_Int_Active_Buff_Conditional_Action1 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Str_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Effect_Buff), null);
+            var Pressure_Points_Int_Active_Buff_Conditional_Action2 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Dex_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Effect_Buff), null);
+            var Pressure_Points_Int_Active_Buff_Conditional_Action3 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Con_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Effect_Buff), null);
+            var Pressure_Points_Int_Active_Buff_Conditional_Action4 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Wis_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Effect_Buff), null);
+            var Pressure_Points_Int_Active_Buff_Conditional_Action5 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Cha_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Effect_Buff), null);
 
-            var Pressure_Points_Con_Activatable_Ability = HlEX.ConvertBuffToActivatableAbility(Pressure_Points_Con_Active_Buff, UnitCommand.CommandType.Free, true, "ToggleAbility", "ActiveBuff");
-            Pressure_Points_Con_Activatable_Ability.ActivationType = AbilityActivationType.Immediately;
-            Pressure_Points_Con_Activatable_Ability.m_ActivateOnUnitAction = AbilityActivateOnUnitActionType.Attack;
+            var Pressure_Points_Wis_Active_Buff_Conditional_Action1 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Str_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Effect_Buff), null);
+            var Pressure_Points_Wis_Active_Buff_Conditional_Action2 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Dex_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Effect_Buff), null);
+            var Pressure_Points_Wis_Active_Buff_Conditional_Action3 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Con_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Effect_Buff), null);
+            var Pressure_Points_Wis_Active_Buff_Conditional_Action4 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Int_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Effect_Buff), null);
+            var Pressure_Points_Wis_Active_Buff_Conditional_Action5 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Cha_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Cha_Effect_Buff), null);
 
-            var Pressure_Points_Int_Activatable_Ability = HlEX.ConvertBuffToActivatableAbility(Pressure_Points_Int_Active_Buff, UnitCommand.CommandType.Free, true, "ToggleAbility", "ActiveBuff");
-            Pressure_Points_Int_Activatable_Ability.ActivationType = AbilityActivationType.Immediately;
-            Pressure_Points_Int_Activatable_Ability.m_ActivateOnUnitAction = AbilityActivateOnUnitActionType.Attack;
+            var Pressure_Points_Cha_Active_Buff_Conditional_Action1 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Str_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Str_Effect_Buff), null);
+            var Pressure_Points_Cha_Active_Buff_Conditional_Action2 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Dex_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Dex_Effect_Buff), null);
+            var Pressure_Points_Cha_Active_Buff_Conditional_Action3 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Con_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Con_Effect_Buff), null);
+            var Pressure_Points_Cha_Active_Buff_Conditional_Action4 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Int_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Int_Effect_Buff), null);
+            var Pressure_Points_Cha_Active_Buff_Conditional_Action5 = HlEX.CreateConditional( HlEX.CreateContextConditionCasterHasFact(Pressure_Points_Wis_Active_Buff, false), HlEX.CreateContextActionRemoveBuff(Pressure_Points_Wis_Effect_Buff), null);
 
-            var Pressure_Points_Wis_Activatable_Ability = HlEX.ConvertBuffToActivatableAbility(Pressure_Points_Wis_Active_Buff, UnitCommand.CommandType.Free, true, "ToggleAbility", "ActiveBuff");
-            Pressure_Points_Wis_Activatable_Ability.ActivationType = AbilityActivationType.Immediately;
-            Pressure_Points_Wis_Activatable_Ability.m_ActivateOnUnitAction = AbilityActivateOnUnitActionType.Attack;
+            var Pressure_Points_Active_Apply_Buff_Duration = Debilitating_Injury_Bewildered_Active_Buff.GetComponent<AddInitiatorAttackRollTrigger>().Action.Actions.OfType<ContextActionApplyBuff>().FirstOrDefault().DurationValue;
 
-            var Pressure_Points_Cha_Activatable_Ability = HlEX.ConvertBuffToActivatableAbility(Pressure_Points_Cha_Active_Buff, UnitCommand.CommandType.Free, true, "ToggleAbility", "ActiveBuff");
-            Pressure_Points_Cha_Activatable_Ability.ActivationType = AbilityActivationType.Immediately;
-            Pressure_Points_Cha_Activatable_Ability.m_ActivateOnUnitAction = AbilityActivateOnUnitActionType.Attack;
+            var Pressure_Points_Str_Active_Apply_Buff_Action = HlEX.CreateContextActionApplyBuff(Pressure_Points_Str_Effect_Buff.ToReference<BlueprintBuffReference>(), Pressure_Points_Active_Apply_Buff_Duration, false, false, true, false, false);
+            var Pressure_Points_Dex_Active_Apply_Buff_Action = HlEX.CreateContextActionApplyBuff(Pressure_Points_Dex_Effect_Buff.ToReference<BlueprintBuffReference>(), Pressure_Points_Active_Apply_Buff_Duration, false, false, true, false, false);
+            var Pressure_Points_Con_Active_Apply_Buff_Action = HlEX.CreateContextActionApplyBuff(Pressure_Points_Con_Effect_Buff.ToReference<BlueprintBuffReference>(), Pressure_Points_Active_Apply_Buff_Duration, false, false, true, false, false);
+            var Pressure_Points_Int_Active_Apply_Buff_Action = HlEX.CreateContextActionApplyBuff(Pressure_Points_Int_Effect_Buff.ToReference<BlueprintBuffReference>(), Pressure_Points_Active_Apply_Buff_Duration, false, false, true, false, false);
+            var Pressure_Points_Wis_Active_Apply_Buff_Action = HlEX.CreateContextActionApplyBuff(Pressure_Points_Wis_Effect_Buff.ToReference<BlueprintBuffReference>(), Pressure_Points_Active_Apply_Buff_Duration, false, false, true, false, false);
+            var Pressure_Points_Cha_Active_Apply_Buff_Action = HlEX.CreateContextActionApplyBuff(Pressure_Points_Str_Effect_Buff.ToReference<BlueprintBuffReference>(), Pressure_Points_Active_Apply_Buff_Duration, false, false, true, false, false);
+
+            Pressure_Points_Str_Active_Buff.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateRunActions(Pressure_Points_Str_Active_Apply_Buff_Action, Pressure_Points_Str_Active_Buff_Conditional_Action1, Pressure_Points_Str_Active_Buff_Conditional_Action2, Pressure_Points_Str_Active_Buff_Conditional_Action3, Pressure_Points_Str_Active_Buff_Conditional_Action4, Pressure_Points_Str_Active_Buff_Conditional_Action5));
+            Pressure_Points_Dex_Active_Buff.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateRunActions(Pressure_Points_Dex_Active_Apply_Buff_Action, Pressure_Points_Dex_Active_Buff_Conditional_Action1, Pressure_Points_Dex_Active_Buff_Conditional_Action2, Pressure_Points_Dex_Active_Buff_Conditional_Action3, Pressure_Points_Dex_Active_Buff_Conditional_Action4, Pressure_Points_Dex_Active_Buff_Conditional_Action5));
+            Pressure_Points_Con_Active_Buff.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateRunActions(Pressure_Points_Con_Active_Apply_Buff_Action, Pressure_Points_Con_Active_Buff_Conditional_Action1, Pressure_Points_Con_Active_Buff_Conditional_Action2, Pressure_Points_Con_Active_Buff_Conditional_Action3, Pressure_Points_Con_Active_Buff_Conditional_Action4, Pressure_Points_Con_Active_Buff_Conditional_Action5));
+            Pressure_Points_Int_Active_Buff.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateRunActions(Pressure_Points_Int_Active_Apply_Buff_Action, Pressure_Points_Int_Active_Buff_Conditional_Action1, Pressure_Points_Int_Active_Buff_Conditional_Action2, Pressure_Points_Int_Active_Buff_Conditional_Action3, Pressure_Points_Int_Active_Buff_Conditional_Action4, Pressure_Points_Int_Active_Buff_Conditional_Action5));
+            Pressure_Points_Wis_Active_Buff.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateRunActions(Pressure_Points_Wis_Active_Apply_Buff_Action, Pressure_Points_Wis_Active_Buff_Conditional_Action1, Pressure_Points_Wis_Active_Buff_Conditional_Action2, Pressure_Points_Wis_Active_Buff_Conditional_Action3, Pressure_Points_Wis_Active_Buff_Conditional_Action4, Pressure_Points_Wis_Active_Buff_Conditional_Action5));
+            Pressure_Points_Cha_Active_Buff.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateRunActions(Pressure_Points_Cha_Active_Apply_Buff_Action, Pressure_Points_Cha_Active_Buff_Conditional_Action1, Pressure_Points_Cha_Active_Buff_Conditional_Action2, Pressure_Points_Cha_Active_Buff_Conditional_Action3, Pressure_Points_Cha_Active_Buff_Conditional_Action4, Pressure_Points_Cha_Active_Buff_Conditional_Action5));
+
+            var Pressure_Points_Str_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsStrToggleAbility", bp => {
+                bp.SetName(ToDContext, Pressure_Points_Str_Active_Buff.Name);
+                bp.SetDescription(ToDContext, Pressure_Points_Str_Active_Buff.Description);
+                bp.m_Buff = Pressure_Points_Str_Active_Buff.ToReference<BlueprintBuffReference>();
+                bp.m_Icon = Pressure_Points_Str_Active_Buff.m_Icon;
+
+            });
+
+            var Pressure_Points_Dex_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexToggleAbility", bp => {
+                bp.SetName(ToDContext, Pressure_Points_Dex_Active_Buff.Name);
+                bp.SetDescription(ToDContext, Pressure_Points_Dex_Active_Buff.Description);
+                bp.m_Buff = Pressure_Points_Dex_Active_Buff.ToReference<BlueprintBuffReference>();
+                bp.m_Icon = Pressure_Points_Dex_Active_Buff.m_Icon;
+
+            });
+
+            var Pressure_Points_Con_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsConToggleAbility", bp => {
+                bp.SetName(ToDContext, Pressure_Points_Con_Active_Buff.Name);
+                bp.SetDescription(ToDContext, Pressure_Points_Con_Active_Buff.Description);
+                bp.m_Buff = Pressure_Points_Con_Active_Buff.ToReference<BlueprintBuffReference>();
+                bp.m_Icon = Pressure_Points_Con_Active_Buff.m_Icon;
+
+            });
+
+            var Pressure_Points_Int_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntToggleAbility", bp => {
+                bp.SetName(ToDContext, Pressure_Points_Int_Active_Buff.Name);
+                bp.SetDescription(ToDContext, Pressure_Points_Int_Active_Buff.Description);
+                bp.m_Buff = Pressure_Points_Int_Active_Buff.ToReference<BlueprintBuffReference>();
+                bp.m_Icon = Pressure_Points_Int_Active_Buff.m_Icon;
+
+            });
+
+            var Pressure_Points_Wis_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisToggleAbility", bp => {
+                bp.SetName(ToDContext, Pressure_Points_Wis_Active_Buff.Name);
+                bp.SetDescription(ToDContext, Pressure_Points_Wis_Active_Buff.Description);
+                bp.m_Buff = Pressure_Points_Wis_Active_Buff.ToReference<BlueprintBuffReference>();
+                bp.m_Icon = Pressure_Points_Wis_Active_Buff.m_Icon;
+
+            });
+
+            var Pressure_Points_Cha_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaToggleAbility", bp => {
+                bp.SetName(ToDContext, Pressure_Points_Cha_Active_Buff.Name);
+                bp.SetDescription(ToDContext, Pressure_Points_Cha_Active_Buff.Description);
+                bp.m_Buff = Pressure_Points_Cha_Active_Buff.ToReference<BlueprintBuffReference>();
+                bp.m_Icon = Pressure_Points_Cha_Active_Buff.m_Icon;
+
+            });
+
 
 
             var Pressure_Points_Con_Unlock_Feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "NinjaTrickPressurePointsConUnlock", bp => {

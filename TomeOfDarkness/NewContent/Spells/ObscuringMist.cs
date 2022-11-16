@@ -11,26 +11,12 @@ using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.Utility;
-using TabletopTweaks.Core.NewComponents.OwlcatReplacements;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
-using Kingmaker.UnitLogic.ActivatableAbilities;
 using Kingmaker.ResourceLinks;
-using Kingmaker.UnitLogic.Abilities.Components.Base;
 using System.Linq;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using Kingmaker.UnitLogic.Abilities.Components.AreaEffects;
-using Kingmaker.UnitLogic.Buffs;
-using Kingmaker.Designers.Mechanics.Facts;
-using System.Web;
-using static UnityModManagerNet.UnityModManager;
-using Kingmaker.Blueprints.Classes.Selection;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.ElementsSystem;
-using Kingmaker.EntitySystem.Stats;
-using Kingmaker.RuleSystem;
-using Kingmaker.UnitLogic.Mechanics.Components;
-using Kingmaker.UnitLogic.Mechanics.Conditions;
 
 
 namespace TomeOfDarkness.NewContent.Spells

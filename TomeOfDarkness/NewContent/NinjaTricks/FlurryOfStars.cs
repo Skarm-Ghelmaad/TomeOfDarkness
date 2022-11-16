@@ -16,22 +16,10 @@ using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using TomeOfDarkness.NewComponents;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
 using Kingmaker.UnitLogic.Commands.Base;
-using Kingmaker.UnitLogic.Abilities;
 using TomeOfDarkness.Utilities;
-using Kingmaker.UnitLogic.Abilities.Components;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
-using System.Drawing;
-using Kingmaker.UnitLogic.Buffs;
 using System;
-using Kingmaker.UnitLogic.Abilities.Components.Base;
-using Kingmaker.Blueprints.Items.Ecnchantments;
-using Kingmaker.Enums.Damage;
-using Kingmaker.RuleSystem;
-using Kingmaker.UnitLogic.Mechanics.Actions;
-using System.Linq;
 using Kingmaker.UnitLogic.Abilities.Components.CasterCheckers;
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
@@ -88,6 +76,10 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             flurry_of_stars_feature.AddComponent(Helpers.Create<ConsiderWeaponCategoriesAsLightWeapon>(c => {
                 c.Categories = new WeaponCategory[] { WeaponCategory.Dart, WeaponCategory.Shuriken };
             }));
+
+            flurry_of_stars_feature.IsClassFeature = true;
+            flurry_of_stars_feature.Ranks = 1;
+
 
             ToDContext.Logger.LogPatch("Created Flurry of Stars ninja trick.", flurry_of_stars_feature);
 

@@ -1,27 +1,15 @@
 ﻿using Kingmaker.Blueprints;
-using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.Enums;
-using Kingmaker.ResourceLinks;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.Buffs.Components;
 using Kingmaker.UnitLogic.FactLogic;
 using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.Utility;
-using System.Diagnostics.Tracing;
-using Kingmaker.EntitySystem.Stats;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using Kingmaker.UnitLogic.Mechanics.Components;
-using TomeOfDarkness.NewComponents;
-using Kingmaker.Designers.EventConditionActionSystem.Actions;
-using Kingmaker.Visual.Animation.Kingmaker.Actions;
 using Kingmaker.UnitLogic.Commands.Base;
-using Kingmaker.UnitLogic.Abilities;
 using TomeOfDarkness.Utilities;
-using Kingmaker.UnitLogic.Abilities.Components;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using Kingmaker.Blueprints.Items.Ecnchantments;
 using System.Linq;
@@ -114,6 +102,9 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             Kamikaze_Wrapper_Ability.SetDescription(ToDContext, "A character with this ability strikes without concern for her own well-being. The character can spend 1 point from her ki pool to give her unarmed strikes and any weapons she wields the Vicious weapon special ability for 1 round per level. The character can also spend 1 ki point to dismiss this effect as a free action.");
 
             var kamikaze_feature = HlEX.ConvertAbilityToFeature(Kamikaze_Wrapper_Ability, "", "", "Feature", "BaseAbility", false);
+
+            kamikaze_feature.IsClassFeature = true;
+            kamikaze_feature.Ranks = 1;
 
             ToDContext.Logger.LogPatch("Created Kamikaze ninja trick.", kamikaze_feature);
 

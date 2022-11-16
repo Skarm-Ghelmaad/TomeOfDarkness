@@ -6,7 +6,6 @@ using System.Linq;
 using TabletopTweaks.Core.Utilities;
 using UnityModManagerNet;
 using TomeOfDarkness.ModLogic;
-using TabletopTweaks.Core.ModLogic;
 using static UnityModManagerNet.UnityModManager;
 
 namespace TomeOfDarkness

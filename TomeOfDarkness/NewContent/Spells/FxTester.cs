@@ -1,23 +1,11 @@
 ﻿using Kingmaker.Blueprints;
-using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Spells;
-using Kingmaker.Craft;
-using Kingmaker.Enums;
 using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
-using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.UnitLogic.Mechanics;
-using Kingmaker.UnitLogic.Mechanics.Actions;
-using Kingmaker.Utility;
-using TabletopTweaks.Core.NewComponents.OwlcatReplacements;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using Kingmaker.UnitLogic.ActivatableAbilities;
 using Kingmaker.ResourceLinks;
-using Kingmaker.UnitLogic.Abilities.Components.Base;
-using System.Linq;
 
 namespace TomeOfDarkness.NewContent.Spells
 {

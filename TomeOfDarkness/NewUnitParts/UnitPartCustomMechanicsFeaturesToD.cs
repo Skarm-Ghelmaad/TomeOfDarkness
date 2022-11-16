@@ -1,16 +1,4 @@
-﻿using HarmonyLib;
-using Kingmaker.EntitySystem.Entities;
-using Kingmaker.Enums.Damage;
-using Kingmaker.Items;
-using Kingmaker.RuleSystem.Rules;
-using Kingmaker.RuleSystem.Rules.Damage;
-using Kingmaker.UnitLogic;
-using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.Utility;
-using System;
-using System.Collections.Generic;
-using TabletopTweaks.Core.NewUnitParts;
-using static TabletopTweaks.Core.NewUnitParts.UnitPartCustomMechanicsFeatures;
+﻿using static TabletopTweaks.Core.NewUnitParts.UnitPartCustomMechanicsFeatures;
 
 namespace TomeOfDarkness.NewUnitParts
 {

@@ -61,8 +61,8 @@ namespace TomeOfDarkness.MechanicsChanges
                 bp.SetName(ToDContext, "Ki Pool - {g|Encyclopedia:Wisdom}Wisdom{/g}");
                 bp.SetDescription(ToDContext, "This character adds his {g|Encyclopedia:Wisdom}Wisdom{/g} modifier to his ki pool, to the DC of his ki abilities and \n to any other ability parameter that would be affected by an attribute.");
                 bp.m_Icon = wisdomKiPoolIcon;
-                bp.HideInUI = true;
-                bp.HideInCharacterSheetAndLevelUp = true;
+                bp.HideInUI = false;
+                bp.HideInCharacterSheetAndLevelUp = false;
                 bp.AddComponent(Helpers.Create<IncreaseResourceAmountBasedOnStat>(c => {
                     c.m_Resource = kiResource.ToReference<BlueprintAbilityResourceReference>();
                     c.Subtract = false;
@@ -78,8 +78,8 @@ namespace TomeOfDarkness.MechanicsChanges
                 bp.SetName(ToDContext, "Ki Pool - {g|Encyclopedia:Charisma}Charisma{/g}");
                 bp.SetDescription(ToDContext, "This character adds his {g|Encyclopedia:Charisma}Charisma{/g} modifier to his ki pool, to the DC of his ki abilities and \n to any other ability parameter that would be affected by an attribute.");
                 bp.m_Icon = wisdomKiPoolIcon;
-                bp.HideInUI = true;
-                bp.HideInCharacterSheetAndLevelUp = true;
+                bp.HideInUI = false;
+                bp.HideInCharacterSheetAndLevelUp = false;
                 bp.AddComponent(Helpers.Create<IncreaseResourceAmountBasedOnStat>(c => {
                     c.m_Resource = kiResource.ToReference<BlueprintAbilityResourceReference>();
                     c.Subtract = false;
@@ -125,11 +125,13 @@ namespace TomeOfDarkness.MechanicsChanges
             kiPowerFeature.AddComponent<HasFactsFeaturesUnlock>(c => {
                 c.m_CheckedFacts = canon_ki_modifier_exclusions;
                 c.m_Features = new BlueprintUnitFactReference[] { wisdom_KiPoolCanon.ToReference<BlueprintUnitFactReference>() };
+                c.Not = true;
             });
 
             scaledFistKiPowerFeature.AddComponent<HasFactsFeaturesUnlock>(c => {
                 c.m_CheckedFacts = canon_ki_modifier_exclusions;
                 c.m_Features = new BlueprintUnitFactReference[] { charisma_KiPoolCanon.ToReference<BlueprintUnitFactReference>() };
+                c.Not = true;
             });
 
             #endregion

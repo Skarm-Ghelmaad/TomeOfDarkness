@@ -13,6 +13,16 @@
   "Feats": {
     "DisableAll": false,
     "Settings": {
+      "ExtraNinjaTrick": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "You gain one additional ninja trick. You must meet all of the prerequisites for this ninja trick. You can gain Extra Ninja Trick multiple times."
+      },
+      "ExtraPoisonUse": {
+        "Enabled": true,
+        "Homebrew": true,
+        "Description": "You can use your poison use ability three additional times per day. You can take this feat multiple times. Its effects stack."
+      }
     }
   },
   "NinjaTricks": {
