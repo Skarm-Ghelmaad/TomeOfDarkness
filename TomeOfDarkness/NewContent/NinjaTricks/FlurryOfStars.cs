@@ -80,6 +80,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             flurry_of_stars_feature.IsClassFeature = true;
             flurry_of_stars_feature.Ranks = 1;
 
+            flurry_of_stars_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(flurry_of_stars_feature));
 
             ToDContext.Logger.LogPatch("Created Flurry of Stars ninja trick.", flurry_of_stars_feature);
 

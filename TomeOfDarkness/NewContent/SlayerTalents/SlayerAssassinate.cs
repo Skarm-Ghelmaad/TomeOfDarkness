@@ -22,6 +22,7 @@ namespace TomeOfDarkness.NewContent.SlayerTalents
             Slayer_Talent_Assassination_Feature.AddComponent(HlEX.CreatePrerequisiteClassLevel(ClassTools.Classes.SlayerClass, 1, false));
             Slayer_Talent_Assassination_Feature.AddComponent(HlEX.CreatePrerequisiteNoArchetype(ClassTools.Classes.SlayerClass, Executioner_Archetype));
             Slayer_Talent_Assassination_Feature.Groups = new FeatureGroup[] { FeatureGroup.SlayerTalent };
+            Slayer_Talent_Assassination_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Slayer_Talent_Assassination_Feature));
 
             if (ToDContext.NewContent.SlayerTalents.IsDisabled("SlayerAssassinate")) { return; }
 

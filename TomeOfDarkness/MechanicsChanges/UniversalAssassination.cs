@@ -613,7 +613,7 @@ namespace TomeOfDarkness.MechanicsChanges
             #region |---------------------------------------------| Change Executioner's Assassinate Ability's Description |---------------------------------------------------|
 
 
-            var ExecutionerAssassinateNewIcon = AssetLoader.LoadInternal(ToDContext, folder: "Features", file: "Icon_AssassinateSlayer.png");
+            var ExecutionerAssassinateNewIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_AssassinateSlayer.png");
 
 
             Executioner_Assassinate_Ability.SetDescription(ToDContext, "The slayer can target studied opponents in attempt to instantly kill them. This ability can only be used out of combat and the target must not see the slayer, but this special {g|Encyclopedia:Attack}attack{/g} automatically hits, scores a {g|Encyclopedia:Critical}critical hit{/g} and, if the victim survives, must make a {g|Encyclopedia:Saving_Throw}Fortitude save{/g} ({g|Encyclopedia:DC}DC{/g} 10 + slayer level + relevant stat modifier or die. \n This special {g|Encyclopedia:Attack}attack{/g} is a full-{g|Encyclopedia:Combat_Round}round{/g} {g|Encyclopedia:CA_Types}action{/g} that provokes {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g} from {g|Encyclopedia:Threatened_Area}threatening{/g} opponents.");

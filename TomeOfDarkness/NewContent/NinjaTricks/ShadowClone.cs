@@ -5,6 +5,8 @@ using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using System;
+using TomeOfDarkness.Utilities;
+
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
 {
@@ -31,6 +33,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             shadow_clone_feature.IsClassFeature = true;
             shadow_clone_feature.Ranks = 1;
+
+            shadow_clone_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(shadow_clone_feature));
 
             ToDContext.Logger.LogPatch("Created Shadow Clone ninja trick.", shadow_clone_feature);
 

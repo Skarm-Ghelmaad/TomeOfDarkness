@@ -35,6 +35,16 @@
     "Settings": {
     }
   },
+  "StyleStrikes": {
+    "DisableAll": false,
+    "Settings": {
+      "FlyingKick": {
+        "Enabled": true,
+        "Homebrew": false,
+        "Description": "You gain one additional ninja trick. You must meet all of the prerequisites for this ninja trick. You can gain Extra Ninja Trick multiple times."
+      }
+    }
+  },
   "SlayerTalents": {
     "DisableAll": false,
     "Settings": {

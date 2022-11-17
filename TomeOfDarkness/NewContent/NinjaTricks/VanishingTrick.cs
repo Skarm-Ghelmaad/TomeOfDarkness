@@ -70,7 +70,9 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             vanishing_trick_feature.IsClassFeature = true;
             vanishing_trick_feature.Ranks = 1;
 
-            n_trick_invisible_blade.Get().AddPrerequisiteFeature(vanishing_trick_feature);
+            vanishing_trick_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(vanishing_trick_feature));
+
+            n_trick_invisible_blade.Get().AddComponent(HlEX.CreatePrerequisiteNoFeature(n_trick_invisible_blade.Get()));
 
             ToDContext.Logger.LogPatch("Created Vanishing Trick ninja trick.", vanishing_trick_feature);
 

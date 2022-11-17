@@ -37,6 +37,7 @@ using TabletopTweaks.Base.NewContent.Features;
 using System.Security.AccessControl;
 using TomeOfDarkness.NewComponents.OwlcatReplacements;
 using Kingmaker.RuleSystem;
+using TomeOfDarkness.NewContent.StyleStrikes;
 
 namespace TomeOfDarkness.MechanicsChanges
 {
@@ -157,7 +158,11 @@ namespace TomeOfDarkness.MechanicsChanges
 
             #endregion
 
+            #region |-------------------------------------------------------------------/ ADD STYLE STRIKES /--------------------------------------------------------------------|
 
+            FlyingKick.ConfigureFlyingKick();
+
+            #endregion
 
         }
 

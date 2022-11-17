@@ -81,6 +81,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             Smoke_Bomb_Feature.IsClassFeature = true;
             Smoke_Bomb_Feature.Ranks = 1;
 
+            Smoke_Bomb_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Smoke_Bomb_Feature));
+
             ToDContext.Logger.LogPatch("Created Smoke Bomb Trick ninja trick.", Smoke_Bomb_Feature);
 
 
@@ -121,6 +123,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             Choking_Bomb_Feature.IsClassFeature = true;
             Choking_Bomb_Feature.Ranks = 1;
 
+            Choking_Bomb_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Choking_Bomb_Feature));
+
             ToDContext.Logger.LogPatch("Created Choking Bomb Trick ninja trick.", Choking_Bomb_Feature);
 
             #endregion
@@ -137,7 +141,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 a.IsNotFirstRoundDelay = false;
             });
 
-            var Blinding_Bomb_Area = Smoke_Bomb_Area.CreateCopy(ToDContext, "NinjaTrickChokingBombArea", bp =>
+            var Blinding_Bomb_Area = Smoke_Bomb_Area.CreateCopy(ToDContext, "NinjaTrickBlindingBombArea", bp =>
             {
                 bp.AddComponent(Blinding_Bomb_Action);
             });
@@ -159,6 +163,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             Blinding_Bomb_Feature.AddPrerequisiteFeature(Choking_Bomb_Feature);
             Blinding_Bomb_Feature.IsClassFeature = true;
             Blinding_Bomb_Feature.Ranks = 1;
+
+            Blinding_Bomb_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Blinding_Bomb_Feature));
 
             ToDContext.Logger.LogPatch("Created Blinding Bomb Trick ninja trick.", Blinding_Bomb_Feature);
 

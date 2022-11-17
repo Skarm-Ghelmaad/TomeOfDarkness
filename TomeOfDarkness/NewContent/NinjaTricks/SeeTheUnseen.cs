@@ -1,10 +1,13 @@
 ﻿using Kingmaker.Blueprints;
+using Kingmaker.Blueprints.Classes.Prerequisites;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.EntitySystem.Stats;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using Kingmaker.UnitLogic.Commands.Base;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
+using TomeOfDarkness.Utilities;
+
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
 {
@@ -32,6 +35,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             
             see_the_unseen_feature.IsClassFeature = true;
             see_the_unseen_feature.Ranks = 1;
+
+            see_the_unseen_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(see_the_unseen_feature));
 
             ToDContext.Logger.LogPatch("Created See The Unseen ninja trick.", see_the_unseen_feature);
 

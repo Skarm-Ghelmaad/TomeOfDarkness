@@ -195,7 +195,7 @@ namespace TomeOfDarkness.NewContent.Features
 
             ToDContext.Logger.LogPatch("Added Create Poison - Toxicity Reduction feature.", Universal_Create_Poison_Toxicity_Reduction_Feature);
 
-            var Universal_Create_Poison_Toxicity_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonToxicityBoostBluff", bp => {
+            var Universal_Create_Poison_Toxicity_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonToxicityReductionBluff", bp => {
                 bp.SetName(ToDContext, "Create Poison - Toxicity Reduction");
                 bp.SetDescription(ToDContext, "Each rank of this buff adds -1 to the Poison Use's DC.");
                 bp.Ranks = 100;

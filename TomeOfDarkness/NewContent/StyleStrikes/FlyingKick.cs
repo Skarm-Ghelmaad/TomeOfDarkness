@@ -11,7 +11,7 @@ namespace TomeOfDarkness.NewContent.StyleStrikes
 
         public static void ConfigureFlyingKick()
         {
-            var FlyingKickIcon = AssetLoader.LoadInternal(ToDContext, folder: "assets/icons", file: "FlyingKick.png");
+            var FlyingKickIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_FlyingKick.png");
 
             var FlyingKickBuff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "MonkFlyingKickBuff", bp => {
                 bp.SetName(ToDContext, "");
@@ -21,6 +21,7 @@ namespace TomeOfDarkness.NewContent.StyleStrikes
                     c.m_Feature = Kingmaker.UnitLogic.FactLogic.AddMechanicsFeature.MechanicsFeatureType.Pounce;
                 });
                 bp.m_Flags = BlueprintBuff.Flags.StayOnDeath | BlueprintBuff.Flags.HiddenInUi;
+                bp.IsClassFeature = true;
             });
 
             var FlyingKickToggle = HelpersExtension.ConvertBuffToActivatableAbility(FlyingKickBuff, Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Free, false, "ToggleAbility", "Buff");
@@ -32,6 +33,10 @@ namespace TomeOfDarkness.NewContent.StyleStrikes
 
 
             var FlyingKickFeature = HelpersExtension.ConvertActivatableAbilityToFeature(FlyingKickToggle, "", "", "Feature", "ToggleAbility", false);
+
+            FlyingKickFeature.IsClassFeature = true;
+
+            if (ToDContext.NewContent.StyleStrikes.IsDisabled("FlyingKick")) { return; }
 
             FeatToolsExtension.AddAsStyleStrike(FlyingKickFeature);
 

@@ -61,31 +61,31 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.m_Icon = PressurePointsStrIcon;
             });
 
-            var Pressure_Points_Dex_Active_Buff = Pressure_Points_Str_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexActiveBuff", bp => {
+            var Pressure_Points_Dex_Active_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexActiveBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Dexterity)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Dexterity}Dexterity{/g}.");
                 bp.m_Icon = PressurePointsDexIcon;
             });
 
-            var Pressure_Points_Con_Active_Buff = Pressure_Points_Str_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsConActiveBuff", bp => {
+            var Pressure_Points_Con_Active_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsConActiveBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Constitution)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Constitution}Constitution{/g}.");
                 bp.m_Icon = PressurePointsConIcon;
             });
 
-            var Pressure_Points_Int_Active_Buff = Pressure_Points_Str_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntActiveBuff", bp => {
+            var Pressure_Points_Int_Active_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntActiveBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Intelligence)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Intelligence}Intelligence{/g}.");
                 bp.m_Icon = PressurePointsIntIcon;
             });
 
-            var Pressure_Points_Wis_Active_Buff = Pressure_Points_Str_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisActiveBuff", bp => {
+            var Pressure_Points_Wis_Active_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisActiveBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Wisdom)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Wisdom}Wisdom{/g}.");
                 bp.m_Icon = PressurePointsWisIcon;
             });
 
-            var Pressure_Points_Cha_Active_Buff = Pressure_Points_Str_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaActiveBuff", bp => {
+            var Pressure_Points_Cha_Active_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaActiveBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Charisma)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Charisma}Charisma{/g}.");
                 bp.m_Icon = PressurePointsChaIcon;
@@ -96,41 +96,47 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Strength}Strength{/g}.");
                 bp.m_Icon = PressurePointsStrIcon;
                 bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Str_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
             });
 
-            var Pressure_Points_Dex_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexEffectBuff", bp => {
+            var Pressure_Points_Dex_Effect_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexEffectBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Dexterity)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Dexterity}Dexterity{/g}.");
                 bp.m_Icon = PressurePointsDexIcon;
                 bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Dex_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
             });
 
-            var Pressure_Points_Con_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsConEffectBuff", bp => {
+            var Pressure_Points_Con_Effect_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsConEffectBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Constitution)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Constitution}Constitution{/g}.");
                 bp.m_Icon = PressurePointsConIcon;
                 bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Con_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
             });
 
-            var Pressure_Points_Int_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntEffectBuff", bp => {
+            var Pressure_Points_Int_Effect_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntEffectBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Intelligence)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Intelligence}Intelligence{/g}.");
                 bp.m_Icon = PressurePointsIntIcon;
                 bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Int_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
             });
 
-            var Pressure_Points_Wis_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisEffectBuff", bp => {
+            var Pressure_Points_Wis_Effect_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisEffectBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Wisdom)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Wisdom}Wisdom{/g}.");
                 bp.m_Icon = PressurePointsWisIcon;
                 bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Wis_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
             });
 
-            var Pressure_Points_Cha_Effect_Buff = Pressure_Points_Str_Effect_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaEffectBuff", bp => {
+            var Pressure_Points_Cha_Effect_Buff = Debilitating_Injury_Bewildered_Active_Buff.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaEffectBuff", bp => {
                 bp.SetName(ToDContext, "Pressure Points (Charisma)");
                 bp.SetDescription(ToDContext, "Whenever a character with this trick deals sneak {g|Encyclopedia:Attack}attack{/g} {g|Encyclopedia:Damage}damage{/g} to a foe, he also deals 1 stat {g|Encyclopedia:Damage}damage{/g} to that foe's {g|Encyclopedia:Charisma}Charisma{/g}.");
                 bp.m_Icon = PressurePointsChaIcon;
                 bp.ReplaceComponents<AddInitiatorAttackRollTrigger>(HlEX.CreateAddInitiatorAttackRollTrigger(Helpers.CreateActionList(Pressure_Points_Cha_Action_Deal_Damage, HlEX.CreateContextActionRemoveSelf()), true, false, true));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
             });
 
 
@@ -194,7 +200,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             });
 
-            var Pressure_Points_Dex_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexToggleAbility", bp => {
+            var Pressure_Points_Dex_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsDexToggleAbility", bp => {
                 bp.SetName(ToDContext, Pressure_Points_Dex_Active_Buff.Name);
                 bp.SetDescription(ToDContext, Pressure_Points_Dex_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Dex_Active_Buff.ToReference<BlueprintBuffReference>();
@@ -202,7 +208,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             });
 
-            var Pressure_Points_Con_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsConToggleAbility", bp => {
+            var Pressure_Points_Con_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsConToggleAbility", bp => {
                 bp.SetName(ToDContext, Pressure_Points_Con_Active_Buff.Name);
                 bp.SetDescription(ToDContext, Pressure_Points_Con_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Con_Active_Buff.ToReference<BlueprintBuffReference>();
@@ -210,7 +216,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             });
 
-            var Pressure_Points_Int_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntToggleAbility", bp => {
+            var Pressure_Points_Int_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntToggleAbility", bp => {
                 bp.SetName(ToDContext, Pressure_Points_Int_Active_Buff.Name);
                 bp.SetDescription(ToDContext, Pressure_Points_Int_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Int_Active_Buff.ToReference<BlueprintBuffReference>();
@@ -218,7 +224,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             });
 
-            var Pressure_Points_Wis_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisToggleAbility", bp => {
+            var Pressure_Points_Wis_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisToggleAbility", bp => {
                 bp.SetName(ToDContext, Pressure_Points_Wis_Active_Buff.Name);
                 bp.SetDescription(ToDContext, Pressure_Points_Wis_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Wis_Active_Buff.ToReference<BlueprintBuffReference>();
@@ -226,7 +232,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             });
 
-            var Pressure_Points_Cha_Activatable_Ability = Pressure_Points_Str_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaToggleAbility", bp => {
+            var Pressure_Points_Cha_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaToggleAbility", bp => {
                 bp.SetName(ToDContext, Pressure_Points_Cha_Active_Buff.Name);
                 bp.SetDescription(ToDContext, Pressure_Points_Cha_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Cha_Active_Buff.ToReference<BlueprintBuffReference>();
@@ -240,6 +246,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, "The character learned new pressure points that allow him to deal {g|Encyclopedia:Constitution}Constitution{/g} {g|Encyclopedia:Damage}damage{/g} with his sneak attacks.");
                 bp.HideInUI = true;
                 bp.HideInCharacterSheetAndLevelUp = true;
+                bp.IsClassFeature = true;
                 bp.Ranks = 1;
             });
 
@@ -247,6 +254,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, "The character learned new pressure points that allow him to deal {g|Encyclopedia:Intelligence}Intelligence{/g} {g|Encyclopedia:Damage}damage{/g} with his sneak attacks.");
                 bp.HideInUI = true;
                 bp.HideInCharacterSheetAndLevelUp = true;
+                bp.IsClassFeature = true;
                 bp.Ranks = 1;
             });
 
@@ -254,6 +262,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, "The character learned new pressure points that allow him to deal {g|Encyclopedia:Wisdom}Wisdom{/g} {g|Encyclopedia:Damage}damage{/g} with his sneak attacks.");
                 bp.HideInUI = true;
                 bp.HideInCharacterSheetAndLevelUp = true;
+                bp.IsClassFeature = true;
                 bp.Ranks = 1;
             });
 
@@ -261,6 +270,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, "The character learned new pressure points that allow him to deal {g|Encyclopedia:Charisma}Charisma{/g} {g|Encyclopedia:Damage}damage{/g} with his sneak attacks.");
                 bp.HideInUI = true;
                 bp.HideInCharacterSheetAndLevelUp = true;
+                bp.IsClassFeature = true;
                 bp.Ranks = 1;
             });
 
@@ -271,7 +281,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.HideInCharacterSheetAndLevelUp = false;
                 bp.Ranks = 1;
                 bp.m_Icon = PressurePointsIcon;
-                bp.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Pressure_Points_Str_Activatable_Ability.ToReference<BlueprintUnitFactReference>(), Pressure_Points_Dex_Activatable_Ability.ToReference<BlueprintUnitFactReference>() }));
+                bp.IsClassFeature = true;
+                bp.AddComponent(HlEX.CreateAddFacts(Pressure_Points_Str_Activatable_Ability.ToReference<BlueprintUnitFactReference>(), Pressure_Points_Dex_Activatable_Ability.ToReference<BlueprintUnitFactReference>()));
                 bp.AddComponent<AddFeatureIfHasFact>(c =>
                 {
                     c.m_CheckedFact = Pressure_Points_Con_Unlock_Feature.ToReference<BlueprintUnitFactReference>();
@@ -297,6 +308,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                     c.Not = false;
                 });                
             });
+
+            Pressure_Points_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Pressure_Points_Feature));
 
             ToDContext.Logger.LogPatch("Created Pressure Points trick.", Pressure_Points_Feature);
 

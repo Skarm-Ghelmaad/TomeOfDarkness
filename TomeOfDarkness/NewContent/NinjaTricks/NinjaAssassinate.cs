@@ -13,6 +13,7 @@ using Kingmaker.ResourceLinks;
 using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
 using Kingmaker.UnitLogic.Abilities.Components.TargetCheckers;
+using TomeOfDarkness.Utilities;
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
 {
@@ -87,6 +88,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             Ninja_Trick_Assassinate_Feature.Ranks = 1;
             Ninja_Trick_Assassinate_Feature.IsClassFeature = true;
+
+            Ninja_Trick_Assassinate_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Ninja_Trick_Assassinate_Feature));
 
             ToDContext.Logger.LogPatch("Created Assassinate ninja trick.", Ninja_Trick_Assassinate_Feature);
         }

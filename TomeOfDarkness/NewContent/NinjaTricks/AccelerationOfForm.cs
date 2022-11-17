@@ -64,6 +64,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             acceleration_of_form_feature.IsClassFeature = true;
             acceleration_of_form_feature.Ranks = 1;
 
+            acceleration_of_form_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(acceleration_of_form_feature));
+
             ToDContext.Logger.LogPatch("Created Accelleration of Form ninja trick.", acceleration_of_form_feature);
 
 

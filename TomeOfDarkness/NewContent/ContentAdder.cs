@@ -36,6 +36,8 @@ namespace TomeOfDarkness.NewContent
                 KiResourceChanges.ConfigureBasicKiResourceChanges();        //Changes to the Monk's Ki Pool feature to make it universal. 
                 MartialArtsTraining.ConfigureMonkMartialArtsTraining();     //Changes to the Monk's unarmed attack feature to make it universal. 
                 UniversalPoisonUse.ConfigureUniversalPoisonUse();           //Changes to the Assassin's Poison Use feature to make it universal.
+                UniversalAssassination.ConfigureUniversalAssassination();   //Changes to the Assassin's Death Attack and Executioner's Assassinate features to make it universal.
+
 
                 //New spells (added first to be used for archetypes and other things)
                 Spells.FxTester.ConfigureFxTester();

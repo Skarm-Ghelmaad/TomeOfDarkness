@@ -34,12 +34,16 @@ using Kingmaker.Localization;
 using Kingmaker.UI.Models.Log.CombatLog_ThreadSystem;
 using Kingmaker.UI.Models.Log;
 using Kingmaker.UI.MVVM._VM.Tooltip.Templates;
-using TomeOfDarkness.NewUIStrings;
+using static TomeOfDarkness.NewUIStrings.CustomUIStrings;
 using Kingmaker.Blueprints.Root.Strings;
 using TabletopTweaks.Core.Config;
 using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using Kingmaker.PubSubSystem;
 using Kingmaker.UnitLogic;
+using TabletopTweaks.Core.Utilities;
+using static TomeOfDarkness.Main;
+using TomeOfDarkness.NewGameLogs;
+
 
 namespace TomeOfDarkness.NewComponents
 {
@@ -113,10 +117,6 @@ namespace TomeOfDarkness.NewComponents
 
         public bool CanBeAttackedBy(UnitEntityData unit)
         {
-            var rep_keys = new string[] { "{caster}", "{target}", "{custom_fact}" };
-            var rep_values = new LocalizedString[] { this.Owner.Blueprint.m_DisplayName, unit.Blueprint.m_DisplayName, this.Fact.Blueprint.m_DisplayName };
-            var rep_dict = HlEX.CreateCustomReplacementStringDictionary(rep_keys, rep_values);
-            var target_icon = unit.IsPlayerFaction ? PrefixIcon.LeftArrow : PrefixIcon.RightGreyArrow;
 
             if (this.Can_Attack.Contains(unit))
             {
@@ -129,7 +129,7 @@ namespace TomeOfDarkness.NewComponents
             var buff_spell_descriptor = this.Buff.Blueprint.GetComponent<SpellDescriptorComponent>();
             if ((buff_spell_descriptor != null) && (UnitDescriptionHelper.GetDescription(unit.Blueprint).Immunities.SpellDescriptorImmunity.Value & buff_spell_descriptor.Descriptor.Value) != 0)
             {
-                HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactImmunity, rep_dict, Color.red, target_icon, null, false);
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Immunity, unit);
                 this.Can_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
@@ -140,7 +140,7 @@ namespace TomeOfDarkness.NewComponents
       
             if (this.CanBypassInoffensiveness(this.Context, unit) == true)
             {
-                HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactBypassSuccess, rep_dict, Color.blue, target_icon, null, false);
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassSucceess, unit);
                 this.Can_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
@@ -150,7 +150,7 @@ namespace TomeOfDarkness.NewComponents
             }
             else
             {
-                HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactBypassFailure, rep_dict, Color.red, target_icon, null, false);
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassFailure, unit);
                 this.Cannot_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
@@ -218,10 +218,6 @@ namespace TomeOfDarkness.NewComponents
             }
             else if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_TARGET && !this.Can_Attack.Contains(target))
             {
-                var rep_keys = new string[] { "{caster}", "{target}", "{custom_fact}" };
-                var rep_values = new LocalizedString[] { this.Owner.Blueprint.m_DisplayName, target.Blueprint.m_DisplayName, this.Fact.Blueprint.m_DisplayName };
-                var rep_dict = HlEX.CreateCustomReplacementStringDictionary(rep_keys, rep_values);
-                var target_icon = target.IsPlayerFaction ? PrefixIcon.LeftArrow : PrefixIcon.RightGreyArrow;
 
                 this.Can_Attack.Add(target);
                 this.Cannot_Attack.Remove(target);
@@ -229,8 +225,46 @@ namespace TomeOfDarkness.NewComponents
                 {
                     this.RemoveMarkingBuff(target);
                 }
-                HlEX.CreateCustomLogMessage(NewUITooltips.CustomFactInvalidation, rep_dict, Color.blue, target_icon, null, false);
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Invalidation, target);
             }
+        }
+
+        public void CreateInoffensivenessLogMessage(InoffensivenessMessageType message_type, UnitEntityData target)
+        {
+            var caster = this.Owner;
+            var text = this.Fact.Name;
+            var color = new Color32();
+            LocalizedString message;
+
+            switch (message_type)
+            {
+                case InoffensivenessMessageType.Immunity:
+                    message = CustomFactImmunity;
+                    color = Color.red;
+                    break;
+                case InoffensivenessMessageType.BypassSucceess:
+                    message = CustomFactBypassSuccess;
+                    color = Color.red;
+                    break;
+                case InoffensivenessMessageType.BypassFailure:
+                    message = CustomFactBypassFailure;
+                    color = Color.green;
+                    break;
+                case InoffensivenessMessageType.Invalidation:
+                    message = CustomFactInvalidation;
+                    color = Color.magenta;
+                    break;
+                default:
+                    message = CustomFactBypassFailure;
+                    color = Color.green;
+                    break;
+            }
+
+            var custom_message = SimpleCombatLogMessage.GenerateSimpleCombatLogMessage(message, color, caster, target, null, text, "", "");
+            SimpleCombatLogMessage.SendSimpleCombatLogMessage(custom_message);
+
+            return;
+
         }
 
         [UsedImplicitly]
@@ -327,6 +361,17 @@ namespace TomeOfDarkness.NewComponents
         private List<UnitEntityData> Marked_Units = new List<UnitEntityData>();
 
         public bool ReverseCheck = false;
+
+        public enum InoffensivenessMessageType
+        {
+            Immunity = 0,
+            BypassSucceess = 1,
+            BypassFailure = 2,
+            Invalidation = 3
+
+        }
+
+
 
     }
 }

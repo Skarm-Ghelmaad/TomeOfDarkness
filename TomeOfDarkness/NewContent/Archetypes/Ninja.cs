@@ -75,9 +75,9 @@ namespace TomeOfDarkness.NewContent.Archetypes
             var ninja_prof = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaProficiencies");
             var ninja_ki_pool = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "KiPoolNinjaFeature");
             var ninja_trick = BlueprintTools.GetModBlueprintReference<BlueprintFeatureSelectionReference>(ToDContext, "NinjaTrickSelection");
-            var ninja_no_trace = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NoTraceFeature");
-            var ninja_dispatchment = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "DispatchmentFeature");
-            var ninja_light_steps = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "LightStepsFeature");
+            var ninja_no_trace = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaNoTraceFeature");
+            var ninja_dispatchment = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaDispatchmentFeature");
+            var ninja_light_steps = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaLightStepsFeature");
             var ninja_style_strikes = BlueprintTools.GetModBlueprintReference<BlueprintFeatureSelectionReference>(ToDContext, "NinjaStyleStrike");
             var ninja_poison_use = BlueprintTools.GetModBlueprintReference<BlueprintFeatureReference>(ToDContext, "NinjaCreatePoison");
 

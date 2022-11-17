@@ -2,6 +2,7 @@
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using TomeOfDarkness.Utilities;
+using HlEX = TomeOfDarkness.Utilities.HelpersExtension;
 using Kingmaker.Blueprints.Classes.Selection;
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
@@ -28,7 +29,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             });
 
-            Style_Master_Feature_Selection.CreatePrerequisiteNoFeature(Style_Master_Feature_Selection);
+            Style_Master_Feature_Selection.AddComponent(HlEX.CreatePrerequisiteNoFeature(Style_Master_Feature_Selection));
 
             ToDContext.Logger.LogPatch("Created Style Master ninja trick.", Style_Master_Feature_Selection);
 

@@ -52,8 +52,10 @@ using Kingmaker.Enums.Damage;
 using Kingmaker.RuleSystem.Rules.Damage;
 using Kingmaker.RuleSystem.Rules;
 using Kingmaker.Designers.EventConditionActionSystem.Conditions;
-
-
+using TomeOfDarkness.NewGameLogs;
+using Kingmaker.EntitySystem.Entities;
+using Kingmaker.EntitySystem;
+using Kingmaker.Blueprints.Root.Strings.GameLog;
 
 namespace TomeOfDarkness.Utilities
 {
@@ -977,6 +979,8 @@ namespace TomeOfDarkness.Utilities
             p.Not = not;
             return p;
         }
+
+        // Holic75_SC
 
         public static PrerequisiteNoFeature CreatePrerequisiteNoFeature(this BlueprintFeature feat, bool any = false)
         {
@@ -2747,39 +2751,6 @@ namespace TomeOfDarkness.Utilities
 
             return target_string;
 
-        }
-
-        #endregion
-
-        #region |------------------------------------------------------|  ( Combat Log ) Miscellaneous Functions |---------------------------------------------------------|
-
-        // Bubbles_PC
-        // The part on the LogThreadService was copied straight-away from BubbleBuffs, while the rest of this method is original.
-        public static void CreateCustomLogMessage(LocalizedString base_text, Dictionary<string, LocalizedString> replacement_substrings, Color color, PrefixIcon icon, TooltipBaseTemplate template = null, bool hasTooltip = true)
-        {
-            string custom_message_text = "";
-
-            foreach (var dictionary_item in replacement_substrings)
-            {
-                custom_message_text = custom_message_text.Replace(dictionary_item.Key, dictionary_item.Value.ToString());
-            }
-            var custom_message = new CombatLogMessage(custom_message_text, color, icon, template, hasTooltip);
-            var messageLog = LogThreadService.Instance.m_Logs[LogChannelType.Common].First(x => x is MessageLogThread);
-            messageLog.AddMessage(custom_message);
-
-        }
-
-        public static Dictionary<String, LocalizedString> CreateCustomReplacementStringDictionary(string[] replacement_keys, LocalizedString[] replacement_values)
-        {
-            Math.Min(replacement_keys.Length, replacement_values.Length);
-
-            var new_replacement_dictionary = new Dictionary<String, LocalizedString>();
-
-            foreach (var rk in replacement_keys)
-            {
-                new_replacement_dictionary.Add(rk, replacement_values[rk.IndexOf(rk)]);
-            }
-            return new_replacement_dictionary;
         }
 
         #endregion

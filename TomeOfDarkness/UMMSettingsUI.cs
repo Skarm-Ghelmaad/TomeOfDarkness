@@ -49,6 +49,7 @@ namespace TomeOfDarkness
                 SetttingUI.SettingGroup("Feats", TabLevel, AddedContent.Feats);
                 SetttingUI.SettingGroup("Ninja Tricks", TabLevel, AddedContent.NinjaTricks);
                 SetttingUI.SettingGroup("Rogue Talents", TabLevel, AddedContent.RogueTalents);
+                SetttingUI.SettingGroup("Style Strikes", TabLevel, AddedContent.StyleStrikes);
                 SetttingUI.SettingGroup("Slayer Talents", TabLevel, AddedContent.SlayerTalents);
                 SetttingUI.SettingGroup("Wild Talents", TabLevel, AddedContent.WildTalents);
                 SetttingUI.SettingGroup("Items", TabLevel, AddedContent.Items);

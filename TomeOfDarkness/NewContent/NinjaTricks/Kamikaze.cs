@@ -106,6 +106,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             kamikaze_feature.IsClassFeature = true;
             kamikaze_feature.Ranks = 1;
 
+            kamikaze_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(kamikaze_feature));
+
             ToDContext.Logger.LogPatch("Created Kamikaze ninja trick.", kamikaze_feature);
 
         }

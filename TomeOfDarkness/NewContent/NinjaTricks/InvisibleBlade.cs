@@ -19,6 +19,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.Ranks = 1;
             });
 
+
             VanishingTrick.ConfigureVanishingTrick();
 
             ToDContext.Logger.LogPatch("Created Invisible Blade ninja trick.", InvisibleBladeFeature);

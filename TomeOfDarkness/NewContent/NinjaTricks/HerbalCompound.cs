@@ -90,6 +90,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
             herbal_compound_feature.IsClassFeature = true;
             herbal_compound_feature.Ranks = 1;
 
+            herbal_compound_feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(herbal_compound_feature));
+
             ToDContext.Logger.LogPatch("Created Herbal Compound ninja trick.", herbal_compound_feature);
 
         }

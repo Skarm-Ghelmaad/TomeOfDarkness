@@ -15,6 +15,7 @@ namespace TomeOfDarkness.Config
         public SettingGroup Feats;
         public SettingGroup NinjaTricks;
         public SettingGroup RogueTalents;
+        public SettingGroup StyleStrikes;
         public SettingGroup SlayerTalents;
         public SettingGroup WildTalents;
         public SettingGroup Items;
@@ -34,6 +35,7 @@ namespace TomeOfDarkness.Config
             Items.LoadSettingGroup(loadedSettings.Items, NewSettingsOffByDefault);
             NinjaTricks.LoadSettingGroup(loadedSettings.NinjaTricks, NewSettingsOffByDefault);
             RogueTalents.LoadSettingGroup(loadedSettings.RogueTalents, NewSettingsOffByDefault);
+            StyleStrikes.LoadSettingGroup(loadedSettings.NinjaTricks, NewSettingsOffByDefault);
             SlayerTalents.LoadSettingGroup(loadedSettings.SlayerTalents, NewSettingsOffByDefault);
             WildTalents.LoadSettingGroup(loadedSettings.WildTalents, NewSettingsOffByDefault);
             Spells.LoadSettingGroup(loadedSettings.Spells, NewSettingsOffByDefault);
