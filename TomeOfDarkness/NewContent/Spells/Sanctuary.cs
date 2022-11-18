@@ -13,7 +13,7 @@ using Kingmaker.Enums;
 using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Craft;
-
+using TomeOfDarkness.NewEnums;
 
 
 namespace TomeOfDarkness.NewContent.Spells
@@ -32,10 +32,11 @@ namespace TomeOfDarkness.NewContent.Spells
             var protection_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("b750650400d9d554b880dbf4c8347b24");
 
             var SactuaryBuffLogic = Helpers.Create<AddInoffensiveness>(c =>{
-                c.Type = NewEnums.InoffensivenessEvaluationType.SavingThrow;
+                c.Type = InoffensivenessEvaluationType.SavingThrow;
                 c.m_SavingThrowType = SavingThrowType.Will;
                 c.ReverseCheck = false;
                 c.HasMarkingBuff = false;
+                c.Offensive_Action_Effect = OffensiveActionEffect.REMOVE_FROM_OWNER;
             });
 
             var Sanctuary_Buff = Invisibility_Buff.CreateCopy(ToDContext, "SanctuaryBuff", bp => {
@@ -46,7 +47,7 @@ namespace TomeOfDarkness.NewContent.Spells
             Sanctuary_Buff.ComponentsArray = new BlueprintComponent[] { SactuaryBuffLogic };
 
             var Apply_Sanctuary_Buff = HlEX.CreateContextActionApplyBuff(Sanctuary_Buff, HlEX.CreateContextDuration(HlEX.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds), true);
-  
+
             var Sanctuary_Spell = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "SanctuaryAbility", bp => {
                 bp.SetName(ToDContext, "Sanctuary");
                 bp.SetDescription(ToDContext, "Any opponent attempting to directly attack the warded creature, even with a targeted spell, must attempt a Will save. If the save succeeds, the opponent can attack normally and is unaffected by that casting of the spell. If the save fails, the opponent can’t follow through with the attack, that part of its action is lost, and it can’t directly attack the warded creature for the duration of the spell. Those not attempting to attack the subject remain unaffected. This spell does not prevent the warded creature from being attacked or affected by area of effect spells. The subject cannot attack without breaking the spell but may use non-attack spells or otherwise act.");

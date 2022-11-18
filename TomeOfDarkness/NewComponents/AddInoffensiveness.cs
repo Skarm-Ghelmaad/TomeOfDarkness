@@ -127,7 +127,7 @@ namespace TomeOfDarkness.NewComponents
                 return false;
             }
             var buff_spell_descriptor = this.Buff.Blueprint.GetComponent<SpellDescriptorComponent>();
-            if ((buff_spell_descriptor != null) && (UnitDescriptionHelper.GetDescription(unit.Blueprint).Immunities.SpellDescriptorImmunity.Value & buff_spell_descriptor.Descriptor.Value) != 0)
+            if (buff_spell_descriptor != null && (UnitDescriptionHelper.GetDescription(unit.Blueprint).Immunities.SpellDescriptorImmunity.Value & buff_spell_descriptor.Descriptor.Value) != 0)
             {
                 this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Immunity, unit);
                 this.Can_Attack.Add(unit);
@@ -138,24 +138,24 @@ namespace TomeOfDarkness.NewComponents
                 return true;
             }
       
-            if (this.CanBypassInoffensiveness(this.Context, unit) == true)
+            if (this.CanBypassInoffensiveness(unit) == true)
             {
-                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassSucceess, unit);
                 this.Can_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
                     this.RemoveMarkingBuff(unit);
                 }
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassSucceess, unit);
                 return true;
             }
             else
             {
-                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassFailure, unit);
                 this.Cannot_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
                     this.AddMarkingBuff(unit);
                 }
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassFailure, unit);
                 return true;
             }
 
@@ -164,16 +164,16 @@ namespace TomeOfDarkness.NewComponents
         // If the ReverseCheck is set to "false", the inoffensiveness effect cannot be bypassed if the saving throw or skill check is passed,
         // if the buff is either on the owner of this buff or on the "target" of this buff or if the chosen property is higher or equal to the threshold. 
         // As a safety measure, the default result if no InoffensivenessEvaluationType was set is "true", so the unit can be attacked.
-        public bool CanBypassInoffensiveness(MechanicsContext context, UnitEntityData target)
+        public bool CanBypassInoffensiveness(UnitEntityData target)
         {
             switch (this.Type)
             {
                 case InoffensivenessEvaluationType.SavingThrow:
-                    RuleSavingThrow ruleSavingThrow = context.TriggerRule<RuleSavingThrow>(new RuleSavingThrow(target, this.m_SavingThrowType, context.Params.DC));
+                    RuleSavingThrow ruleSavingThrow = this.Context.TriggerRule<RuleSavingThrow>(new RuleSavingThrow(target, this.m_SavingThrowType, this.DC.Calculate(this.Context)));
                     return ( ruleSavingThrow.IsPassed && !this.ReverseCheck );
 
                 case InoffensivenessEvaluationType.SkillCheck:
-                    RuleSkillCheck ruleSkillCheck = context.TriggerRule<RuleSkillCheck>(new RuleSkillCheck(target, this.m_StatStype, this.DC.Calculate(context)));
+                    RuleSkillCheck ruleSkillCheck = this.Context.TriggerRule<RuleSkillCheck>(new RuleSkillCheck(target, this.m_StatStype, this.DC.Calculate(this.Context)));
                     return ( ruleSkillCheck.Success && !this.ReverseCheck);
 
                 case InoffensivenessEvaluationType.OwnerBuff:
@@ -183,23 +183,23 @@ namespace TomeOfDarkness.NewComponents
                     return ( target.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck);
 
                 case InoffensivenessEvaluationType.OwnerProperty:
-                    int op_threshold = this.PropertyThreshold.Calculate(context);
+                    int op_threshold = this.PropertyThreshold.Calculate(this.Context);
                     return ((this.Property.GetInt(this.Owner) >= op_threshold) && !this.ReverseCheck);
 
                 case InoffensivenessEvaluationType.TargetProperty:
-                    int tp_threshold = this.PropertyThreshold.Calculate(context);
+                    int tp_threshold = this.PropertyThreshold.Calculate(this.Context);
                     return ((this.Property.GetInt(target) >= tp_threshold) && !this.ReverseCheck);
 
                 case InoffensivenessEvaluationType.OwnerCustomProperty:
-                    int cop_threshold = this.CustomPropertyThreshold.Calculate(context);
+                    int cop_threshold = this.CustomPropertyThreshold.Calculate(this.Context);
                     return ((this.CustomProperty.GetInt(this.Owner) >= cop_threshold) && !this.ReverseCheck);
 
                 case InoffensivenessEvaluationType.TargetCustomProperty:
-                    int ctp_threshold = this.CustomPropertyThreshold.Calculate(context);
+                    int ctp_threshold = this.CustomPropertyThreshold.Calculate(this.Context);
                     return ((this.CustomProperty.GetInt(target) >= ctp_threshold) && !this.ReverseCheck);
 
                 default:
-                    return true;
+                    return !this.ReverseCheck;
             }
 
 
@@ -260,7 +260,7 @@ namespace TomeOfDarkness.NewComponents
                     break;
             }
 
-            var custom_message = SimpleCombatLogMessage.GenerateSimpleCombatLogMessage(message, color, caster, target, null, text, "", "");
+            var custom_message = SimpleCombatLogMessage.GenerateSimpleCombatLogMessage(message, color, caster, target, text, "", "");
             SimpleCombatLogMessage.SendSimpleCombatLogMessage(custom_message);
 
             return;
@@ -312,26 +312,35 @@ namespace TomeOfDarkness.NewComponents
             }
         }
 
+        [UsedImplicitly]
+        public bool IsBasedOnRoll
+        {
+            get
+            {
+                return this.Type == InoffensivenessEvaluationType.SavingThrow || this.Type == InoffensivenessEvaluationType.SkillCheck;
+            }
+        }
+
         private List<UnitEntityData> Cannot_Attack = new List<UnitEntityData>();
 
         private List<UnitEntityData> Can_Attack = new List<UnitEntityData>();
 
         public OffensiveActionEffect Offensive_Action_Effect;
 
-        public InoffensivenessEvaluationType Type;
+        public InoffensivenessEvaluationType Type = InoffensivenessEvaluationType.SavingThrow;
 
         public bool HasMarkingBuff = false;
 
         [HideInInspector]
         [ShowIf("IsEvaluationOnSavingThrow")]
-        public SavingThrowType m_SavingThrowType;
+        public SavingThrowType m_SavingThrowType = SavingThrowType.Will;
 
         [HideInInspector]
         [ShowIf("IsEvaluationOnSkillCheck")]
         public StatType m_StatStype;
 
         [HideInInspector]
-        [ShowIf("IsEvaluationOnSkillCheck")]
+        [ShowIf("IsBasedOnRoll")]
         public ContextValue DC;
 
         [HideInInspector]

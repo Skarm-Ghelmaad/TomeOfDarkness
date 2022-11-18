@@ -24,7 +24,7 @@ namespace TomeOfDarkness.NewGameLogs
 
     public class SimpleCombatLogMessage
     {
-        public static CombatLogMessage GenerateSimpleCombatLogMessage(LocalizedString message, Color color, UnitEntityData source_entity = null, UnitEntityData target = null, EntityFact source_fact = null, string text = "", string description = "", string text_with_tags = "")
+        public static CombatLogMessage GenerateSimpleCombatLogMessage(LocalizedString message, Color color, UnitEntityData source_entity = null, UnitEntityData target = null, string text = "", string description = "", string text_with_tags = "")
         {
             CombatLogMessage result;
                 using (ProfileScope.New("Build Simple Combat Log Message", (SimpleBlueprint)null))
@@ -34,10 +34,6 @@ namespace TomeOfDarkness.NewGameLogs
                         if (source_entity != null)
                         {
                             GameLogContext.SourceUnit = source_entity;
-                        }
-                        else
-                        {
-                            GameLogContext.SourceFact = source_fact;
                         }
 
                         GameLogContext.Target = target;
