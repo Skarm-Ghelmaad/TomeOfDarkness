@@ -67,7 +67,7 @@ namespace TomeOfDarkness.NewUnitParts
 
                 }
 
-            this.SpecificConcealmentBuffTracker = Tracker.ToArray();
+            this.SpecificConcealmentBuffTracker = Tracker;
         }
 
 
@@ -95,7 +95,7 @@ namespace TomeOfDarkness.NewUnitParts
 
 
         public CountableFlag SpecificConcealment = new CountableFlag();
-        public BlueprintBuff[] SpecificConcealmentBuffTracker = new BlueprintBuff[0];
+        public List<BlueprintBuff> SpecificConcealmentBuffTracker = new List<BlueprintBuff>();
 
 
     }

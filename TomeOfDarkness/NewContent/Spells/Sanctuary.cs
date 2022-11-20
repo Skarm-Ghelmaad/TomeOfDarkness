@@ -14,6 +14,7 @@ using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Craft;
 using TomeOfDarkness.NewEnums;
+using Kingmaker.UnitLogic.Abilities.Components.Base;
 
 
 namespace TomeOfDarkness.NewContent.Spells
@@ -28,6 +29,8 @@ namespace TomeOfDarkness.NewContent.Spells
 
             // Sanctuary uses the Invisibility buff as base.
             var Invisibility_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("525f980cb29bc2240b93e953974cb325");
+            var Legend_Shadow_Buff_Fx = BlueprintTools.GetBlueprint<BlueprintBuff>("faf2133d48b641149343f4dac75fba47").FxOnStart.AssetId; // Not sure what's for, but is a cool fx.
+            var Faerie_Fire_Buff_Fx = BlueprintTools.GetBlueprint<BlueprintBuff>("cc383a9eaae4d2b45a925d442b367b54").FxOnStart.AssetId;   // I wanted an effect that felt like "Sanctuary", so I am mixing these two fx.
 
             var protection_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("b750650400d9d554b880dbf4c8347b24");
 
@@ -42,6 +45,7 @@ namespace TomeOfDarkness.NewContent.Spells
             var Sanctuary_Buff = Invisibility_Buff.CreateCopy(ToDContext, "SanctuaryBuff", bp => {
                 bp.SetName(ToDContext, "Sanctuary");
                 bp.m_Icon = SanctuaryIcon;
+                bp.FxOnStart = HlEX.CreatePrefabLink(Legend_Shadow_Buff_Fx);
             });
 
             Sanctuary_Buff.ComponentsArray = new BlueprintComponent[] { SactuaryBuffLogic };
@@ -67,6 +71,7 @@ namespace TomeOfDarkness.NewContent.Spells
                 bp.ResourceAssetIds = new string[0];
                 bp.AddComponent(HlEX.CreateSpellComponent(SpellSchool.Abjuration));
                 bp.AddComponent(HlEX.CreateRunActions(Apply_Sanctuary_Buff));
+                bp.AddComponent(HlEX.CreateAbilitySpawnFx(Faerie_Fire_Buff_Fx, anchor: AbilitySpawnFxAnchor.SelectedTarget));
                 bp.AddComponent(Helpers.Create<CraftInfoComponent>(c => { c.OwnerBlueprint = bp; c.SpellType = CraftSpellType.Buff; c.SavingThrow = CraftSavingThrow.Will; c.AOEType = CraftAOE.None; }));
                 bp.SpellResistance = false;
             });

@@ -174,18 +174,19 @@ namespace TomeOfDarkness.NewContent.Archetypes
         static void ConfigureNinjaKiPool()
         {
             var InstinctiveStealthIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_InstinctiveStealth.png");
+            var SpeedBurstIcon = AssetLoader.LoadInternal(ToDContext, folder: "Abilities", file: "Icon_SpeedBurst.png");
             var kiResource = BlueprintTools.GetBlueprint<BlueprintAbilityResource>("9d9c90a9a1f52d04799294bf91c80a82");
             var Abundant_Ki_Pool = BlueprintTools.GetBlueprint<BlueprintFeature>("e8752f9126d986748b10d0bdac693264");
             var Ki_Extra_Attack_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("cadf8a5c42002494cabfc6c1196b514a");
             var Monk_Ki_Extra_Attack_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("7f6ea312f5dad364fa4a896d7db39fdd");
             var Monk_Ki_Sudden_Speed_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("8c98b8f3ac90fa245afe14116e48c7da");
-            var Expeditious_Retreat_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("9ea4ec3dc30cd7940a372a4d699032e7");
+            var Monk_Ki_Sudden_Speed_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("8f05a04203b4fda4fa2d29fadf16f647");
             var Shadow_Veil_Buff = BlueprintTools.GetBlueprint<BlueprintBuff>("5ceedff361efd4c4eb8e8369c13b03ea");
             var Shadow_Veil_Buff_Fx_Asset_ID = Shadow_Veil_Buff.FxOnStart.AssetId;
 
             #region | Create Ninja Ki abilities |
 
-            var NinjaKiSpeedBuff = Expeditious_Retreat_Buff.CreateCopy(ToDContext, "NinjaTrickKiSpeedBuff", bp =>
+            var NinjaKiSpeedBuff = Monk_Ki_Sudden_Speed_Buff.CreateCopy(ToDContext, "NinjaTrickKiSpeedBuff", bp =>
             {
                 bp.SetName(ToDContext, "Speed Burst");
                 bp.SetDescription(ToDContext, "You grant yourself a sudden burst of speed, increasing your base land speed by 20 feet for 1 round.");
@@ -193,7 +194,15 @@ namespace TomeOfDarkness.NewContent.Archetypes
                 {
                     c.Descriptor = ModifierDescriptor.UntypedStackable;
                     c.Value = 20;
+                    c.ContextBonus = HlEX.CreateContextValue(0);
+                    c.CappedOnMultiplier = false;
+                    c.MultiplierCap = 0.0F;
+                    c.CappedMinimum = false;
+                    c.MinimumCap = 0;
                 }));
+                bp.m_Flags = (BlueprintBuff.Flags)0;
+                bp.IsClassFeature = true;
+                bp.m_Icon = SpeedBurstIcon;
 
             });
 
@@ -227,19 +236,17 @@ namespace TomeOfDarkness.NewContent.Archetypes
 
             ToDContext.Logger.LogPatch("Created Extra Attack (minor) ninja trick.", Monk_Ki_Extra_Attack_Ability);
 
+            var Apply_Speed_Boost_Buff = HlEX.CreateContextActionApplyBuff(NinjaKiSpeedBuff.ToReference<BlueprintBuffReference>(),
+                                                    HlEX.CreateContextDuration(HlEX.CreateContextValue(1), DurationRate.Rounds),false, false, false, true, false);
+
             var NinjaKiSpeedBoostAbility = Monk_Ki_Sudden_Speed_Ability.CreateCopy(ToDContext, "NinjaTrickKiSpeedBoostAbility", bp =>
             {
                 bp.SetName(ToDContext, "Ninja Trick: Speed Burst");
                 bp.SetDescription(ToDContext, "A ninja with this ki power can spend 1 point from his ki pool as a swift action to grant himself a sudden burst of speed. This increases the ninja's base land speed by 20 feet for 1 round.");
+                bp.ReplaceComponents<AbilityEffectRunAction>(HlEX.CreateRunActions(Apply_Speed_Boost_Buff));
+                bp.m_Icon = SpeedBurstIcon;
             });
 
-            NinjaKiSpeedBoostAbility.FlattenAllActions()
-                                    .OfType<ContextActionApplyBuff>()
-                                    .ForEach(a =>
-                                    {
-                                        a.m_Buff = NinjaKiSpeedBuff.ToReference<BlueprintBuffReference>();
-                                        a.DurationValue = HlEX.CreateContextDuration(1, DurationRate.Rounds);
-                                    });
 
             ToDContext.Logger.LogPatch("Created Ninja Speed Burst (minor) ninja trick.", NinjaKiSpeedBoostAbility);
 

@@ -30,6 +30,7 @@ using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.RuleSystem;
 using Kingmaker.UnitLogic.ActivatableAbilities;
 using Kingmaker.ElementsSystem;
+using static TomeOfDarkness.MechanicsChanges.ActivatableAbilityGroupToD;
 
 namespace TomeOfDarkness.NewContent.NinjaTricks
 {
@@ -197,6 +198,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, Pressure_Points_Str_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Str_Active_Buff.ToReference<BlueprintBuffReference>();
                 bp.m_Icon = Pressure_Points_Str_Active_Buff.m_Icon;
+                bp.Group = NewActivatableAbilityGroup.PressurePoints;
+                bp.WeightInGroup = 1;
 
             });
 
@@ -205,7 +208,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, Pressure_Points_Dex_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Dex_Active_Buff.ToReference<BlueprintBuffReference>();
                 bp.m_Icon = Pressure_Points_Dex_Active_Buff.m_Icon;
-
+                bp.Group = NewActivatableAbilityGroup.PressurePoints;
+                bp.WeightInGroup = 1;
             });
 
             var Pressure_Points_Con_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsConToggleAbility", bp => {
@@ -213,7 +217,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, Pressure_Points_Con_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Con_Active_Buff.ToReference<BlueprintBuffReference>();
                 bp.m_Icon = Pressure_Points_Con_Active_Buff.m_Icon;
-
+                bp.Group = NewActivatableAbilityGroup.PressurePoints;
+                bp.WeightInGroup = 1;
             });
 
             var Pressure_Points_Int_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsIntToggleAbility", bp => {
@@ -221,7 +226,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, Pressure_Points_Int_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Int_Active_Buff.ToReference<BlueprintBuffReference>();
                 bp.m_Icon = Pressure_Points_Int_Active_Buff.m_Icon;
-
+                bp.Group = NewActivatableAbilityGroup.PressurePoints;
+                bp.WeightInGroup = 1;
             });
 
             var Pressure_Points_Wis_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsWisToggleAbility", bp => {
@@ -229,7 +235,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, Pressure_Points_Wis_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Wis_Active_Buff.ToReference<BlueprintBuffReference>();
                 bp.m_Icon = Pressure_Points_Wis_Active_Buff.m_Icon;
-
+                bp.Group = NewActivatableAbilityGroup.PressurePoints;
+                bp.WeightInGroup = 1;
             });
 
             var Pressure_Points_Cha_Activatable_Ability = Debilitating_Injury_Bewildered_Activatable_Ability.CreateCopy(ToDContext, "NinjaTrickPressurePointsChaToggleAbility", bp => {
@@ -237,7 +244,8 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
                 bp.SetDescription(ToDContext, Pressure_Points_Cha_Active_Buff.Description);
                 bp.m_Buff = Pressure_Points_Cha_Active_Buff.ToReference<BlueprintBuffReference>();
                 bp.m_Icon = Pressure_Points_Cha_Active_Buff.m_Icon;
-
+                bp.Group = NewActivatableAbilityGroup.PressurePoints;
+                bp.WeightInGroup = 1;
             });
 
 

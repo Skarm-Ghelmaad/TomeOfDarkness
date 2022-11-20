@@ -270,7 +270,7 @@ namespace TomeOfDarkness.NewContent.Features
 
             ToDContext.Logger.LogPatch("Added Create Poison - Duration Reduction feature.", Universal_Create_Poison_Duration_Reduction_Feature);
 
-            var Universal_Create_Poison_Duration_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonDurationyBoostBluff", bp => {
+            var Universal_Create_Poison_Duration_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonDurationyReductionBluff", bp => {
                 bp.SetName(ToDContext, "Create Poison - Duration Reduction");
                 bp.SetDescription(ToDContext, "Each rank of this feature add -1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
@@ -880,8 +880,11 @@ namespace TomeOfDarkness.NewContent.Features
             // Use "ProjectilesCount" for Stickiness.
 
             Assassin_Create_Poison_Ability_Str_Buff.Stacking = StackingType.Rank;
+            Assassin_Create_Poison_Ability_Str_Buff.Ranks = 200;
             Assassin_Create_Poison_Ability_Dex_Buff.Stacking = StackingType.Rank;
+            Assassin_Create_Poison_Ability_Str_Buff.Ranks = 200;
             Assassin_Create_Poison_Ability_Con_Buff.Stacking = StackingType.Rank;
+            Assassin_Create_Poison_Ability_Str_Buff.Ranks = 200;
 
             // Replace Apply Buff Action with Apply Buff Ranks Action [Poison Use — Strength Ability]
 

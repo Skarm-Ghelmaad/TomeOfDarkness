@@ -41,6 +41,7 @@
     <Compile Include="Bugfixes\Spells\ConcealingCloudsFix.cs" />
     <Compile Include="Config\Bugfixes.cs" />
     <Compile Include="Config\NewContent.cs" />
+    <Compile Include="MechanicsChanges\ActivatableAbilityGroupToD.cs" />
     <Compile Include="MechanicsChanges\AsceticPractice.cs" />
     <Compile Include="MechanicsChanges\AssassinationTraining.cs" />
     <Compile Include="MechanicsChanges\ConcealmentDescriptorToD.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="NewComponents\AbilityShowIfCasterKnowsSpell.cs" />
     <Compile Include="NewComponents\AddContextFlankingAttackBonus.cs" />
     <Compile Include="NewComponents\AddInoffensiveness.cs" />
+    <Compile Include="NewComponents\AddInoffensivenessData.cs" />
     <Compile Include="NewComponents\AddOutgoingConcealment.cs" />
     <Compile Include="NewComponents\AreaEffects\AbilityAreaEffectRunActionWithDelay.cs" />
     <Compile Include="NewComponents\BindAbilitiesToSharedValueAndConditionalStat.cs" />
@@ -295,6 +297,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_ShadowClone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_SpeedBurst.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_VanishingTrick.png">

@@ -121,8 +121,24 @@ namespace TomeOfDarkness.MechanicsChanges
             monk_1d6_unarmed_strike.ReapplyOnLevelUp = true;
             monk_1d6_unarmed_strike.m_Icon = MartialArtsTrainingOrangeIcon;
 
-            monk_progression.LevelEntries = HlEX.RemoveEntries(monk_progression.LevelEntries, f => monk_other_fists.Contains(f), keep_empty_entries: true);
+            // Note: I have found out that replicating Holic's method to remove the unarmed strike features is troublesome, because
+            // Kingmaker didn't have three archetypes (Quarterstaff Master and Sohei) which replace the this feature, so I changed this
+            // to changing those features by removing their components and hiding them.
 
+            var empty_component_array = new BlueprintComponent[] { };
+
+            foreach (var other_fist in monk_other_fists)
+            {
+                other_fist.ComponentsArray = empty_component_array;
+                other_fist.HideInUI = true;
+                other_fist.HideInCharacterSheetAndLevelUp = true;
+            }
+
+            ToDContext.Logger.LogPatch("Removed components and hidden feature.", monk_1d8_unarmed_strike);
+            ToDContext.Logger.LogPatch("Removed components and hidden feature.", monk_1d10_unarmed_strike);
+            ToDContext.Logger.LogPatch("Removed components and hidden feature.", monk_2d6_unarmed_strike);
+            ToDContext.Logger.LogPatch("Removed components and hidden feature.", monk_2d8_unarmed_strike);
+            ToDContext.Logger.LogPatch("Removed components and hidden feature.", monk_2d10_unarmed_strike);
             ToDContext.Logger.LogPatch("Condensed Monk's unarmed strike damage.", monk_1d6_unarmed_strike);
 
             #endregion

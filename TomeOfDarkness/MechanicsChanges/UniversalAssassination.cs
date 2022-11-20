@@ -195,7 +195,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Assassination Mortality Reduction feature.", Universal_Assassination_Mortality_Reduction_Feature);
 
-            var Universal_Assassination_Mortality_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalAssassinationMortalityBoostBluff", bp => {
+            var Universal_Assassination_Mortality_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalAssassinationMortalityReductionBluff", bp => {
                 bp.SetName(ToDContext, "Assassination - Mortality Reduction");
                 bp.SetDescription(ToDContext, "Each rank of this buff adds -1 to the Death Attack's and Assassination's DC.");
                 bp.Ranks = 100;

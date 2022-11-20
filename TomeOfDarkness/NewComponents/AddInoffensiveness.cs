@@ -45,22 +45,63 @@ using static TomeOfDarkness.Main;
 using TomeOfDarkness.NewGameLogs;
 
 
+
+
 namespace TomeOfDarkness.NewComponents
 {
     [TypeId("A73BDB5B66D446A4AFE2EC493653B8AB")]
-    public class AddInoffensiveness : UnitBuffComponentDelegate, IUnitMakeOffensiveActionHandler, IUnitSubscriber
+    public class AddInoffensiveness : UnitBuffComponentDelegate<AddInoffensivenessData>, IUnitMakeOffensiveActionGlobalHandler, IGlobalSubscriber, IUnitSubscriber, ISubscriber
     {
 
         public override void OnTurnOn()
         {
             this.Owner.Ensure<UnitPartInoffensiveness>().AddUnitPartFlag();
+            this.Owner.Get<UnitPartInoffensiveness>().UpdateInoffensivenessBuffTracker();
+            if (this.IsEvaluationOnSavingThrow)
+            {
+                base.Data.Stored_DC = this.Context.Params.DC;
+            }
+            else if (this.IsEvaluationOnSkillCheck)
+            {
+                base.Data.Stored_DC = this.Check_DC.Calculate(this.Context);
+            }
+            else if (this.IsEvaluationOnProperty)
+            {
+                base.Data.Stored_PropertyThreshold = this.PropertyThreshold.Calculate(this.Context);
+            }
+            else if (this.IsEvaluationCustomProperty)
+            {
+                base.Data.Stored_CustomPropertyThreshold = this.CustomPropertyThreshold.Calculate(this.Context);
+            }
+
 
         }
 
         public override void OnTurnOff()
         {
-            this.Owner.Ensure<UnitPartInoffensiveness>().RemoveUnitPartFlag();
+            if (this.IsEvaluationOnSavingThrow)
+            {
+                base.Data.Stored_DC = 0;
+            }
+            else if (this.IsEvaluationOnSkillCheck)
+            {
+                base.Data.Stored_DC = 0;
+            }
+            else if (this.IsEvaluationOnProperty)
+            {
+                base.Data.Stored_PropertyThreshold = 0;
+            }
+            else if (this.IsEvaluationCustomProperty)
+            {
+                base.Data.Stored_CustomPropertyThreshold = 0;
+            }
+            this.Owner.Ensure<UnitPartInoffensiveness>().UpdateInoffensivenessBuffTracker();
 
+            if (this.Owner.Get<UnitPartInoffensiveness>().IsInoffensivenessBuffTrackerEmpty)
+            {
+               this.Owner.Get<UnitPartInoffensiveness>().RemoveUnitPartFlag();
+            }
+ 
         }
 
         public BlueprintBuff MarkingBuff
@@ -78,38 +119,38 @@ namespace TomeOfDarkness.NewComponents
 
         public void AddMarkingBuff(UnitEntityData unit)
         {
-            if ((!this.Marked_Units.Any() || !this.Marked_Units.Contains(unit)) && !unit.HasFact(this.MarkingBuff))
+            if ((!base.Data.Marked_Units.Any() || !base.Data.Marked_Units.Contains(unit)) && !unit.HasFact(this.MarkingBuff))
             {
                 unit.Buffs.AddBuff(this.MarkingBuff, null, null, null);
-                this.Marked_Units.Add(unit);
+                base.Data.Marked_Units.Add(unit);
                 return;
             }
         }
 
         public void RemoveMarkingBuff(UnitEntityData unit)
         {
-            if ((this.Marked_Units.Any() || this.Marked_Units.Contains(unit)) && (unit.HasFact(this.MarkingBuff)))
+            if ((base.Data.Marked_Units.Any() || base.Data.Marked_Units.Contains(unit)) && unit.HasFact(this.MarkingBuff))
             {
                 unit.Buffs.RemoveFact(this.MarkingBuff);
-                this.Marked_Units.Remove(unit);
+                base.Data.Marked_Units.Remove(unit);
                 return;
             }
         }
 
         public void RemoveAllMarkingBuffs()
         {
-            if (this.Marked_Units.Any())
+            if (base.Data.Marked_Units.Any())
             {
-                foreach (var unit in this.Marked_Units)
+                foreach (var unit in base.Data.Marked_Units)
                 {
                     if (!unit.IsDisposed && unit.HasFact(this.MarkingBuff))
                     {
                         unit.Buffs.RemoveFact(this.MarkingBuff);
-                        this.Marked_Units.Remove(unit);
+                        base.Data.Marked_Units.Remove(unit);
                     }
                     else
                     {
-                        this.Marked_Units.Remove(unit);
+                        base.Data.Marked_Units.Remove(unit);
                     }
                 }
             }
@@ -118,11 +159,11 @@ namespace TomeOfDarkness.NewComponents
         public bool CanBeAttackedBy(UnitEntityData unit)
         {
 
-            if (this.Can_Attack.Contains(unit))
+            if (base.Data.Can_Attack.Contains(unit))
             {
                 return true;
             }
-            if (this.Cannot_Attack.Contains(unit))
+            if (base.Data.Cannot_Attack.Contains(unit))
             {
                 return false;
             }
@@ -130,7 +171,7 @@ namespace TomeOfDarkness.NewComponents
             if (buff_spell_descriptor != null && (UnitDescriptionHelper.GetDescription(unit.Blueprint).Immunities.SpellDescriptorImmunity.Value & buff_spell_descriptor.Descriptor.Value) != 0)
             {
                 this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Immunity, unit);
-                this.Can_Attack.Add(unit);
+                base.Data.Can_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
                     this.RemoveMarkingBuff(unit);
@@ -140,22 +181,23 @@ namespace TomeOfDarkness.NewComponents
       
             if (this.CanBypassInoffensiveness(unit) == true)
             {
-                this.Can_Attack.Add(unit);
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassSucceess, unit);
+                base.Data.Can_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
                     this.RemoveMarkingBuff(unit);
                 }
-                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassSucceess, unit);
                 return true;
             }
-            else
+            else 
             {
-                this.Cannot_Attack.Add(unit);
+                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassFailure, unit);
+                base.Data.Cannot_Attack.Add(unit);
                 if (this.HasMarkingBuff)
                 {
                     this.AddMarkingBuff(unit);
                 }
-                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassFailure, unit);
+
                 return true;
             }
 
@@ -169,34 +211,30 @@ namespace TomeOfDarkness.NewComponents
             switch (this.Type)
             {
                 case InoffensivenessEvaluationType.SavingThrow:
-                    RuleSavingThrow ruleSavingThrow = this.Context.TriggerRule<RuleSavingThrow>(new RuleSavingThrow(target, this.m_SavingThrowType, this.DC.Calculate(this.Context)));
-                    return ( ruleSavingThrow.IsPassed && !this.ReverseCheck );
+                    RuleSavingThrow ruleSavingThrow = this.Context.TriggerRule<RuleSavingThrow>(new RuleSavingThrow(target, this.m_SavingThrowType, base.Data.Stored_DC));
+                    return  ruleSavingThrow.IsPassed && !this.ReverseCheck ;
 
                 case InoffensivenessEvaluationType.SkillCheck:
-                    RuleSkillCheck ruleSkillCheck = this.Context.TriggerRule<RuleSkillCheck>(new RuleSkillCheck(target, this.m_StatStype, this.DC.Calculate(this.Context)));
-                    return ( ruleSkillCheck.Success && !this.ReverseCheck);
+                    RuleSkillCheck ruleSkillCheck = this.Context.TriggerRule<RuleSkillCheck>(new RuleSkillCheck(target, this.m_StatStype, base.Data.Stored_DC));
+                    return  ruleSkillCheck.Success && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.OwnerBuff:
-                    return ( this.Owner.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck );
+                    return  this.Owner.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck ;
 
                 case InoffensivenessEvaluationType.TargetBuff:
-                    return ( target.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck);
+                    return  target.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.OwnerProperty:
-                    int op_threshold = this.PropertyThreshold.Calculate(this.Context);
-                    return ((this.Property.GetInt(this.Owner) >= op_threshold) && !this.ReverseCheck);
+                    return (this.Property.GetInt(this.Owner) >= base.Data.Stored_PropertyThreshold) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.TargetProperty:
-                    int tp_threshold = this.PropertyThreshold.Calculate(this.Context);
-                    return ((this.Property.GetInt(target) >= tp_threshold) && !this.ReverseCheck);
+                    return (this.Property.GetInt(target) >= base.Data.Stored_PropertyThreshold) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.OwnerCustomProperty:
-                    int cop_threshold = this.CustomPropertyThreshold.Calculate(this.Context);
-                    return ((this.CustomProperty.GetInt(this.Owner) >= cop_threshold) && !this.ReverseCheck);
+                    return (this.CustomProperty.GetInt(this.Owner) >= base.Data.Stored_CustomPropertyThreshold) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.TargetCustomProperty:
-                    int ctp_threshold = this.CustomPropertyThreshold.Calculate(this.Context);
-                    return ((this.CustomProperty.GetInt(target) >= ctp_threshold) && !this.ReverseCheck);
+                    return (this.CustomProperty.GetInt(target) >= base.Data.Stored_CustomPropertyThreshold) && !this.ReverseCheck;
 
                 default:
                     return !this.ReverseCheck;
@@ -205,29 +243,45 @@ namespace TomeOfDarkness.NewComponents
 
         }
 
-        public void HandleUnitMakeOffensiveAction(UnitEntityData target)
+        public void HandleUnitMakeOffensiveAction(UnitEntityData unit, UnitEntityData target)
         {
-            if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_OWNER)
+            if (unit == this.Owner)
             {
-                if (this.HasMarkingBuff)
+                if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_OWNER)
                 {
-                    this.RemoveAllMarkingBuffs();
+                    if (this.HasMarkingBuff)
+                    {
+                        this.RemoveAllMarkingBuffs();
+                    }
+                    this.Buff.Remove();
+
                 }
-                this.Buff.Remove();
-
-            }
-            else if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_TARGET && !this.Can_Attack.Contains(target))
-            {
-
-                this.Can_Attack.Add(target);
-                this.Cannot_Attack.Remove(target);
-                if (this.HasMarkingBuff)
+                else if (this.Offensive_Action_Effect == OffensiveActionEffect.REMOVE_FROM_TARGET && !base.Data.Can_Attack.Contains(target))
                 {
-                    this.RemoveMarkingBuff(target);
+                    this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Invalidation, target);
+                    base.Data.Can_Attack.Add(target);
+                    base.Data.Cannot_Attack.Remove(target);
+                    if (this.HasMarkingBuff)
+                    {
+                        this.RemoveMarkingBuff(target);
+                    }
                 }
-                this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Invalidation, target);
             }
+            
+
         }
+
+        // IEntityRevealedHandler,
+        //public void HandleEntityRevealed(EntityDataBase entity)
+        //{
+        //    UnitEntityData revealed_entity = entity as UnitEntityData;
+        //    UnitEntityData caster = this.Owner;
+
+        //    if (entity != null && revealed_entity != caster && revealed_entity.IsPlayersEnemy)
+        //    {
+        //        this.CanBeAttackedBy(revealed_entity);
+        //    }
+        //}
 
         public void CreateInoffensivenessLogMessage(InoffensivenessMessageType message_type, UnitEntityData target)
         {
@@ -240,23 +294,23 @@ namespace TomeOfDarkness.NewComponents
             {
                 case InoffensivenessMessageType.Immunity:
                     message = CustomFactImmunity;
-                    color = Color.red;
+                    color = GameLogStrings.Instance.DefaultColor;
                     break;
                 case InoffensivenessMessageType.BypassSucceess:
                     message = CustomFactBypassSuccess;
-                    color = Color.red;
+                    color = GameLogStrings.Instance.DefaultColor;
                     break;
                 case InoffensivenessMessageType.BypassFailure:
                     message = CustomFactBypassFailure;
-                    color = Color.green;
+                    color = GameLogStrings.Instance.DefaultColor;
                     break;
                 case InoffensivenessMessageType.Invalidation:
                     message = CustomFactInvalidation;
-                    color = Color.magenta;
+                    color = GameLogStrings.Instance.DefaultColor;
                     break;
                 default:
                     message = CustomFactBypassFailure;
-                    color = Color.green;
+                    color = GameLogStrings.Instance.DefaultColor;
                     break;
             }
 
@@ -321,10 +375,6 @@ namespace TomeOfDarkness.NewComponents
             }
         }
 
-        private List<UnitEntityData> Cannot_Attack = new List<UnitEntityData>();
-
-        private List<UnitEntityData> Can_Attack = new List<UnitEntityData>();
-
         public OffensiveActionEffect Offensive_Action_Effect;
 
         public InoffensivenessEvaluationType Type = InoffensivenessEvaluationType.SavingThrow;
@@ -340,8 +390,8 @@ namespace TomeOfDarkness.NewComponents
         public StatType m_StatStype;
 
         [HideInInspector]
-        [ShowIf("IsBasedOnRoll")]
-        public ContextValue DC;
+        [ShowIf("IsEvaluationOnSkillCheck")]
+        public ContextValue Check_DC;
 
         [HideInInspector]
         [ShowIf("IsEvaluationOnBuff")]
@@ -365,9 +415,6 @@ namespace TomeOfDarkness.NewComponents
         [ShowIf("HasMarkingBuff")]
         [SerializeField]
         public BlueprintBuffReference m_MarkingBuff;
-
-        [ShowIf("HasMarkingBuff")]
-        private List<UnitEntityData> Marked_Units = new List<UnitEntityData>();
 
         public bool ReverseCheck = false;
 

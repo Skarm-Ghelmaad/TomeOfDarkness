@@ -25,6 +25,20 @@ namespace TomeOfDarkness.NewUnitParts
             }
         }
 
+        // Inoffensiveness is a unique unit part which tracks and checks the requirements to attack the owner associated
+        // with any effect that have this component, so it is necessary to check whether (or not) there are AddInoffensiveness components left
+        // before deactivating the UnitPartInoffensiveness. 
+
+        public bool  IsInoffensivenessBuffTrackerEmpty
+        {
+            get
+            {
+                return !this.InoffensivenessBuffTracker.Any();
+            }
+
+        }
+
+
         public void UpdateInoffensivenessBuffTracker()
         {
             List<BlueprintBuff> Tracker = new List<BlueprintBuff>();
@@ -40,12 +54,12 @@ namespace TomeOfDarkness.NewUnitParts
 
             }
 
-            this.InoffensivenessBuffTracker = Tracker.ToArray();
+            this.InoffensivenessBuffTracker = Tracker;
         }
 
         public bool CanBeAttackedBy(UnitEntityData unit)
         {
-            if (this.InoffensivenessBuffTracker.Empty())
+            if (!this.InoffensivenessBuffTracker.Any())
             {
                 return true;
             }
@@ -89,10 +103,9 @@ namespace TomeOfDarkness.NewUnitParts
 
         public CountableFlag Inoffensiveness = new CountableFlag();
 
-        public BlueprintBuff[] InoffensivenessBuffTracker = new BlueprintBuff[0];
+        public List<BlueprintBuff> InoffensivenessBuffTracker = new List<BlueprintBuff>();
 
     }
 }
 
 
-//UnityModManagerNet.UnityModManager.Logger.Log($"Replace {domain_base_feature_name} spell: Removed {domain_base_feature_name} spell list component from {old_spell_name}.");

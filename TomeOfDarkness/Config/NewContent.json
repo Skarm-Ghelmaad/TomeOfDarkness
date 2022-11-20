@@ -41,7 +41,7 @@
       "FlyingKick": {
         "Enabled": true,
         "Homebrew": false,
-        "Description": "You gain one additional ninja trick. You must meet all of the prerequisites for this ninja trick. You can gain Extra Ninja Trick multiple times."
+        "Description": "The monk leaps through the air to strike a foe with a kick. The monk can make a full-attack at the end of charge action."
       }
     }
   },
