@@ -109,18 +109,19 @@ namespace TomeOfDarkness.MechanicsChanges
                                                                                     HlEX.CreateContextWeaponDamageDiceReplacementWeaponCategory(new WeaponCategory[] { WeaponCategory.UnarmedStrike }, fist_dice_formulas, HlEX.CreateContextValue(AbilityRankType.Default)),
                                                                                 };
 
-            monk_1d6_unarmed_strike.AddContextRankConfig(c =>
-            {
-                c.m_Type = AbilityRankType.Default;
-                c.m_BaseValueType = ContextRankBaseValueType.CustomProperty;
-                c.m_CustomProperty = MartialArtsTrainingProperty.ToReference<BlueprintUnitPropertyReference>();
-                c.m_Progression = ContextRankProgression.DivStep;
-                c.m_StepLevel = 4;
+            monk_1d6_unarmed_strike.TemporaryContext(bp => {
+                bp.AddContextRankConfig(c =>
+                {
+                    c.m_Type = AbilityRankType.Default;
+                    c.m_BaseValueType = ContextRankBaseValueType.CustomProperty;
+                    c.m_CustomProperty = MartialArtsTrainingProperty.ToReference<BlueprintUnitPropertyReference>();
+                    c.m_Progression = ContextRankProgression.DivStep;
+                    c.m_StepLevel = 4;
+                });
+                bp.ReapplyOnLevelUp = true;
+                bp.m_Icon = MartialArtsTrainingOrangeIcon;
             });
-
-            monk_1d6_unarmed_strike.ReapplyOnLevelUp = true;
-            monk_1d6_unarmed_strike.m_Icon = MartialArtsTrainingOrangeIcon;
-
+ 
             // Note: I have found out that replicating Holic's method to remove the unarmed strike features is troublesome, because
             // Kingmaker didn't have three archetypes (Quarterstaff Master and Sohei) which replace the this feature, so I changed this
             // to changing those features by removing their components and hiding them.
@@ -129,9 +130,11 @@ namespace TomeOfDarkness.MechanicsChanges
 
             foreach (var other_fist in monk_other_fists)
             {
-                other_fist.ComponentsArray = empty_component_array;
-                other_fist.HideInUI = true;
-                other_fist.HideInCharacterSheetAndLevelUp = true;
+                other_fist.TemporaryContext(bp => {
+                    bp.ComponentsArray = empty_component_array;
+                    bp.HideInUI = true;
+                    bp.HideInCharacterSheetAndLevelUp = true;
+                });
             }
 
             ToDContext.Logger.LogPatch("Removed components and hidden feature.", monk_1d8_unarmed_strike);
@@ -162,14 +165,19 @@ namespace TomeOfDarkness.MechanicsChanges
 
             var double_damage_dice_vanilla = hammerblow_buff.GetComponent<DoubleDamageDiceOnAttack>();
 
-            hammerblow_buff.ReplaceComponents<DoubleDamageDiceOnAttack>(Helpers.Create<DoubleDamageDiceOnAttackLOS>(c =>
-            {
-                c.CriticalHit = double_damage_dice_vanilla.CriticalHit;
-                c.OnlyOnFullAttack = double_damage_dice_vanilla.OnlyOnFullAttack;
-                c.m_WeaponType = double_damage_dice_vanilla.m_WeaponType;
-                c.OnlyOnFirstAttack = double_damage_dice_vanilla.OnlyOnFirstAttack;
+            hammerblow_buff.TemporaryContext(bp => {
+                bp.ReplaceComponents<DoubleDamageDiceOnAttack>(Helpers.Create<DoubleDamageDiceOnAttackLOS>(c =>
+                {
+                    c.CriticalHit = double_damage_dice_vanilla.CriticalHit;
+                    c.OnlyOnFullAttack = double_damage_dice_vanilla.OnlyOnFullAttack;
+                    c.m_WeaponType = double_damage_dice_vanilla.m_WeaponType;
+                    c.OnlyOnFirstAttack = double_damage_dice_vanilla.OnlyOnFirstAttack;
 
-            }));
+                }));
+            });         
+                
+                
+                
             ToDContext.Logger.LogPatch("Patched Hammerblow buff.", hammerblow_buff);
 
             #endregion

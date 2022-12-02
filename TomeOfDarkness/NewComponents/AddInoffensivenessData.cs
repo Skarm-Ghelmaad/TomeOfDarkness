@@ -14,13 +14,13 @@ namespace TomeOfDarkness.NewComponents
 
         public List<UnitEntityData> Can_Attack = new List<UnitEntityData>();
 
-        public List<UnitEntityData> Marked_Units = new List<UnitEntityData>();
+        public List<UnitEntityData> Marked_Units_Minor = new List<UnitEntityData>();
+
+        public List<UnitEntityData> Marked_Units_Moderate = new List<UnitEntityData>();
+
+        public List<UnitEntityData> Marked_Units_Major = new List<UnitEntityData>();
 
         public int Stored_DC = 0;
-
-        public int Stored_PropertyThreshold = 0;
-
-        public int Stored_CustomPropertyThreshold = 0;
 
     }
 }

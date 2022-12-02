@@ -77,7 +77,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             KamikazeAbility.SetMiscAbilityParametersSelfOnly();
 
-            var Dismiss_Kamikaze_Buff = HlEX.CreateConditional(HlEX.CreateContextConditionHasBuffFromCaster(Kamikaze_Buff), HlEX.CreateContextActionRemoveBuff(Kamikaze_Buff), null);
+            var Dismiss_Kamikaze_Buff = HlEX.CreateConditional(HlEX.CreateContextConditionHasBuffFromCaster(Kamikaze_Buff, true), HlEX.CreateContextActionRemoveBuff(Kamikaze_Buff), null);
 
             var KamikazeDismissAbility = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "NinjaTrickKamikazeDismissAbility", bp => {
                 bp.SetName(ToDContext, "Kamikaze (Dismiss)");

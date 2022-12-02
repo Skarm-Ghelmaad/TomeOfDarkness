@@ -13,7 +13,7 @@ using System.Reflection;
 using static TabletopTweaks.Core.NewUnitParts.CustomStatTypes;
 using static TabletopTweaks.Core.NewUnitParts.UnitPartCustomMechanicsFeatures;
 
-namespace TomeOfDarkness.MechanicsChanges
+namespace TomeOfDarkness.NewEnums
 {
     internal class CustomStatTypesToD
     {
@@ -23,7 +23,7 @@ namespace TomeOfDarkness.MechanicsChanges
         {
             //I have agreed with Vek17 to use only numbers over 11.000 for Stats and 1.001.000 for Attributes.
 
-            public const CustomStatType Chi = (CustomStatType)1_001_001; // This attribute is used with Universal Ki mechanics.
+            public const CustomStatType Chi = (CustomStatType)1_001_201; // This attribute is used with Universal Ki mechanics.
 
 
 

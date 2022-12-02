@@ -53,9 +53,18 @@ using Kingmaker.RuleSystem.Rules.Damage;
 using Kingmaker.RuleSystem.Rules;
 using Kingmaker.Designers.EventConditionActionSystem.Conditions;
 using TomeOfDarkness.NewGameLogs;
-using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem;
+using Kingmaker.EntitySystem.Entities;
 using Kingmaker.Blueprints.Root.Strings.GameLog;
+using Microsoft.Build.Framework.XamlTypes;
+using Kingmaker.UnitLogic.Abilities.Components.CasterCheckers;
+using Kingmaker.Designers.Mechanics.Buffs;
+using Epic.OnlineServices;
+using Owlcat.Runtime.Core.Physics.PositionBasedDynamics.Forces;
+using Kingmaker.Visual.HitSystem;
+using Kingmaker.UnitLogic.Abilities.Components.TargetCheckers;
+using Kingmaker.UnitLogic;
+
 
 namespace TomeOfDarkness.Utilities
 {
@@ -164,6 +173,25 @@ namespace TomeOfDarkness.Utilities
             return new ContextValue() { ValueType = ContextValueType.Simple, Value = value };
         }
 
+        public static ContextValue CreateContextValueFromCasterProperty(this UnitProperty property)
+        {
+            return new ContextValue() { ValueType = ContextValueType.CasterProperty, Property = property };
+        }
+
+        public static ContextValue CreateContextValueFromTargetProperty(this UnitProperty property)
+        {
+            return new ContextValue() { ValueType = ContextValueType.TargetProperty, Property = property };
+        }
+
+        public static ContextValue CreateContextValueFromCustomCasterProperty(this BlueprintUnitProperty custom_property)
+        {
+            return new ContextValue() { ValueType = ContextValueType.CasterCustomProperty, m_CustomProperty = custom_property.ToReference<BlueprintUnitPropertyReference>() };
+        }
+
+        public static ContextValue CreateContextValueFromCustomTargetProperty(this BlueprintUnitProperty custom_property)
+        {
+            return new ContextValue() { ValueType = ContextValueType.TargetCustomProperty, m_CustomProperty = custom_property.ToReference<BlueprintUnitPropertyReference>() };
+        }
 
         // Holic75_SC
         public static ContextDiceValue CreateContextDiceValue(this DiceType dice, ContextValue diceCount = null, ContextValue bonus = null)
@@ -282,20 +310,6 @@ namespace TomeOfDarkness.Utilities
         #region  |-----------------------------------------------------------| ( Mechanics ) Actions Creators |-------------------------------------------------------------|
 
 
-        public static AddInitiatorAttackRollTrigger CreateAddInitiatorAttackRollTrigger(Kingmaker.ElementsSystem.ActionList action, bool only_hit = true, bool critical_hit = false, bool sneak_attack = false, bool on_owner = false, bool affect_friendly_touch = false, bool check_weapon = false, WeaponCategory weapon_category = WeaponCategory.UnarmedStrike)
-        {
-            var result = Helpers.Create<AddInitiatorAttackRollTrigger>();
-            result.Action = action;
-            result.OnlyHit = only_hit;
-            result.CriticalHit = critical_hit;
-            result.SneakAttack = sneak_attack;
-            result.OnOwner = on_owner;
-            result.AffectFriendlyTouchSpells = affect_friendly_touch;
-            result.CheckWeapon = check_weapon;
-            result.WeaponCategory = weapon_category;
-            return result;
-        }
-
         // Holic75_SC
         public static ContextActionApplyBuff CreateContextActionApplyBuff(this BlueprintBuff buff, ContextDurationValue duration, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false)
         {
@@ -309,7 +323,6 @@ namespace TomeOfDarkness.Utilities
             result.Permanent = permanent;
             return result;
         }
-
 
         static public ContextActionApplyBuffRanks CreateContextActionApplyBuffRanks(this BlueprintBuff buff, ContextDurationValue duration, ContextValue applied_ranks, bool fromSpell, bool dispellable = true, bool toCaster = false, bool asChild = false, bool permanent = false, bool linked_to_area = true)
         {
@@ -325,6 +338,20 @@ namespace TomeOfDarkness.Utilities
             result.NotLinkToAreaEffect = !linked_to_area;
 
             return result;
+        }
+
+        static public ContextActionCastSpell CreateContextActionCastSpell(BlueprintAbility spell, bool override_dc = false, bool override_spell_level = false, bool cast_by_target = false, bool as_child = false, bool log_if_cannot_target = false, ContextValue custom_dc = null, ContextValue custom_spell_level = null)
+        {
+            var r = Helpers.Create<ContextActionCastSpell>();
+            r.m_Spell = spell.ToReference<BlueprintAbilityReference>();
+            r.OverrideDC = override_dc;
+            r.DC = custom_dc;
+            r.OverrideSpellLevel = false;
+            r.SpellLevel = custom_spell_level;
+            r.CastByTarget = cast_by_target;
+            r.MarkAsChild = as_child;
+            r.LogIfCanNotTarget = log_if_cannot_target;
+            return r;
         }
 
         // Holic75_SC
@@ -444,6 +471,53 @@ namespace TomeOfDarkness.Utilities
             return result;
         }
 
+        static public ContextActionKill CreateContextActionKill(UnitState.DismemberType type)
+        {
+            var result = Helpers.Create<ContextActionKill>();
+            result.Dismember = type;
+            return result;
+        }
+
+        public static ContextActionMeleeAttack CreateContextActionMeleeAttack(bool auto_hit = false, bool auto_crit_threat = false, bool auto_crit_confirm = false, bool extra_attack = true, bool full_attack = true, bool select_new_target = false, bool ignore_stat_bonus = false )
+        {
+            var result = Helpers.Create<ContextActionMeleeAttack>();
+            result.AutoHit = auto_hit;
+            result.AutoCritThreat = auto_crit_threat;
+            result.AutoCritConfirmation = auto_crit_confirm;
+            result.ExtraAttack = extra_attack;
+            result.FullAttack = full_attack;
+            result.SelectNewTarget = select_new_target;
+            result.IgnoreStatBonus = ignore_stat_bonus;
+            return result;
+        }
+
+        public static ContextActionOnContextCaster CreateContextActionOnContextCaster(GameAction actions)
+        {
+            var result = Helpers.Create<ContextActionOnContextCaster>();
+            result.Actions = Helpers.CreateActionList(actions);
+            return result;
+        }
+
+        public static ContextActionProvokeAttackOfOpportunity CreateContextActionProvokeAttackOfOpportunity(bool apply_to_caster)
+        {
+            var result = Helpers.Create<ContextActionProvokeAttackOfOpportunity>();
+            result.ApplyToCaster = apply_to_caster;
+            return result;
+        }
+
+        public static ContextActionRangedAttack CreateContextActionRangedAttack(bool auto_hit = false, bool auto_crit_threat = false, bool auto_crit_confirm = false, bool extra_attack = true, bool full_attack = true, bool select_new_target = false, bool ignore_stat_bonus = false)
+        {
+            var result = Helpers.Create<ContextActionRangedAttack>();
+            result.AutoHit = auto_hit;
+            result.AutoCritThreat = auto_crit_threat;
+            result.AutoCritConfirmation = auto_crit_confirm;
+            result.ExtraAttack = extra_attack;
+            result.FullAttack = full_attack;
+            result.SelectNewTarget = select_new_target;
+            result.IgnoreStatBonus = ignore_stat_bonus;
+            return result;
+        }
+
         // Holic75_PT
         static public ContextActionRemoveBuff CreateContextActionRemoveBuff(BlueprintBuff buff)
         {
@@ -530,12 +604,17 @@ namespace TomeOfDarkness.Utilities
 
         #region |------------------------------------------------------------| ( Mechanics ) Buffs Creators |--------------------------------------------------------------|
 
-        public static HasFactFeatureUnlock CreateHasFactFeatureUnlock(BlueprintUnitFactReference checked_fact, BlueprintUnitFactReference feature, bool not)
+        public static BuffPoisonStatDamageContext CreateBuffPoisonStatDamageContext(ModifierDescriptor descriptor, StatType stat, ContextDiceValue dice_value = null, ContextValue bonus = null, ContextValue ticks = null, ContextValue successful_saves = null, SavingThrowType save_type = SavingThrowType.Fortitude, bool no_effect_first_tick = false)
         {
-            var c = Helpers.Create<HasFactFeatureUnlock>();
-            c.m_CheckedFact = checked_fact;
-            c.m_Feature = feature;
-            c.Not = not;
+            var c = Helpers.Create<BuffPoisonStatDamageContext>();
+            c.Descriptor = descriptor;
+            c.Stat = stat;
+            c.Value = dice_value;
+            c.Bonus = bonus;
+            c.Ticks = ticks;
+            c.SuccesfullSaves = successful_saves;
+            c.SaveType = save_type;
+            c.NoEffectOnFirstTick = no_effect_first_tick; 
             return c;
         }
 
@@ -544,15 +623,6 @@ namespace TomeOfDarkness.Utilities
         #endregion
 
         #region |----------------------------------------------------------| ( Abilities ) Components Creators |-----------------------------------------------------------|
-
-
-        public static AbilityShowIfCasterHasFact CreateAbilityShowIfCasterHasFact(BlueprintUnitFactReference checked_fact, bool not = false)
-        {
-            var c = Helpers.Create<AbilityShowIfCasterHasFact>();
-            c.m_UnitFact = checked_fact;
-            c.Not = not;
-            return c;
-        }
 
         // Holic75_SC
         public static AbilityAreaEffectRunAction CreateAreaEffectRunAction(GameAction unitEnter = null, GameAction unitExit = null, GameAction unitMove = null, GameAction round = null)
@@ -576,6 +646,21 @@ namespace TomeOfDarkness.Utilities
             return a;
         }
 
+        // Holic75_SC
+        public static AbilityCasterHasNoFacts CreateAbilityCasterHasNoFacts(params BlueprintUnitFactReference[] facts)
+        {
+            var c = Helpers.Create<AbilityCasterHasNoFacts>();
+            c.m_Facts = facts;
+            return c;
+        }
+
+        public static AbilityCasterInCombat CreateAbilityCasterInCombat(bool not = false)
+        {
+            var c = Helpers.Create<AbilityCasterInCombat>();
+            c.Not = not;
+            return c;
+        }
+
         public static AbilityDeliverDelay CreateAbilityDeliverDelay(float delay_seconds = 1.0F)
         {
             var c = Helpers.Create<AbilityDeliverDelay>();
@@ -591,6 +676,53 @@ namespace TomeOfDarkness.Utilities
             c.m_Projectiles = new BlueprintProjectileReference[] { projectile.ToReference<BlueprintProjectileReference>() };
             c.m_Length = length;
             c.m_LineWidth = width;
+            return c;
+        }
+
+        public static AbilityExecuteActionOnCast CreateAbilityExecuteActionOnCast(Condition condition, GameAction action)
+        {
+            var c = Helpers.Create<AbilityExecuteActionOnCast>();
+            c.Conditions = CreateConditionsCheckerAnd(condition);
+            c.Actions = Helpers.CreateActionList(action);
+            return c;
+        }
+
+        public static AbilityExecuteActionOnCast CreateAbilityExecuteActionOnCast(Condition[] conditions, GameAction action)
+        {
+            var c = Helpers.Create<AbilityExecuteActionOnCast>();
+            c.Conditions = CreateConditionsCheckerAnd(conditions);
+            c.Actions = Helpers.CreateActionList(action);
+            return c;
+        }
+
+        public static AbilityExecuteActionOnCast CreateAbilityExecuteActionOnCastOr(Condition condition, GameAction action)
+        {
+            var c = Helpers.Create<AbilityExecuteActionOnCast>();
+            c.Conditions = CreateConditionsCheckerOr(condition);
+            c.Actions = Helpers.CreateActionList(action);
+            return c;
+        }
+
+        public static AbilityExecuteActionOnCast CreateAbilityExecuteActionOnCastOr(Condition[] conditions, GameAction action)
+        {
+            var c = Helpers.Create<AbilityExecuteActionOnCast>();
+            c.Conditions = CreateConditionsCheckerOr(conditions);
+            c.Actions = Helpers.CreateActionList(action);
+            return c;
+        }
+
+        public static AbilityRequirementHasItemInHands CreateAbilityRequirementHasItemInHands(AbilityRequirementHasItemInHands.RequirementType type)
+        {
+            var c = Helpers.Create<AbilityRequirementHasItemInHands>();
+            c.m_Type = type;
+            return c;
+        }
+
+        public static AbilityShowIfCasterHasFact CreateAbilityShowIfCasterHasFact(BlueprintUnitFactReference checked_fact, bool not = false)
+        {
+            var c = Helpers.Create<AbilityShowIfCasterHasFact>();
+            c.m_UnitFact = checked_fact;
+            c.Not = not;
             return c;
         }
 
@@ -637,6 +769,38 @@ namespace TomeOfDarkness.Utilities
             a.Anchor = anchor;
             a.DestroyOnCast = true;
             return a;
+        }
+        public static AbilityTargetCanSeeCaster CreateAbilityTargetCanSeeCaster(bool not = false)
+        {
+            var c = Helpers.Create<AbilityTargetCanSeeCaster>();
+            c.Not = not;
+            return c;
+        }
+
+        public static AbilityTargetHasConditionOrBuff CreateAbilityTargetHasConditionOrBuff(BlueprintBuffReference[] buffs, UnitCondition condition = (UnitCondition)0, bool not = false)
+        {
+            var c = Helpers.Create<AbilityTargetHasConditionOrBuff>();
+            c.Condition = condition;
+            c.m_Buffs = buffs;
+            c.Not = not;
+            return c;
+        }
+
+        public static AbilityTargetHasConditionOrBuff CreateAbilityTargetHasConditionOrBuff(BlueprintBuff buff, UnitCondition condition = (UnitCondition)0, bool not = false)
+        {
+            var c = Helpers.Create<AbilityTargetHasConditionOrBuff>();
+            c.Condition = condition;
+            c.m_Buffs = new BlueprintBuffReference[] { buff.ToReference<BlueprintBuffReference>() };
+            c.Not = not;
+            return c;
+        }
+
+        public static AbilityTargetHasFact CreateAbilityTargetHasFact(BlueprintUnitFactReference[] facts, bool not = false)
+        {
+            var c = Helpers.Create<AbilityTargetHasFact>();
+            c.m_CheckedFacts = facts;
+            c.Inverted = not;
+            return c;
         }
 
         // Holic75_PT
@@ -702,6 +866,22 @@ namespace TomeOfDarkness.Utilities
 
         #endregion
 
+        #region |----------------------------------------------------------| ( HitSystem ) Components Creators |-----------------------------------------------------------|
+
+        public static InPowerDismemberComponent CreateInPowerDismemberComponent()
+        {
+            var c = Helpers.Create<InPowerDismemberComponent>();
+            return c;
+        }
+
+        public static SplitDismemberComponent CreateSplitDismemberComponent()
+        {
+            var c = Helpers.Create<SplitDismemberComponent>();
+            return c;
+        }
+
+        #endregion
+
         #region |----------------------------------------------------------| ( Mechanics ) Components Creators |-----------------------------------------------------------|
 
         // Holic75_SC
@@ -713,6 +893,138 @@ namespace TomeOfDarkness.Utilities
             a.NewRound = Helpers.CreateActionList(onNewRound);
             return a;
         }
+
+        public static AddInitiatorAttackRollTrigger CreateAddInitiatorAttackRollTrigger(Kingmaker.ElementsSystem.ActionList action, bool only_hit = true, bool critical_hit = false, bool sneak_attack = false, bool on_owner = false, bool affect_friendly_touch = false, bool check_weapon = false, WeaponCategory weapon_category = WeaponCategory.UnarmedStrike)
+        {
+            var result = Helpers.Create<AddInitiatorAttackRollTrigger>();
+            result.Action = action;
+            result.OnlyHit = only_hit;
+            result.CriticalHit = critical_hit;
+            result.SneakAttack = sneak_attack;
+            result.OnOwner = on_owner;
+            result.AffectFriendlyTouchSpells = affect_friendly_touch;
+            result.CheckWeapon = check_weapon;
+            result.WeaponCategory = weapon_category;
+            return result;
+        }
+
+
+        // Holic75_SC
+        public static AddInitiatorAttackWithWeaponTrigger CreateAddInitiatorAttackWithWeaponTrigger(ActionList action,
+                                                                                                    bool only_hit = true,
+                                                                                                    bool critical_hit = false,
+                                                                                                    bool check_weapon_range_type = false,
+                                                                                                    bool reduce_hp_to_zero = false,
+                                                                                                    bool on_initiator = false,
+                                                                                                    WeaponRangeType range_type = WeaponRangeType.Melee,
+                                                                                                    bool wait_for_attack_to_resolve = false,
+                                                                                                    bool only_first_hit = false)
+        {
+            var result = Helpers.Create<AddInitiatorAttackWithWeaponTrigger>();
+            result.Action = action;
+            result.OnlyHit = only_hit;
+            result.CriticalHit = critical_hit;
+            result.CheckWeaponRangeType = check_weapon_range_type;
+            result.RangeType = range_type;
+            result.ReduceHPToZero = reduce_hp_to_zero;
+            result.ActionsOnInitiator = on_initiator;
+            result.WaitForAttackResolve = wait_for_attack_to_resolve;
+            result.OnlyOnFirstAttack = only_first_hit;
+            return result;
+        }
+
+
+        // Holic75_SC
+        public static AddInitiatorAttackWithWeaponTrigger CreateAddInitiatorAttackWithWeaponTrigger(ActionList action,
+                                                                                                    bool only_hit = true,
+                                                                                                    bool critical_hit = false,
+                                                                                                    bool sneak_attack = false,
+                                                                                                    bool check_weapon_range_type = false,
+                                                                                                    bool on_initiator = false,
+                                                                                                    bool only_natural20 = false,
+                                                                                                    WeaponRangeType range_type = WeaponRangeType.Melee)
+        {
+            var result = Helpers.Create<AddInitiatorAttackWithWeaponTrigger>();
+            result.OnlySneakAttack = sneak_attack;
+            result.Action = action;
+            result.OnlyHit = only_hit;
+            result.CriticalHit = critical_hit;
+            result.CheckWeaponRangeType = check_weapon_range_type;
+            result.RangeType = range_type;
+            result.ActionsOnInitiator = on_initiator;
+            result.OnlyNatural20 = only_natural20;
+            return result;
+        }
+
+
+        // Holic75_SC
+        public static AddInitiatorAttackWithWeaponTrigger CreateAddInitiatorAttackWithDuelistWeaponTrigger(ActionList action,
+                                                                                                           bool only_hit = true,
+                                                                                                           bool critical_hit = false,
+                                                                                                           bool check_weapon_range_type = false,
+                                                                                                           bool reduce_hp_to_zero = false,
+                                                                                                           bool on_initiator = false,
+                                                                                                           WeaponRangeType range_type = WeaponRangeType.Melee,
+                                                                                                           bool wait_for_attack_to_resolve = false,
+                                                                                                           bool only_first_hit = false)
+        {
+            var result = Helpers.Create<AddInitiatorAttackWithWeaponTrigger>();
+            result.Action = action;
+            result.OnlyHit = only_hit;
+            result.CriticalHit = critical_hit;
+            result.CheckWeaponRangeType = check_weapon_range_type;
+            result.RangeType = range_type;
+            result.ReduceHPToZero = reduce_hp_to_zero;
+            result.ActionsOnInitiator = on_initiator;
+            result.WaitForAttackResolve = wait_for_attack_to_resolve;
+            result.OnlyOnFirstAttack = only_first_hit;
+            result.DuelistWeapon = true;
+            return result;
+        }
+
+
+        // Holic75_SC
+        public static AddInitiatorAttackWithWeaponTrigger CreateAddInitiatorAttackWithWeaponCategoryTrigger(ActionList action,
+                                                                                                            bool only_hit = true,
+                                                                                                            bool critical_hit = false,
+                                                                                                            bool check_weapon_range_type = false,
+                                                                                                            bool reduce_hp_to_zero = false,
+                                                                                                            bool on_initiator = false,
+                                                                                                            WeaponRangeType range_type = WeaponRangeType.Melee,
+                                                                                                            bool wait_for_attack_to_resolve = false,
+                                                                                                            bool only_first_hit = false,
+                                                                                                            WeaponCategory weapon_category = WeaponCategory.UnarmedStrike)
+        {
+            var result = Helpers.Create<AddInitiatorAttackWithWeaponTrigger>();
+            result.Action = action;
+            result.OnlyHit = only_hit;
+            result.CriticalHit = critical_hit;
+            result.CheckWeaponRangeType = check_weapon_range_type;
+            result.RangeType = range_type;
+            result.ReduceHPToZero = reduce_hp_to_zero;
+            result.ActionsOnInitiator = on_initiator;
+            result.WaitForAttackResolve = wait_for_attack_to_resolve;
+            result.OnlyOnFirstAttack = only_first_hit;
+            result.CheckWeaponCategory = true;
+            result.Category = weapon_category;
+            return result;
+        }
+
+        public static ContextSetAbilityParams CreateContextSetAbilityParams(ContextValue dc = null,
+                                                                            ContextValue caster_level = null,
+                                                                            ContextValue concentration = null,
+                                                                            ContextValue spell_level = null,
+                                                                            bool add_10_to_dc = true)
+        {
+            var c = Helpers.Create<ContextSetAbilityParams>();
+            c.DC = dc;
+            c.CasterLevel = caster_level;
+            c.Concentration = concentration;
+            c.SpellLevel = spell_level;
+            c.Add10ToDC = add_10_to_dc;
+            return c;
+        }
+
 
         public static ContextCalculateAbilityParamsBasedOnClass CreateContextCalculateAbilityParamsBasedOnClass(BlueprintCharacterClassReference character_class,
                                                                                                          StatType stat,
@@ -774,6 +1086,16 @@ namespace TomeOfDarkness.Utilities
             c.m_StatType = stat;
             c.StatTypeFromCustomProperty = true;
             c.m_CustomProperty = property;
+            return c;
+        }
+
+        // Holic75_SC
+        public static ContextCalculateSharedValue CreateContextCalculateSharedValue(ContextDiceValue value, AbilitySharedValue shared_value = AbilitySharedValue.Damage, double modifier = 1.0)
+        {
+            var c = Helpers.Create<ContextCalculateSharedValue>();
+            c.Value = value;
+            c.ValueType = shared_value;
+            c.Modifier = modifier;
             return c;
         }
 
@@ -895,11 +1217,11 @@ namespace TomeOfDarkness.Utilities
         }
 
         // Holic75_SC
-        public static ContextConditionHasBuffFromCaster CreateContextConditionHasBuffFromCaster(BlueprintBuff buff, bool not = false)
+        public static ContextConditionHasBuffFromCaster CreateContextConditionHasBuffFromCaster(BlueprintBuff buff, bool has = true)
         {
             var c = Helpers.Create<ContextConditionHasBuffFromCaster>();
             c.m_Buff = buff.ToReference<BlueprintBuffReference>();
-            c.Not = not;
+            c.Not = !has;
             return c;
         }
 
@@ -957,6 +1279,14 @@ namespace TomeOfDarkness.Utilities
             return c;
         }
 
+        public static HasFactFeatureUnlock CreateHasFactFeatureUnlock(BlueprintUnitFactReference checked_fact, BlueprintUnitFactReference feature, bool not)
+        {
+            var c = Helpers.Create<HasFactFeatureUnlock>();
+            c.m_CheckedFact = checked_fact;
+            c.m_Feature = feature;
+            c.Not = not;
+            return c;
+        }
 
 
         #endregion

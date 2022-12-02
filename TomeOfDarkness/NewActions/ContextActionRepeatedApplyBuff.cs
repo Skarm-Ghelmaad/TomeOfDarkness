@@ -129,7 +129,7 @@ namespace TomeOfDarkness.NewActions
         [FormerlySerializedAs("Buff")]
         public BlueprintBuffReference m_Buff;
         public bool Permanent;
-        public ContextValue BuffApplications = 1;
+        public ContextValue BuffApplications;
         public bool UseDurationSeconds;
         [HideIf("UseDurationSeconds")]
         public ContextDurationValue DurationValue;

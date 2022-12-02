@@ -29,17 +29,12 @@ namespace TomeOfDarkness.NewComponents
         public override void OnTurnOn()
         {
             this.Owner.Ensure<UnitPartSpecificConcealment>().AddUnitPartFlag();
-            this.Owner.Get<UnitPartSpecificConcealment>().UpdateSpecificConcealmentBuffTracker();
+            this.Owner.Get<UnitPartSpecificConcealment>().AddEntry(this.Fact, this);
         }
 
         public override void OnTurnOff()
         {
-            this.Owner.Ensure<UnitPartSpecificConcealment>().RemoveUnitPartFlag();
-
-            if (this.Owner.Get<UnitPartSpecificConcealment>() != null)
-            {
-                this.Owner.Get<UnitPartSpecificConcealment>().UpdateSpecificConcealmentBuffTracker();
-            }
+            this.Owner.Ensure<UnitPartSpecificConcealment>().RemoveEntry(this.Fact, this);
 
         }
 

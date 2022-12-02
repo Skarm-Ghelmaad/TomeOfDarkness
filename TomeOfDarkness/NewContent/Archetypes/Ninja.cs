@@ -459,7 +459,7 @@ namespace TomeOfDarkness.NewContent.Archetypes
             UnarmedCombatMastery.ConfigureUnarmedCombatMastery();
             FlurryOfStars.ConfigureFlurryOfStars();
             NinjaCanonBombs.ConfigureNinjaCanonBombs();
-            PressurePoints.ConfigurePressurePoints();
+            NinjaPressurePoints.ConfigureNinjaPressurePoints();
             NinjaAssassinate.ConfigureNinjaAssassinate();
 
 
@@ -541,27 +541,28 @@ namespace TomeOfDarkness.NewContent.Archetypes
             });
 
             var Ninja_Create_Poison_Feature = HlEX.ConvertFeatureToFeature(Assassin_Create_Poison_Feature, "", "", "", "", "Assassin", "", "", "Ninja", "", "", false);
-            Ninja_Create_Poison_Feature.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
-                c.m_Feature = RoguePoisonCraftTrainingProgression.ToReference<BlueprintFeatureReference>();
-            }));
-            Ninja_Create_Poison_Feature.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Poison_Craft_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
-            Ninja_Create_Poison_Feature.SetDescription(ToDContext, "At 1st level, a ninja gains the assassin’s poison use class feature.  He uses his rogue level as his effective rogue level to determine the effects of poison use.");
-            Ninja_Create_Poison_Feature.AddComponent(Helpers.Create<IncreaseResourceAmountBasedOnClassOnly>(c => {
-                c.m_Resource = Assassin_Create_Poison_Resource.ToReference<BlueprintAbilityResourceReference>();
-                c.m_CharacterClass = ClassTools.ClassReferences.RogueClass;
-                c.Subtract = false;
-                c.IncreasedByLevel = true;
-                c.IncreasedByLevelStartPlusDivStep = false;
-                c.StartingLevel = 0;
-                c.StartingIncrease = 0;
-                c.LevelIncrease = 1;
-                c.Subtract = false;
-            }));
-
-            Ninja_Create_Poison_Feature.IsClassFeature = true;
-            Ninja_Create_Poison_Feature.Ranks = 1;
-
-
+            
+            Ninja_Create_Poison_Feature.TemporaryContext(bp => {
+                    bp.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
+                        c.m_Feature = RoguePoisonCraftTrainingProgression.ToReference<BlueprintFeatureReference>();
+                    }));
+                    bp.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Poison_Craft_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
+                    bp.SetDescription(ToDContext, "At 1st level, a ninja gains the assassin’s poison use class feature.  He uses his rogue level as his effective rogue level to determine the effects of poison use.");
+                    bp.AddComponent(Helpers.Create<IncreaseResourceAmountBasedOnClassOnly>(c => {
+                        c.m_Resource = Assassin_Create_Poison_Resource.ToReference<BlueprintAbilityResourceReference>();
+                        c.m_CharacterClass = ClassTools.ClassReferences.RogueClass;
+                        c.Subtract = false;
+                        c.IncreasedByLevel = true;
+                        c.IncreasedByLevelStartPlusDivStep = false;
+                        c.StartingLevel = 0;
+                        c.StartingIncrease = 0;
+                        c.LevelIncrease = 1;
+                        c.Subtract = false;
+                    }));
+                    bp.IsClassFeature = true;
+                    bp.Ranks = 1;
+            });
+    
 
         }
 

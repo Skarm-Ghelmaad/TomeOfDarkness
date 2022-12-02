@@ -24,7 +24,7 @@ namespace TomeOfDarkness.NewContent.Spells
         public static void ConfigureSanctuary()
         {
             // Sanctuary uses Lesser Restoration spell and scroll icon.
-            var SanctuaryIcon = BlueprintTools.GetBlueprint<BlueprintAbility>("e84fc922ccf952943b5240293669b171").m_Icon; 
+            var SanctuaryIcon = BlueprintTools.GetBlueprint<BlueprintAbility>("e84fc922ccf952943b5240293669b171").m_Icon;
             var SanctuaryScrollIcon = BlueprintTools.GetBlueprint<BlueprintItemEquipmentUsable>("0d9349f009aeaed429ca5c59382e8212").m_Icon;
 
             // Sanctuary uses the Invisibility buff as base.
@@ -34,15 +34,19 @@ namespace TomeOfDarkness.NewContent.Spells
 
             var protection_domain_progression = BlueprintTools.GetBlueprint<BlueprintProgression>("b750650400d9d554b880dbf4c8347b24");
 
-            var SactuaryBuffLogic = Helpers.Create<AddInoffensiveness>(c =>{
+            var SactuaryBuffLogic = Helpers.Create<AddInoffensiveness>(c =>
+            {
                 c.Type = InoffensivenessEvaluationType.SavingThrow;
                 c.m_SavingThrowType = SavingThrowType.Will;
+                c.UseCustomDC = false;
+                c.UseDCAdjustingFacts = false;
                 c.ReverseCheck = false;
                 c.HasMarkingBuff = false;
                 c.Offensive_Action_Effect = OffensiveActionEffect.REMOVE_FROM_OWNER;
             });
 
-            var Sanctuary_Buff = Invisibility_Buff.CreateCopy(ToDContext, "SanctuaryBuff", bp => {
+            var Sanctuary_Buff = Invisibility_Buff.CreateCopy(ToDContext, "SanctuaryBuff", bp =>
+            {
                 bp.SetName(ToDContext, "Sanctuary");
                 bp.m_Icon = SanctuaryIcon;
                 bp.FxOnStart = HlEX.CreatePrefabLink(Legend_Shadow_Buff_Fx);
@@ -52,7 +56,8 @@ namespace TomeOfDarkness.NewContent.Spells
 
             var Apply_Sanctuary_Buff = HlEX.CreateContextActionApplyBuff(Sanctuary_Buff, HlEX.CreateContextDuration(HlEX.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds), true);
 
-            var Sanctuary_Spell = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "SanctuaryAbility", bp => {
+            var Sanctuary_Spell = Helpers.CreateBlueprint<BlueprintAbility>(ToDContext, "SanctuaryAbility", bp =>
+            {
                 bp.SetName(ToDContext, "Sanctuary");
                 bp.SetDescription(ToDContext, "Any opponent attempting to directly attack the warded creature, even with a targeted spell, must attempt a Will save. If the save succeeds, the opponent can attack normally and is unaffected by that casting of the spell. If the save fails, the opponent can’t follow through with the attack, that part of its action is lost, and it can’t directly attack the warded creature for the duration of the spell. Those not attempting to attack the subject remain unaffected. This spell does not prevent the warded creature from being attacked or affected by area of effect spells. The subject cannot attack without breaking the spell but may use non-attack spells or otherwise act.");
                 bp.m_Icon = SanctuaryIcon;

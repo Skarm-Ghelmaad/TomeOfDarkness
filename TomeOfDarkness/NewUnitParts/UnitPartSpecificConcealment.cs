@@ -35,6 +35,7 @@ using TabletopTweaks.Core.Config;
 using Kingmaker.Enums;
 using Kingmaker.Items;
 using Kingmaker.UnitLogic.Parts;
+using static TomeOfDarkness.Main;
 
 
 
@@ -52,40 +53,47 @@ namespace TomeOfDarkness.NewUnitParts
             }
         }
 
-        public void UpdateSpecificConcealmentBuffTracker()
+        public void AddEntry(EntityFact fact, SpecificConcealmentBase component)
         {
-                List<BlueprintBuff> Tracker = new List<BlueprintBuff>();
-
-                foreach (var buff in this.Owner.Buffs)
-                {
-                    if (buff.Blueprint.GetComponent<SpecificConcealmentBase>() != null)
-                    {
-
-                        Tracker.Add(buff.Blueprint);
-
-                    }
-
-                }
-
-            this.SpecificConcealmentBuffTracker = Tracker;
+            if (this.SpecificConcealmentEntries.HasItem((UnitPartSpecificConcealment.SpecificConcealmentEntry i) => i.Fact == fact && i.Component == component))
+            {
+                string messageFormat = "UnitPartSpecificConcealment.AddEntry: item already exists (fact: {0}, component: {1})";
+                object[] array = new object[2];
+                array[0] = fact;
+                int num = 1;
+                SpecificConcealmentBase SpecificConcealmentBaseEffect = component.Or(null);
+                array[num] = ((SpecificConcealmentBaseEffect != null) ? SpecificConcealmentBaseEffect.name : null);
+                string error_message = String.Format(messageFormat, array[0], array[1]);
+                ToDContext.Logger.LogError(error_message);
+                return;
+            }
+            this.SpecificConcealmentEntries.Add(new UnitPartSpecificConcealment.SpecificConcealmentEntry(fact, component));
         }
 
+        public void RemoveEntry(EntityFact fact, SpecificConcealmentBase component)
+        {
+            this.SpecificConcealmentEntries.RemoveAll((UnitPartSpecificConcealment.SpecificConcealmentEntry i) => i.Fact == fact && i.Component == component);
+            if (this.SpecificConcealmentEntries.Count < 1)
+            {
+                this.RemoveUnitPartFlag();
+            }
+        }
 
         public UnitPartConcealment.ConcealmentEntry[] GetConcealments(UnitEntityData attacker)
         {
             var Concealments = new List<UnitPartConcealment.ConcealmentEntry>();
 
-            if (this.SpecificConcealmentBuffTracker.Any())
+            if (!(this.SpecificConcealmentEntries.Count < 1))
             {
-                foreach (var b in this.SpecificConcealmentBuffTracker)
+                foreach (var entry in this.SpecificConcealmentEntries)
                 {
                     bool Works_On = false;
 
-                    b.CallComponents<SpecificConcealmentBase>(s => Works_On = s.WorksAgainst(attacker));
+                    entry.Fact.CallComponents<SpecificConcealmentBase>(s => Works_On = s.WorksAgainst(attacker));
 
                     if (Works_On)
                     {
-                        b.CallComponents<SpecificConcealmentBase>(s => Concealments.Add(s.CreateConcealmentEntry()));
+                        entry.Fact.CallComponents<SpecificConcealmentBase>(s => Concealments.Add(s.CreateConcealmentEntry()));
                     }
                 }
             }
@@ -95,7 +103,21 @@ namespace TomeOfDarkness.NewUnitParts
 
 
         public CountableFlag SpecificConcealment = new CountableFlag();
-        public List<BlueprintBuff> SpecificConcealmentBuffTracker = new List<BlueprintBuff>();
+
+        public readonly List<UnitPartSpecificConcealment.SpecificConcealmentEntry> SpecificConcealmentEntries = new List<UnitPartSpecificConcealment.SpecificConcealmentEntry>();
+
+        public struct SpecificConcealmentEntry
+        {
+            public SpecificConcealmentEntry(EntityFact fact, SpecificConcealmentBase component)
+            {
+                this.Fact = fact;
+                this.Component = component;
+            }
+
+            public readonly EntityFact Fact;
+
+            public readonly SpecificConcealmentBase Component;
+        }
 
 
     }

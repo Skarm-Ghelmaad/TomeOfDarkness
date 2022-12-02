@@ -17,7 +17,7 @@ using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using HarmonyLib;
 using static UnityModManagerNet.UnityModManager;
-using static TomeOfDarkness.MechanicsChanges.FeatureGroupToD;
+using static TomeOfDarkness.NewEnums.FeatureGroupToD;
 
 namespace TomeOfDarkness.Utilities
 {

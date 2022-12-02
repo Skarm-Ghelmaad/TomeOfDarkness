@@ -43,6 +43,11 @@ using Kingmaker.UnitLogic;
 using TabletopTweaks.Core.Utilities;
 using static TomeOfDarkness.Main;
 using TomeOfDarkness.NewGameLogs;
+using static TomeOfDarkness.NewGameLogs.SimpleCombatLogMessage;
+using Kingmaker.Designers;
+using Kingmaker.ElementsSystem;
+using Kingmaker.UnitLogic.Abilities.Components.TargetCheckers;
+
 
 
 
@@ -50,65 +55,14 @@ using TomeOfDarkness.NewGameLogs;
 namespace TomeOfDarkness.NewComponents
 {
     [TypeId("A73BDB5B66D446A4AFE2EC493653B8AB")]
-    public class AddInoffensiveness : UnitBuffComponentDelegate<AddInoffensivenessData>, IUnitMakeOffensiveActionGlobalHandler, IGlobalSubscriber, IUnitSubscriber, ISubscriber
+    public class AddInoffensiveness : UnitBuffComponentDelegate<AddInoffensivenessData>, IEntityRevealedHandler, IUnitMakeOffensiveActionGlobalHandler, IGlobalSubscriber, IUnitSubscriber, ISubscriber
     {
 
-        public override void OnTurnOn()
-        {
-            this.Owner.Ensure<UnitPartInoffensiveness>().AddUnitPartFlag();
-            this.Owner.Get<UnitPartInoffensiveness>().UpdateInoffensivenessBuffTracker();
-            if (this.IsEvaluationOnSavingThrow)
-            {
-                base.Data.Stored_DC = this.Context.Params.DC;
-            }
-            else if (this.IsEvaluationOnSkillCheck)
-            {
-                base.Data.Stored_DC = this.Check_DC.Calculate(this.Context);
-            }
-            else if (this.IsEvaluationOnProperty)
-            {
-                base.Data.Stored_PropertyThreshold = this.PropertyThreshold.Calculate(this.Context);
-            }
-            else if (this.IsEvaluationCustomProperty)
-            {
-                base.Data.Stored_CustomPropertyThreshold = this.CustomPropertyThreshold.Calculate(this.Context);
-            }
-
-
-        }
-
-        public override void OnTurnOff()
-        {
-            if (this.IsEvaluationOnSavingThrow)
-            {
-                base.Data.Stored_DC = 0;
-            }
-            else if (this.IsEvaluationOnSkillCheck)
-            {
-                base.Data.Stored_DC = 0;
-            }
-            else if (this.IsEvaluationOnProperty)
-            {
-                base.Data.Stored_PropertyThreshold = 0;
-            }
-            else if (this.IsEvaluationCustomProperty)
-            {
-                base.Data.Stored_CustomPropertyThreshold = 0;
-            }
-            this.Owner.Ensure<UnitPartInoffensiveness>().UpdateInoffensivenessBuffTracker();
-
-            if (this.Owner.Get<UnitPartInoffensiveness>().IsInoffensivenessBuffTrackerEmpty)
-            {
-               this.Owner.Get<UnitPartInoffensiveness>().RemoveUnitPartFlag();
-            }
- 
-        }
-
-        public BlueprintBuff MarkingBuff
+        public BlueprintBuff MinorMarkingBuff
         {
             get
             {
-                BlueprintBuffReference buff = this.m_MarkingBuff;
+                BlueprintBuffReference buff = this.m_MinorMarkingBuff;
                 if (buff == null)
                 {
                     return null;
@@ -117,40 +71,196 @@ namespace TomeOfDarkness.NewComponents
             }
         }
 
-        public void AddMarkingBuff(UnitEntityData unit)
+        public BlueprintBuff ModerateMarkingBuff
         {
-            if ((!base.Data.Marked_Units.Any() || !base.Data.Marked_Units.Contains(unit)) && !unit.HasFact(this.MarkingBuff))
+            get
             {
-                unit.Buffs.AddBuff(this.MarkingBuff, null, null, null);
-                base.Data.Marked_Units.Add(unit);
-                return;
+                BlueprintBuffReference buff = this.m_ModerateMarkingBuff;
+                if (buff == null)
+                {
+                    return null;
+                }
+                return buff.Get();
             }
         }
 
-        public void RemoveMarkingBuff(UnitEntityData unit)
+        public BlueprintBuff MajorMarkingBuff
         {
-            if ((base.Data.Marked_Units.Any() || base.Data.Marked_Units.Contains(unit)) && unit.HasFact(this.MarkingBuff))
+            get
             {
-                unit.Buffs.RemoveFact(this.MarkingBuff);
-                base.Data.Marked_Units.Remove(unit);
-                return;
+                BlueprintBuffReference buff = this.m_MajorMarkingBuff;
+                if (buff == null)
+                {
+                    return null;
+                }
+                return buff.Get();
+            }
+        }
+
+        public override void OnTurnOn()
+        {
+            this.Owner.Ensure<UnitPartInoffensiveness>().AddUnitPartFlag();
+            this.Owner.Get<UnitPartInoffensiveness>().AddEntry(this.Fact, this);
+            if (this.IsEvaluationOnSavingThrow)
+            {
+                base.Data.Stored_DC = this.UseCustomDC ? this.CustomDC.Calculate(this.Context) : this.Context.Params.DC;
+            }
+            else if (this.IsEvaluationOnSkillCheck)
+            {
+                base.Data.Stored_DC = this.UseCustomDC ? this.CustomDC.Calculate(this.Context) : this.Context.Params.DC;
+            }
+            else if (this.IsEvaluationOnProperty || this.IsEvaluationCustomProperty)
+            {
+                base.Data.Stored_DC = this.UseCustomDC ? this.CustomDC.Calculate(this.Context) : 10;
+            }
+            var visible_enemy_units = this.Owner.Memory.Enemies;
+            var total_enemy_units = new List<UnitGroupMemory.UnitInfo>();
+            var checked_enemy_group = new List<string>();
+
+            foreach (var enemy in visible_enemy_units)
+            {
+                total_enemy_units.Add(enemy);
+                var enemy_group = enemy.UnitReference.Value.Memory.UnitsList;
+                var enemy_group_ID = enemy.UnitReference.Value.Memory.GroupId;
+
+                if (!checked_enemy_group.Any() && !checked_enemy_group.Contains(enemy_group_ID))
+                {
+                    foreach (var enemy_ally in enemy_group)
+                    {
+                        if (!visible_enemy_units.Contains(enemy_ally))
+                        {
+                            total_enemy_units.Add((UnitGroupMemory.UnitInfo)enemy_ally); 
+                        }
+                    }
+                }
+            }
+
+            foreach (var enemy in total_enemy_units)
+            {
+                this.CanBeAttackedBy(enemy.UnitReference.Value);
+            }
+            visible_enemy_units.Clear();
+            total_enemy_units.Clear();
+            checked_enemy_group.Clear();
+
+        }
+
+        public override void OnTurnOff()
+        {
+
+            if (this.IsEvaluationOnSavingThrow || this.IsEvaluationOnSkillCheck || this.IsEvaluationOnProperty || this.IsEvaluationCustomProperty)
+            {
+                base.Data.Stored_DC = 0;
+            }
+            this.Owner.Ensure<UnitPartInoffensiveness>().RemoveEntry(this.Fact, this);
+        }
+
+        public void AddMarkingBuff(UnitEntityData unit, MarkingBuffType type)
+        {
+            if (type == MarkingBuffType.MajorBuff)
+            {
+                if ((!base.Data.Marked_Units_Major.Any() || !base.Data.Marked_Units_Major.Contains(unit)) && !unit.HasFact(this.MajorMarkingBuff))
+                {
+                    unit.Buffs.AddBuff(this.MajorMarkingBuff, null, null, null);
+                    base.Data.Marked_Units_Major.Add(unit);
+                    return;
+                }
+            }
+            else if (type == MarkingBuffType.ModerateBuff)
+            {
+                if ((!base.Data.Marked_Units_Moderate.Any() || !base.Data.Marked_Units_Moderate.Contains(unit)) && !unit.HasFact(this.ModerateMarkingBuff))
+                {
+                    unit.Buffs.AddBuff(this.ModerateMarkingBuff, null, null, null);
+                    base.Data.Marked_Units_Moderate.Add(unit);
+                    return;
+                } 
+            }
+            else 
+            {
+                if ((!base.Data.Marked_Units_Minor.Any() || !base.Data.Marked_Units_Minor.Contains(unit)) && !unit.HasFact(this.MinorMarkingBuff))
+                {
+                    unit.Buffs.AddBuff(this.MinorMarkingBuff, null, null, null);
+                    base.Data.Marked_Units_Minor.Add(unit);
+                    return;
+                }
+            }
+        }
+
+        public void RemoveMarkingBuff(UnitEntityData unit, MarkingBuffType type)
+        {
+            if (type == MarkingBuffType.MajorBuff)
+            {
+                if ((base.Data.Marked_Units_Major.Any() || base.Data.Marked_Units_Major.Contains(unit)) && unit.HasFact(this.MajorMarkingBuff))
+                {
+                    unit.Buffs.RemoveFact(this.MajorMarkingBuff);
+                    base.Data.Marked_Units_Major.Remove(unit);
+                    return;
+                }
+            }
+            else if (type == MarkingBuffType.ModerateBuff)
+            {
+                if ((base.Data.Marked_Units_Moderate.Any() || base.Data.Marked_Units_Moderate.Contains(unit)) && unit.HasFact(this.ModerateMarkingBuff))
+                {
+                    unit.Buffs.RemoveFact(this.ModerateMarkingBuff);
+                    base.Data.Marked_Units_Moderate.Remove(unit);
+                    return;
+                }
+            }
+            else
+            {
+                if ((base.Data.Marked_Units_Minor.Any() || base.Data.Marked_Units_Minor.Contains(unit)) && unit.HasFact(this.MinorMarkingBuff))
+                {
+                    unit.Buffs.RemoveFact(this.MinorMarkingBuff);
+                    base.Data.Marked_Units_Minor.Remove(unit);
+                    return;
+                }
             }
         }
 
         public void RemoveAllMarkingBuffs()
         {
-            if (base.Data.Marked_Units.Any())
+            if (this.HasAdvancedMarkingBuff && base.Data.Marked_Units_Major.Any())
             {
-                foreach (var unit in base.Data.Marked_Units)
+                foreach (var unit in base.Data.Marked_Units_Major)
                 {
-                    if (!unit.IsDisposed && unit.HasFact(this.MarkingBuff))
+                    if (!unit.IsDisposed && unit.HasFact(this.MajorMarkingBuff))
                     {
-                        unit.Buffs.RemoveFact(this.MarkingBuff);
-                        base.Data.Marked_Units.Remove(unit);
+                        unit.Buffs.RemoveFact(this.MajorMarkingBuff);
+                        base.Data.Marked_Units_Major.Remove(unit);
                     }
                     else
                     {
-                        base.Data.Marked_Units.Remove(unit);
+                        base.Data.Marked_Units_Major.Remove(unit);
+                    }
+                }
+            }
+            else if (this.HasAdvancedMarkingBuff && base.Data.Marked_Units_Moderate.Any())
+            {
+                foreach (var unit in base.Data.Marked_Units_Moderate)
+                {
+                    if (!unit.IsDisposed && unit.HasFact(this.ModerateMarkingBuff))
+                    {
+                        unit.Buffs.RemoveFact(this.ModerateMarkingBuff);
+                        base.Data.Marked_Units_Moderate.Remove(unit);
+                    }
+                    else
+                    {
+                        base.Data.Marked_Units_Moderate.Remove(unit);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var unit in base.Data.Marked_Units_Minor)
+                {
+                    if (!unit.IsDisposed && unit.HasFact(this.MinorMarkingBuff))
+                    {
+                        unit.Buffs.RemoveFact(this.MinorMarkingBuff);
+                        base.Data.Marked_Units_Minor.Remove(unit);
+                    }
+                    else
+                    {
+                        base.Data.Marked_Units_Minor.Remove(unit);
                     }
                 }
             }
@@ -172,75 +282,709 @@ namespace TomeOfDarkness.NewComponents
             {
                 this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Immunity, unit);
                 base.Data.Can_Attack.Add(unit);
-                if (this.HasMarkingBuff)
+                if (this.HasAdvancedMarkingBuff)
                 {
-                    this.RemoveMarkingBuff(unit);
+                    this.RemoveMarkingBuff(unit,MarkingBuffType.MajorBuff);
+                    this.RemoveMarkingBuff(unit, MarkingBuffType.ModerateBuff);
+                    this.RemoveMarkingBuff(unit, MarkingBuffType.MinorBuff);
+                }
+                else if (this.HasMarkingBuff)
+                {
+                    this.RemoveMarkingBuff(unit, MarkingBuffType.MinorBuff);
                 }
                 return true;
             }
-      
+
             if (this.CanBypassInoffensiveness(unit) == true)
             {
                 this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassSucceess, unit);
                 base.Data.Can_Attack.Add(unit);
-                if (this.HasMarkingBuff)
+                if (this.HasAdvancedMarkingBuff)
                 {
-                    this.RemoveMarkingBuff(unit);
+                    this.RemoveMarkingBuff(unit,MarkingBuffType.MajorBuff);
+                    this.RemoveMarkingBuff(unit, MarkingBuffType.ModerateBuff);
+                    this.RemoveMarkingBuff(unit, MarkingBuffType.MinorBuff);
+                }
+                else if (this.HasMarkingBuff)
+                {
+                    this.RemoveMarkingBuff(unit, MarkingBuffType.MinorBuff);
                 }
                 return true;
             }
-            else 
+            else
             {
                 this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.BypassFailure, unit);
                 base.Data.Cannot_Attack.Add(unit);
-                if (this.HasMarkingBuff)
-                {
-                    this.AddMarkingBuff(unit);
-                }
-
                 return true;
             }
 
         }
 
-        // If the ReverseCheck is set to "false", the inoffensiveness effect cannot be bypassed if the saving throw or skill check is passed,
-        // if the buff is either on the owner of this buff or on the "target" of this buff or if the chosen property is higher or equal to the threshold. 
-        // As a safety measure, the default result if no InoffensivenessEvaluationType was set is "true", so the unit can be attacked.
         public bool CanBypassInoffensiveness(UnitEntityData target)
         {
+            int altered_DC = 0;
+
             switch (this.Type)
             {
                 case InoffensivenessEvaluationType.SavingThrow:
-                    RuleSavingThrow ruleSavingThrow = this.Context.TriggerRule<RuleSavingThrow>(new RuleSavingThrow(target, this.m_SavingThrowType, base.Data.Stored_DC));
-                    return  ruleSavingThrow.IsPassed && !this.ReverseCheck ;
+
+                    altered_DC = base.Data.Stored_DC;
+                    if (this.UseDCAdjustingFacts && this.m_FactDCModification != null)
+                    {
+                        foreach (AddInoffensiveness.FactDCModification conditionalDCIncreaseEntry in this.m_FactDCModification)
+                        {
+                            if (target.HasFact(conditionalDCIncreaseEntry.Fact))
+                            {
+                                altered_DC += conditionalDCIncreaseEntry.Value;
+                            }
+                        }
+                    }
+                    RuleSavingThrow ruleSavingThrow = this.Context.TriggerRule<RuleSavingThrow>(new RuleSavingThrow(target, this.m_SavingThrowType, altered_DC));
+
+                    if (this.HasAdvancedMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (ruleSavingThrow.Success)
+                            {
+                                if (altered_DC - ruleSavingThrow.RollResult >= 0 && altered_DC - ruleSavingThrow.RollResult < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (altered_DC - ruleSavingThrow.RollResult >= 5 && altered_DC - ruleSavingThrow.RollResult < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (altered_DC - ruleSavingThrow.RollResult >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (!ruleSavingThrow.Success)
+                            {
+                                if (ruleSavingThrow.RollResult - altered_DC >= 0 && ruleSavingThrow.RollResult - altered_DC < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (ruleSavingThrow.RollResult - altered_DC >= 5 && ruleSavingThrow.RollResult - altered_DC < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (ruleSavingThrow.RollResult - altered_DC >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (ruleSavingThrow.Success)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (!ruleSavingThrow.Success)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+
+                    return ruleSavingThrow.Success && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.SkillCheck:
-                    RuleSkillCheck ruleSkillCheck = this.Context.TriggerRule<RuleSkillCheck>(new RuleSkillCheck(target, this.m_StatStype, base.Data.Stored_DC));
-                    return  ruleSkillCheck.Success && !this.ReverseCheck;
+                    
+                    altered_DC = base.Data.Stored_DC;
+                    if (this.UseDCAdjustingFacts && this.m_FactDCModification != null)
+                    {
+                        foreach (AddInoffensiveness.FactDCModification conditionalDCIncreaseEntry in this.m_FactDCModification)
+                        {
+                            if (target.HasFact(conditionalDCIncreaseEntry.Fact))
+                            {
+                                altered_DC += conditionalDCIncreaseEntry.Value;
+                            }
+                        }
+                    }
+                    RuleStatCheck ruleStatCheck = RuleStatCheck.Create(target, this.m_StatStype, altered_DC);
+                    ruleStatCheck.ShowAnyway = true;
+                    RuleStatCheck ruleStatCheck2 = GameHelper.TriggerStatCheck(ruleStatCheck, base.Context, true);
+
+                    if (this.HasAdvancedMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (ruleStatCheck2.Success)
+                            {
+                                if (altered_DC - ruleStatCheck2.RollResult >= 0 && altered_DC - ruleStatCheck2.RollResult < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (altered_DC - ruleStatCheck2.RollResult >= 5 && altered_DC - ruleStatCheck2.RollResult < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (altered_DC - ruleStatCheck2.RollResult >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            } 
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (!ruleStatCheck2.Success)
+                            {
+                                if (ruleStatCheck2.RollResult - altered_DC >= 0 && ruleStatCheck2.RollResult - altered_DC < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (ruleStatCheck2.RollResult - altered_DC >= 5 && ruleStatCheck2.RollResult - altered_DC < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (ruleStatCheck2.RollResult - altered_DC >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (ruleStatCheck2.Success)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (!ruleStatCheck2.Success)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+
+                    return ruleStatCheck2.Success && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.OwnerBuff:
-                    return  this.Owner.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck ;
+
+                    var owner_has_buff = target.Buffs.HasFact(this.m_Buff.Get());
+
+                    if (this.HasMarkingBuff)
+                    {
+                        if (owner_has_buff && !this.ReverseCheck)
+                        {
+                            this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                            return true;
+                        }
+                        else 
+                        { 
+                            return false; 
+                        }
+
+                    }
+                    else
+                    {
+                        if (owner_has_buff && !this.ReverseCheck)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+                    }
 
                 case InoffensivenessEvaluationType.TargetBuff:
-                    return  target.Buffs.HasFact(this.m_Buff.Get()) && !this.ReverseCheck;
+
+
+                    var target_has_buff = target.Buffs.HasFact(this.m_Buff.Get());
+
+                    if (this.HasMarkingBuff)
+                    {
+                        if (target_has_buff && !this.ReverseCheck)
+                        {
+                            this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+                    }
+                    else
+                    {
+                        if (target_has_buff && !this.ReverseCheck)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+                    }
 
                 case InoffensivenessEvaluationType.OwnerProperty:
-                    return (this.Property.GetInt(this.Owner) >= base.Data.Stored_PropertyThreshold) && !this.ReverseCheck;
+                    altered_DC = base.Data.Stored_DC;
+                    if (this.UseDCAdjustingFacts && this.m_FactDCModification != null)
+                    {
+                        foreach (AddInoffensiveness.FactDCModification conditionalDCIncreaseEntry in this.m_FactDCModification)
+                        {
+                            if (target.HasFact(conditionalDCIncreaseEntry.Fact))
+                            {
+                                altered_DC += conditionalDCIncreaseEntry.Value;
+                            }
+                        }
+                    }
+                    int owner_property_value = this.Property.GetInt(this.Owner);
+
+                    if (this.HasAdvancedMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (owner_property_value >= altered_DC)
+                            {
+                                if (altered_DC - owner_property_value >= 0 && altered_DC - owner_property_value < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (altered_DC - owner_property_value >= 5 && altered_DC - altered_DC - owner_property_value < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (altered_DC - owner_property_value >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (owner_property_value < altered_DC)
+                            {
+                                if (owner_property_value - altered_DC > 0 && owner_property_value - altered_DC < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (owner_property_value - altered_DC >= 5 && altered_DC - owner_property_value - altered_DC < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (owner_property_value - altered_DC >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (owner_property_value >= altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (owner_property_value < altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    return (owner_property_value >= altered_DC) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.TargetProperty:
-                    return (this.Property.GetInt(target) >= base.Data.Stored_PropertyThreshold) && !this.ReverseCheck;
+                    altered_DC = base.Data.Stored_DC;
+                    if (this.UseDCAdjustingFacts && this.m_FactDCModification != null)
+                    {
+                        foreach (AddInoffensiveness.FactDCModification conditionalDCIncreaseEntry in this.m_FactDCModification)
+                        {
+                            if (target.HasFact(conditionalDCIncreaseEntry.Fact))
+                            {
+                                altered_DC += conditionalDCIncreaseEntry.Value;
+                            }
+                        }
+                    }
+                    int target_property_value = this.Property.GetInt(target);
+
+                    if (this.HasAdvancedMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (target_property_value >= altered_DC)
+                            {
+                                if (altered_DC - target_property_value >= 0 && altered_DC - target_property_value < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (altered_DC - target_property_value >= 5 && altered_DC - altered_DC - target_property_value < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (altered_DC - target_property_value >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (target_property_value < altered_DC)
+                            {
+                                if (target_property_value - altered_DC > 0 && target_property_value - altered_DC < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (target_property_value - altered_DC >= 5 && altered_DC - target_property_value - altered_DC < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (target_property_value - altered_DC >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (target_property_value >= altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (target_property_value < altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    return (target_property_value >= altered_DC) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.OwnerCustomProperty:
-                    return (this.CustomProperty.GetInt(this.Owner) >= base.Data.Stored_CustomPropertyThreshold) && !this.ReverseCheck;
+                    altered_DC = base.Data.Stored_DC;
+                    if (this.UseDCAdjustingFacts && this.m_FactDCModification != null)
+                    {
+                        foreach (AddInoffensiveness.FactDCModification conditionalDCIncreaseEntry in this.m_FactDCModification)
+                        {
+                            if (target.HasFact(conditionalDCIncreaseEntry.Fact))
+                            {
+                                altered_DC += conditionalDCIncreaseEntry.Value;
+                            }
+                        }
+                    }
+                    int owner_custom_property_value = this.CustomProperty.GetInt(this.Owner);
+
+                    if (this.HasAdvancedMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (owner_custom_property_value >= altered_DC)
+                            {
+                                if (altered_DC - owner_custom_property_value >= 0 && altered_DC - owner_custom_property_value < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (altered_DC - owner_custom_property_value >= 5 && altered_DC - altered_DC - owner_custom_property_value < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (altered_DC - owner_custom_property_value >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (owner_custom_property_value < altered_DC)
+                            {
+                                if (owner_custom_property_value - altered_DC > 0 && owner_custom_property_value - altered_DC < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (owner_custom_property_value - altered_DC >= 5 && altered_DC - owner_custom_property_value - altered_DC < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (owner_custom_property_value - altered_DC >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (owner_custom_property_value >= altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (owner_custom_property_value < altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    return (owner_custom_property_value >= altered_DC) && !this.ReverseCheck;
 
                 case InoffensivenessEvaluationType.TargetCustomProperty:
-                    return (this.CustomProperty.GetInt(target) >= base.Data.Stored_CustomPropertyThreshold) && !this.ReverseCheck;
+                    altered_DC = base.Data.Stored_DC;
+                    if (this.UseDCAdjustingFacts && this.m_FactDCModification != null)
+                    {
+                        foreach (AddInoffensiveness.FactDCModification conditionalDCIncreaseEntry in this.m_FactDCModification)
+                        {
+                            if (target.HasFact(conditionalDCIncreaseEntry.Fact))
+                            {
+                                altered_DC += conditionalDCIncreaseEntry.Value;
+                            }
+                        }
+                    }
+                    int target_custom_property_value = this.CustomProperty.GetInt(target);
+
+                    if (this.HasAdvancedMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (target_custom_property_value >= altered_DC)
+                            {
+                                if (altered_DC - target_custom_property_value >= 0 && altered_DC - target_custom_property_value < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (altered_DC - target_custom_property_value >= 5 && altered_DC - altered_DC - target_custom_property_value < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (altered_DC - target_custom_property_value >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (target_custom_property_value < altered_DC)
+                            {
+                                if (target_custom_property_value - altered_DC > 0 && target_custom_property_value - altered_DC < 5)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                    return true;
+                                }
+                                if (target_custom_property_value - altered_DC >= 5 && altered_DC - target_custom_property_value - altered_DC < 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.ModerateBuff);
+                                    return true;
+                                }
+                                if (target_custom_property_value - altered_DC >= 10)
+                                {
+                                    this.AddMarkingBuff(target, MarkingBuffType.MajorBuff);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        if (!this.ReverseCheck)
+                        {
+                            if (target_custom_property_value >= altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if (target_custom_property_value < altered_DC)
+                            {
+                                this.AddMarkingBuff(target, MarkingBuffType.MinorBuff);
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    return (target_custom_property_value >= altered_DC) && !this.ReverseCheck;
 
                 default:
                     return !this.ReverseCheck;
             }
 
 
+        }
+
+        void IEntityRevealedHandler.HandleEntityRevealed(EntityDataBase entity)
+        {
+            UnitEntityData revealed_entity = entity as UnitEntityData;
+            UnitEntityData caster = this.Owner;
+
+            if (entity != null && revealed_entity != caster && revealed_entity.Faction.AttackFactions.Contains(caster.Faction))
+            {
+                this.CanBeAttackedBy(revealed_entity);
+            }
         }
 
         public void HandleUnitMakeOffensiveAction(UnitEntityData unit, UnitEntityData target)
@@ -261,27 +1005,21 @@ namespace TomeOfDarkness.NewComponents
                     this.CreateInoffensivenessLogMessage(InoffensivenessMessageType.Invalidation, target);
                     base.Data.Can_Attack.Add(target);
                     base.Data.Cannot_Attack.Remove(target);
-                    if (this.HasMarkingBuff)
+                    if (this.HasAdvancedMarkingBuff)
                     {
-                        this.RemoveMarkingBuff(target);
+                        this.RemoveMarkingBuff(unit, MarkingBuffType.MajorBuff);
+                        this.RemoveMarkingBuff(unit, MarkingBuffType.ModerateBuff);
+                        this.RemoveMarkingBuff(unit, MarkingBuffType.MinorBuff);
+                    }
+                    else if (this.HasMarkingBuff)
+                    {
+                        this.RemoveMarkingBuff(unit, MarkingBuffType.MinorBuff);
                     }
                 }
             }
-            
+
 
         }
-
-        // IEntityRevealedHandler,
-        //public void HandleEntityRevealed(EntityDataBase entity)
-        //{
-        //    UnitEntityData revealed_entity = entity as UnitEntityData;
-        //    UnitEntityData caster = this.Owner;
-
-        //    if (entity != null && revealed_entity != caster && revealed_entity.IsPlayersEnemy)
-        //    {
-        //        this.CanBeAttackedBy(revealed_entity);
-        //    }
-        //}
 
         public void CreateInoffensivenessLogMessage(InoffensivenessMessageType message_type, UnitEntityData target)
         {
@@ -289,6 +1027,24 @@ namespace TomeOfDarkness.NewComponents
             var text = this.Fact.Name;
             var color = new Color32();
             LocalizedString message;
+            LogChannelType channel_type;
+            LogThreadBaseAttachment attachment_thread;
+
+            switch (this.Type)
+            {
+                case InoffensivenessEvaluationType.SavingThrow:
+                    channel_type = LogChannelType.AnyCombat;
+                    attachment_thread = LogThreadBaseAttachment.SavingThrow;
+                    break;
+                case InoffensivenessEvaluationType.SkillCheck:
+                    channel_type = LogChannelType.AnyCombat;
+                    attachment_thread = LogThreadBaseAttachment.SkillCheck;
+                    break;
+                default:
+                    channel_type = LogChannelType.Common;
+                    attachment_thread = LogThreadBaseAttachment.None;
+                    break;
+            }
 
             switch (message_type)
             {
@@ -315,11 +1071,15 @@ namespace TomeOfDarkness.NewComponents
             }
 
             var custom_message = SimpleCombatLogMessage.GenerateSimpleCombatLogMessage(message, color, caster, target, text, "", "");
-            SimpleCombatLogMessage.SendSimpleCombatLogMessage(custom_message);
+            SimpleCombatLogMessage.SendSimpleCombatLogMessage(custom_message, channel_type, attachment_thread);
 
             return;
 
         }
+
+
+
+        //Evaluation checkers to define which parameters are needed.
 
         [UsedImplicitly]
         public bool IsEvaluationOnSavingThrow
@@ -375,11 +1135,30 @@ namespace TomeOfDarkness.NewComponents
             }
         }
 
+        //check if other parameters are needed.
+
+        [UsedImplicitly]
+        public bool HasAdvancedMarkingBuff
+        {
+            get
+            {
+                return this.HasMarkingBuff && this.CalculateDCDifference;
+            }
+        }
+
+
+        [UsedImplicitly]
+        public bool NeedsCustomDCInput
+        {
+            get
+            {
+                return this.UseCustomDC && this.IsBasedOnRoll || this.IsEvaluationOnProperty || this.IsEvaluationCustomProperty;
+            }
+        }
+
         public OffensiveActionEffect Offensive_Action_Effect;
 
         public InoffensivenessEvaluationType Type = InoffensivenessEvaluationType.SavingThrow;
-
-        public bool HasMarkingBuff = false;
 
         [HideInInspector]
         [ShowIf("IsEvaluationOnSavingThrow")]
@@ -390,10 +1169,6 @@ namespace TomeOfDarkness.NewComponents
         public StatType m_StatStype;
 
         [HideInInspector]
-        [ShowIf("IsEvaluationOnSkillCheck")]
-        public ContextValue Check_DC;
-
-        [HideInInspector]
         [ShowIf("IsEvaluationOnBuff")]
         [SerializeField]
         public BlueprintBuffReference m_Buff;
@@ -402,21 +1177,48 @@ namespace TomeOfDarkness.NewComponents
         [ShowIf("IsEvaluationOnProperty")]
         public UnitProperty Property;
 
-        [ShowIf("IsEvaluationOnProperty")]
-        public ContextValue PropertyThreshold;
-
         [HideInInspector]
         [ShowIf("IsEvaluationCustomProperty")]
         public BlueprintUnitProperty CustomProperty;
 
-        [ShowIf("IsEvaluationCustomProperty")]
-        public ContextValue CustomPropertyThreshold;
+        public bool UseCustomDC;
+
+        public bool HasMarkingBuff = false;
+
+        public bool CalculateDCDifference = false;
+
+        public bool UseDCAdjustingFacts = false;
+
+        [HideInInspector]
+        [ShowIf("NeedsCustomDCInput")]
+        public ContextValue CustomDC;
 
         [ShowIf("HasMarkingBuff")]
         [SerializeField]
-        public BlueprintBuffReference m_MarkingBuff;
+        public BlueprintBuffReference m_MinorMarkingBuff;
+
+        [ShowIf("HasAdvancedMarkingBuff")]
+        [SerializeField]
+        public BlueprintBuffReference m_ModerateMarkingBuff;
+
+        [ShowIf("HasAdvancedMarkingBuff")]
+        [SerializeField]
+        public BlueprintBuffReference m_MajorMarkingBuff;
+
+        [ShowIf("UseDCAdjustingFacts")]
+        [SerializeField]
+        private AddInoffensiveness.FactDCModification[] m_FactDCModification = new AddInoffensiveness.FactDCModification[0];
 
         public bool ReverseCheck = false;
+
+        [Serializable]
+        private struct FactDCModification
+        {
+            public BlueprintUnitFact Fact;
+
+            public int Value;
+        }
+
 
         public enum InoffensivenessMessageType
         {
@@ -427,7 +1229,12 @@ namespace TomeOfDarkness.NewComponents
 
         }
 
-
+        public enum MarkingBuffType
+        {
+            MinorBuff = 0,
+            ModerateBuff = 1,
+            MajorBuff = 2
+        }
 
     }
 }

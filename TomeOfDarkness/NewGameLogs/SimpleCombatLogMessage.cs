@@ -18,6 +18,7 @@ using static Kingmaker.Blueprints.Root.Strings.GameLog.GameLogStrings;
 using Owlcat.Runtime.UI.Tooltips;
 using Kingmaker.UI.Models.Log.CombatLog_ThreadSystem.LogThreads.Common;
 using System.Runtime.CompilerServices;
+using Kingmaker.UI.Models.Log.CombatLog_ThreadSystem.LogThreads.Combat;
 
 namespace TomeOfDarkness.NewGameLogs
 {
@@ -52,10 +53,29 @@ namespace TomeOfDarkness.NewGameLogs
             return result;
         }
 
-        public static void SendSimpleCombatLogMessage(CombatLogMessage message)
+        // Generally the following are used:
+        // a) LogChannelType.AnyCombat [if you want to send a message alongside skill checks and saving throws]
+        // b) LogChannelType.AnyCombat [if you just want to send the message]
+
+        public static void SendSimpleCombatLogMessage(CombatLogMessage message, LogChannelType channel_type, LogThreadBaseAttachment log_threat_type)
         {
-            var messageLog = LogThreadService.Instance.m_Logs[LogChannelType.Common].First(x => x is MessageLogThread);
-            messageLog.AddMessage(message);
+            switch(log_threat_type)
+            {
+                case LogThreadBaseAttachment.SavingThrow:
+                    var messageLog1 = LogThreadService.Instance.m_Logs[channel_type].Last(x => x is RollSkillCheckLogThread);
+                    messageLog1.AddMessage(message);
+                    return;
+
+                case LogThreadBaseAttachment.SkillCheck:
+                    var messageLog2 = LogThreadService.Instance.m_Logs[channel_type].Last(x => x is RollSkillCheckLogThread);
+                    messageLog2.AddMessage(message);
+                    return;
+
+                default:
+                    var messageLog3 = LogThreadService.Instance.m_Logs[channel_type].Last(x => x is MessageLogThread);
+                    messageLog3.AddMessage(message);
+                    return;
+            }    
         }
 
         public static Color32 ValidateColor(Color color)
@@ -65,6 +85,13 @@ namespace TomeOfDarkness.NewGameLogs
                 return GameLogStrings.Instance.DefaultColor;
             }
             return color;
+        }
+
+        public enum LogThreadBaseAttachment
+        {
+            None = 0,
+            SavingThrow = 1,
+            SkillCheck = 2
         }
 
 

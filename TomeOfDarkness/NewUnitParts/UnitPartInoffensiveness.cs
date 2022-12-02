@@ -1,13 +1,19 @@
 ﻿using HarmonyLib;
+using Kingmaker;
 using Kingmaker.Blueprints;
 using Kingmaker.EntitySystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.RuleSystem;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
+using Kingmaker.UnitLogic.Buffs.Components;
 using Kingmaker.UnitLogic.Commands.Base;
+using Kingmaker.UnitLogic.Parts;
 using Kingmaker.Utility;
+using Owlcat.Runtime.Core.Logging;
+using System;
 using System.Collections.Generic;
 using TomeOfDarkness.NewComponents;
+using static TomeOfDarkness.Main;
 
 namespace TomeOfDarkness.NewUnitParts
 {
@@ -25,50 +31,46 @@ namespace TomeOfDarkness.NewUnitParts
             }
         }
 
-        // Inoffensiveness is a unique unit part which tracks and checks the requirements to attack the owner associated
-        // with any effect that have this component, so it is necessary to check whether (or not) there are AddInoffensiveness components left
-        // before deactivating the UnitPartInoffensiveness. 
 
-        public bool  IsInoffensivenessBuffTrackerEmpty
+
+        public void AddEntry(EntityFact fact, AddInoffensiveness component)
         {
-            get
+            if (this.InoffensivenessEntries.HasItem((UnitPartInoffensiveness.InoffensivenessEntry i) => i.Fact == fact && i.Component == component))
             {
-                return !this.InoffensivenessBuffTracker.Any();
+                string messageFormat = "UnitPartInoffensiveness.AddEntry: item already exists (fact: {0}, component: {1})";
+                object[] array = new object[2];
+                array[0] = fact;
+                int num = 1;
+                AddInoffensiveness addEffectInoffensiveness = component.Or(null);
+                array[num] = ((addEffectInoffensiveness != null) ? addEffectInoffensiveness.name : null);
+                string error_message = String.Format(messageFormat, array[0], array[1]);
+                ToDContext.Logger.LogError(error_message);
+                return;
             }
-
+            this.InoffensivenessEntries.Add(new UnitPartInoffensiveness.InoffensivenessEntry(fact, component));
         }
 
-
-        public void UpdateInoffensivenessBuffTracker()
+        public void RemoveEntry(EntityFact fact, AddInoffensiveness component)
         {
-            List<BlueprintBuff> Tracker = new List<BlueprintBuff>();
-
-            foreach (var buff in this.Owner.Buffs)
+            this.InoffensivenessEntries.RemoveAll((UnitPartInoffensiveness.InoffensivenessEntry i) => i.Fact == fact && i.Component == component);
+            if (this.InoffensivenessEntries.Count < 1)
             {
-                if (buff.Blueprint.GetComponent<AddInoffensiveness>() != null)
-                {
-
-                    Tracker.Add(buff.Blueprint);
-
-                }
-
+                this.RemoveUnitPartFlag();
             }
-
-            this.InoffensivenessBuffTracker = Tracker;
         }
 
         public bool CanBeAttackedBy(UnitEntityData unit)
         {
-            if (!this.InoffensivenessBuffTracker.Any())
+            if (this.InoffensivenessEntries.Count < 1)
             {
                 return true;
             }
 
-            foreach (var b in this.InoffensivenessBuffTracker)
+            foreach (var entry in this.InoffensivenessEntries)
             {
                 bool Can_Be_Attacked_By = false;
 
-                b.CallComponents<AddInoffensiveness>(c => Can_Be_Attacked_By = c.CanBeAttackedBy(unit));
+                entry.Fact.CallComponents<AddInoffensiveness>(c => Can_Be_Attacked_By = c.CanBeAttackedBy(unit));
 
                 if (Can_Be_Attacked_By)
                 {
@@ -100,10 +102,22 @@ namespace TomeOfDarkness.NewUnitParts
 
         }
 
-
         public CountableFlag Inoffensiveness = new CountableFlag();
 
-        public List<BlueprintBuff> InoffensivenessBuffTracker = new List<BlueprintBuff>();
+        public readonly List<UnitPartInoffensiveness.InoffensivenessEntry> InoffensivenessEntries = new List<UnitPartInoffensiveness.InoffensivenessEntry>();
+
+        public struct InoffensivenessEntry
+        {
+            public InoffensivenessEntry(EntityFact fact, AddInoffensiveness component)
+            {
+                this.Fact = fact;
+                this.Component = component;
+            }
+
+            public readonly EntityFact Fact;
+
+            public readonly AddInoffensiveness Component;
+        }
 
     }
 }

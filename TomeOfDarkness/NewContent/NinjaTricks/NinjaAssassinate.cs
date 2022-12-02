@@ -21,7 +21,7 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
     {
         public static void ConfigureNinjaAssassinate()
         {
-            //[CHECKED]
+  
             var Executioner_Assassinate_Feature = BlueprintTools.GetBlueprint<BlueprintFeature>("bd7e70e98f9036f4ba27ef3e29a177c2");                                        //[CHECKED]
             var Executioner_Assassinate_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("3dad7f131aa884f4c972f2fb759d0df4");                                        //[CHECKED]
             var Slayer_Study_Target_Ability = BlueprintTools.GetBlueprint<BlueprintAbility>("b96d810ceb1708b4e895b695ddbb1813");                                            //[CHECKED]
@@ -73,23 +73,23 @@ namespace TomeOfDarkness.NewContent.NinjaTricks
 
             var Ninja_Trick_Assassinate_Wrapper_Ability = HlEX.CreateVariantWrapper("NinjaTrickAssassinateBaseAbility", Ninja_Trick_Assassinate_Ability_Variants);
 
-            Ninja_Trick_Assassinate_Wrapper_Ability.SetName(ToDContext, "Assassinate");
-            Ninja_Trick_Assassinate_Wrapper_Ability.SetDescription(ToDContext, "A character with this master trick can kill foes that are unable to defend themselves. To attempt to assassinate a target, the character must first study his target as a {g|Encyclopedia:Move_Action}move action{/g} to mark him for assassination. Subsequently he can attempt to instantly kill him (or any other marked target). This ability can only be used out of combat and the target must not see the character, but this special {g|Encyclopedia:Attack}attack{/g} automatically hits, scores a {g|Encyclopedia:Critical}critical hit{/g} and, if the victim survives, must make a {g|Encyclopedia:Saving_Throw}Fortitude save{/g} ({g|Encyclopedia:DC}DC{/g} 10 + relevant class level + relevant stat modifier or die. \n This special {g|Encyclopedia:Attack}attack{/g} is a full-{g|Encyclopedia:Combat_Round}round{/g} {g|Encyclopedia:CA_Types}action{/g} that provokes {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g} from {g|Encyclopedia:Threatened_Area}threatening{/g} opponents.");
-            Ninja_Trick_Assassinate_Wrapper_Ability.m_Icon = NinjaTrickAssassinateMeleeIcon;
-
+            Ninja_Trick_Assassinate_Wrapper_Ability.TemporaryContext(ab => {
+                ab.SetName(ToDContext, "Assassinate");
+                ab.SetDescription(ToDContext, "A character with this master trick can kill foes that are unable to defend themselves. To attempt to assassinate a target, the character must first study his target as a {g|Encyclopedia:Move_Action}move action{/g} to mark him for assassination. Subsequently he can attempt to instantly kill him (or any other marked target). This ability can only be used out of combat and the target must not see the character, but this special {g|Encyclopedia:Attack}attack{/g} automatically hits, scores a {g|Encyclopedia:Critical}critical hit{/g} and, if the victim survives, must make a {g|Encyclopedia:Saving_Throw}Fortitude save{/g} ({g|Encyclopedia:DC}DC{/g} 10 + relevant class level + relevant stat modifier or die. \n This special {g|Encyclopedia:Attack}attack{/g} is a full-{g|Encyclopedia:Combat_Round}round{/g} {g|Encyclopedia:CA_Types}action{/g} that provokes {g|Encyclopedia:Attack_Of_Opportunity}attacks of opportunity{/g} from {g|Encyclopedia:Threatened_Area}threatening{/g} opponents.");
+                ab.m_Icon = NinjaTrickAssassinateMeleeIcon;
+            });
 
             var Ninja_Trick_Assassinate_Feature = HlEX.ConvertAbilityToFeature(Ninja_Trick_Assassinate_Wrapper_Ability, "", "", "Feature", "BaseAbility", false);
 
-            Ninja_Trick_Assassinate_Feature.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
-                c.m_Feature = Rogue_Assassination_Training_Progression.ToReference<BlueprintFeatureReference>();
-            }));
-
-            Ninja_Trick_Assassinate_Feature.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Assassination_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
-
-            Ninja_Trick_Assassinate_Feature.Ranks = 1;
-            Ninja_Trick_Assassinate_Feature.IsClassFeature = true;
-
-            Ninja_Trick_Assassinate_Feature.AddComponent(HlEX.CreatePrerequisiteNoFeature(Ninja_Trick_Assassinate_Feature));
+            Ninja_Trick_Assassinate_Feature.TemporaryContext(bp => {
+                bp.AddComponent(Helpers.Create<AddFeatureOnApply>(c => {
+                    c.m_Feature = Rogue_Assassination_Training_Progression.ToReference<BlueprintFeatureReference>();
+                }));
+                bp.AddComponent(HlEX.CreateAddFacts(new BlueprintUnitFactReference[] { Assassination_Charisma_Feature.ToReference<BlueprintUnitFactReference>() }));
+                bp.Ranks = 1;
+                bp.IsClassFeature = true;
+                bp.AddComponent(HlEX.CreatePrerequisiteNoFeature(Ninja_Trick_Assassinate_Feature));
+            });
 
             ToDContext.Logger.LogPatch("Created Assassinate ninja trick.", Ninja_Trick_Assassinate_Feature);
         }

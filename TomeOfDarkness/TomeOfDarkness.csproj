@@ -41,12 +41,13 @@
     <Compile Include="Bugfixes\Spells\ConcealingCloudsFix.cs" />
     <Compile Include="Config\Bugfixes.cs" />
     <Compile Include="Config\NewContent.cs" />
-    <Compile Include="MechanicsChanges\ActivatableAbilityGroupToD.cs" />
+    <Compile Include="NewEnums\AbilityRankTypeToD.cs" />
+    <Compile Include="NewEnums\AbilitySharedValueToD.cs" />
     <Compile Include="MechanicsChanges\AsceticPractice.cs" />
     <Compile Include="MechanicsChanges\AssassinationTraining.cs" />
-    <Compile Include="MechanicsChanges\ConcealmentDescriptorToD.cs" />
-    <Compile Include="MechanicsChanges\CustomStatTypesToD.cs" />
-    <Compile Include="MechanicsChanges\FeatureGroupToD.cs" />
+    <Compile Include="NewEnums\ConcealmentDescriptorToD.cs" />
+    <Compile Include="NewEnums\CustomStatTypesToD.cs" />
+    <Compile Include="NewEnums\FeatureGroupToD.cs" />
     <Compile Include="MechanicsChanges\KiResourceChanges.cs" />
     <Compile Include="MechanicsChanges\MartialArtsTraining.cs" />
     <Compile Include="MechanicsChanges\NinjutsuTraining.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="NewContent\NinjaTricks\Kamikaze.cs" />
     <Compile Include="NewContent\NinjaTricks\NinjaAssassinate.cs" />
     <Compile Include="NewContent\NinjaTricks\NinjaCanonBombs.cs" />
-    <Compile Include="NewContent\NinjaTricks\PressurePoints.cs" />
+    <Compile Include="NewContent\NinjaTricks\NinjaPressurePoints.cs" />
     <Compile Include="NewContent\NinjaTricks\SeeTheUnseen.cs" />
     <Compile Include="NewContent\NinjaTricks\ShadowClone.cs" />
     <Compile Include="NewContent\NinjaTricks\StyleMaster.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="NewGameLogs\SimpleCombatLogMessage.cs" />
     <Compile Include="NewUIStrings\CustomUIStrings.cs" />
     <Compile Include="NewUnitParts\AdditiveUnitPart.cs" />
+    <Compile Include="NewUnitParts\UnitPartCustomActivatableAbilityGroup.cs" />
     <Compile Include="NewUnitParts\UnitPartCustomMechanicsFeaturesToD.cs" />
     <Compile Include="NewUnitParts\UnitPartIgnoreConcealmentDescriptor.cs" />
     <Compile Include="NewUnitParts\UnitPartInoffensiveness.cs" />
@@ -257,10 +259,16 @@
     <Content Include="Assets\Abilities\Icon_NinjaBombBlue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Abilities\Icon_NinjaBombBrown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Abilities\Icon_NinjaBombGreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_NinjaBombPurple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Abilities\Icon_NinjaBombRed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Abilities\Icon_NinjaBombYellow.png">
