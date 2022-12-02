@@ -513,7 +513,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Create Poison - Frequency Boost feature.", Universal_Create_Poison_Frequency_Boost_Feature);
 
-            var Universal_Create_Poison_Frequency_Boost_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyyBoostBluff", bp => {
+            var Universal_Create_Poison_Frequency_Boost_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyBoostBluff", bp => {
                 bp.SetName(ToDContext, "Create Poison - Frequency Boost");
                 bp.SetDescription(ToDContext, "Each rank of this feature add +1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
@@ -523,7 +523,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Create Poison - Frequency Boost buff.", Universal_Create_Poison_Frequency_Boost_Buff);
 
-            var Universal_Create_Poison_Frequency_Reduction_Feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "UniversalCreatePoisonFrequencyyReductionFeature", bp => {
+            var Universal_Create_Poison_Frequency_Reduction_Feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "UniversalCreatePoisonFrequencyReductionFeature", bp => {
                 bp.SetName(ToDContext, "Create Poison - Frequency Reduction");
                 bp.SetDescription(ToDContext, "Each rank of this feature add -1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
@@ -533,7 +533,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Create Poison - Frequency Reduction feature.", Universal_Create_Poison_Frequency_Reduction_Feature);
 
-            var Universal_Create_Poison_Frequency_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyyReductionBluff", bp => {
+            var Universal_Create_Poison_Frequency_Reduction_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyReductionBluff", bp => {
                 bp.SetName(ToDContext, "Create Poison - Frequency Reduction");
                 bp.SetDescription(ToDContext, "Each rank of this feature add -1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
@@ -555,7 +555,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Create Poison - Frequency Boost (Class) feature.", Universal_Create_Poison_Frequency_Boost_Class_Feature);
 
-            var Universal_Create_Poison_Frequency_Boost_Class_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyyBoostClassBluff", bp => {
+            var Universal_Create_Poison_Frequency_Boost_Class_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyBoostClassBluff", bp => {
                 bp.SetName(ToDContext, "Create Poison - Frequency Boost (Class)");
                 bp.SetDescription(ToDContext, "Each rank of this feature add +1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
@@ -566,7 +566,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Create Poison - Frequency Boost (Class) buff.", Universal_Create_Poison_Frequency_Boost_Class_Buff);
 
-            var Universal_Create_Poison_Frequency_Reduction_Class_Feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "UniversalCreatePoisonFrequencyyReductionClassFeature", bp => {
+            var Universal_Create_Poison_Frequency_Reduction_Class_Feature = Helpers.CreateBlueprint<BlueprintFeature>(ToDContext, "UniversalCreatePoisonFrequencyReductionClassFeature", bp => {
                 bp.SetName(ToDContext, "Create Poison - Frequency Reduction (Class)");
                 bp.SetDescription(ToDContext, "Each rank of this feature add -1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
@@ -577,7 +577,7 @@ namespace TomeOfDarkness.MechanicsChanges
 
             ToDContext.Logger.LogPatch("Added Create Poison - Frequency Reduction (Class) feature.", Universal_Create_Poison_Frequency_Reduction_Class_Feature);
 
-            var Universal_Create_Poison_Frequency_Reduction_Class_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyyReductionClassBluff", bp => {
+            var Universal_Create_Poison_Frequency_Reduction_Class_Buff = Helpers.CreateBlueprint<BlueprintBuff>(ToDContext, "UniversalCreatePoisonFrequencyReductionClassBluff", bp => {
                 bp.SetName(ToDContext, "Create Poison - Frequency Reduction (Class)");
                 bp.SetDescription(ToDContext, "Each rank of this feature add -1 to the Poison Use's frequency (duration).");
                 bp.Ranks = 100;
